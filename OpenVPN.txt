@@ -1,0 +1,26 @@
+安装pam-devel: 
+
+
+安装rpmlib(PayloadIsZstd): 
+
+
+安装pam: 
+
+-----------------------------------------------------------------
+yum -y install pam-devel
+=================================================================
+下载安装libsystemd-daemon: 
+rpm -ivh ./systemd-devel-219-78.el7_9.3.x86_64.rpm --nodeps --force
+
+下载安装lzo: 
+./configure --prefix=/usr/local/ --enable-shared --disable-static --docdir=/usr/share/doc/lzo-2.10
+-----------------------------------------------------------------
+安装OpenVPN: 
+https://github.com/OpenVPN/openvpn/archive/v2.4.9.tar.gz
+
+autoreconf -ivf
+
+./configure --prefix=/quincy/env/openvpn/openvpn-bin --enable-lzo --enable-lz4 --enable-crypto --enable-server --enable-plugins --enable-port-share --enable-iproute2 --enable-pf --enable-plugin-auth-pam --enable-pam-dlopen --enable-systemd
+
+下载并解压Easy-RSA: 
+https://github.com/OpenVPN/easy-rsa/archive/v3.0.8.tar.gz

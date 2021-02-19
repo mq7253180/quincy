@@ -1,0 +1,26 @@
+安装ncurses: 
+./configure --prefix=/quincy/env/rabbitmq/ncurses-bin --with-shared --without-debug --without-ada --enable-overwrite
+复制lib包文件到/usr/lib
+或
+yum -y install ncurses-devel
+
+安装openssl-devel: 
+yum install openssl openssl-devel
+
+安装unixODBC-devel: 
+./configure --prefix=/quincy/env/rabbitmq/unixODBC-bin --includedir=/usr/include --libdir=/usr/lib -bindir=/usr/bin --sysconfdir=/etc --enable-gui=no
+或
+yum install unixODBC-devel
+
+
+安装Erlang: 
+./configure --prefix=/quincy/env/rabbitmq/otp-bin --with-ssl --enable-threads --enable-smp-support --enable-kernel-poll --enable-hipe --without-javac
+make -j8
+
+将bin/erl软链至/usr/bin
+
+rabbitmq-server -detached
+rabbitmqctl shutdown
+rabbitmq-plugins list
+rabbitmq-plugins enable rabbitmq_management
+ebin/rabbit.app: {loopback_users, [<<"guest">>]}改为{loopback_users, []}

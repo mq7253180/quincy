@@ -1,0 +1,26 @@
+mvnrepository: 
+http://mvnrepository.com/artifact/taglibs
+-------------------------------------------------
+Tomcat用Redis共享Session: 
+
+<Valve className="com.radiadesign.catalina.session.RedisSessionHandlerValve" />
+<Manager className="com.radiadesign.catalina.session.RedisSessionManager" host="192.168.237.128" port="6379" database="0" maxInactiveInternal="60"/>
+--------------------------------------------------
+struts国际化session问题: 
+
+request.getSession().invalidate();
+HttpSession newSession = request.getSession(true); 
+if(newSession.isNew())
+	return "redirect";
+else 
+	return "failed";
+--------------------------------------------------
+FTL文本资源占位符替换: 
+
+<@s.text name="seo.list.title"><@s.param>${key?if_exists}</@s.param></@s.text>
+-------------------------------------------------
+Eclipse: Cannot create a server using the selected type
+1. 退出eclipse
+2. 到[工程目录下]/.metadata/.plugins/org.eclipse.core.runtime/.settings
+3. 把org.eclipse.wst.server.core.prefs和org.eclipse.jst.server.tomcat.core.prefs这两个文件去掉
+4. 重启eclipse

@@ -1,0 +1,39 @@
+设置keystore在磁盘上的location: 
+System.setProperty("javax.net.ssl.trustStore", "");
+System.setProperty("javax.net.ssl.trustStorePassword", "");
+
+创建密钥对: 
+keytool -genkeypair -alias tomcat -keyalg RSA -sigalg SHA1withRSA -keysize 2048 -validity 36000 -keystore "D:\keystore\quincy.keystore"
+
+生成Certificate Request: 
+keytool -certreq -alias tomcat -keystore "D:\keystore\quincy.keystore" -file "D:\keystore\quincy.csr"
+
+导入Certificate: 
+keytool -importcert -trustcacerts -alias tomcat -keystore "D:\keystore\quincy.keystore" -file "D:\keystore\quincy.crt"
+
+Tomcat配置: 
+<Connector protocol="org.apache.coyote.http11.Http11Protocol"
+           port="8443" maxThreads="200"
+           scheme="https" secure="true" SSLEnabled="true"
+           keystoreFile="D:/keystore/quincy.keystore" keystorePass="mq123456"
+           clientAuth="false" sslProtocol="TLS"/>
+
+<Connector SSLEnabled="true" clientAuth="false" keyPass="lzh@201408.com" keystoreFile="d:/test/casserver.keystore" keystorePass="changeit" maxThreads="200" port="8443" protocol="org.apache.coyote.http11.Http11NioProtocol" scheme="https" secure="true" sslProtocol="TLS"/>
+
+导出自签名公钥证书: 
+keytool -export -alias tomcat -file D:/keystore/quincy.crt -keystore D:/keystore/quincy.keystore
+
+查看keystore文件: 
+keytool -list -v -keystore "D:\keystore\quincy.keystore" -storepass mq123456
+
+查看条目: 
+keytool -list -v -alias tomcat -keystore "D:\keystore\quincy.keystore" -storepass mq123456
+
+改keystore密码: 
+keytool -storepasswd -new changeit -storepass IzpWin2014@9.9 -keystore D:/test/casserver.keystore
+
+改条目密码: 
+keytool -keypasswd -alias izp_hx -keypass changeit -new lzh@201408.com -keystore D:/test/casserver.keystore
+
+修改别名: 
+keytool -changealias -keystore anxinsign-test.jks -alias {3ae68516-06cc-4b5c-aa90-24af1fbd2921} -destalias anxinsign -storepass 1qazxsw23edc

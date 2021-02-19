@@ -1,0 +1,2 @@
+IE设置在新选项卡打开: 以管理员身份运行inetcpl.cpl
+查看端口: netstat -aon|findstr 1883

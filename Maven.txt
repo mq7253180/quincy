@@ -1,0 +1,8 @@
+构建:
+D:\env\maven\apache-maven-3.5.4\bin\mvn clean compile package -Dmaven.test.skip=true -Pdev --settings D:\env\maven\settings.xml
+
+安装jar包到本地库
+D:\env\maven\apache-maven-3.5.4\bin\mvn install:install-file --settings=D:/env/maven/settings.xml -Dpackaging=jar -DgroupId=com.quincy -DartifactId=pw-swift-core-SRU2017 -Dversion=7.9.7 -Dfile=D:/env/github/payment-gateway/payment-gateway-service/src/main/lib/pw-swift-core-SRU2017-7.9.7.jar
+
+上传jar包到远程Nexus库: 
+D:\env\maven\apache-maven-3.5.4\bin\mvn deploy:deploy-file --settings=D:/env/maven/settings.xml -Dpackaging=jar -DrepositoryId=releases -Durl=http://172.16.80.38:8082/nexus/content/repositories/releases/ -DgroupId=com.ats -DartifactId=ats-app-api -Dversion=1.1.0 -Dfile=D:/docs/java_api_0914/java_api_0914/lib/ats-app-api-1.1.0.jar

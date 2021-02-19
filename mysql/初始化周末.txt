@@ -1,0 +1,86 @@
+CREATE FUNCTION `gen_for_tb_uplan_work_day`(begin_date VARCHAR(20), end_date VARCHAR(20)) RETURNS INT(11)
+BEGIN
+DECLARE total_days INT DEFAULT 0;
+DECLARE now_date date DEFAULT NOW();
+DECLARE end_tmp date DEFAULT NOW();
+
+DECLARE curr_y INTEGER;
+DECLARE curr_m INTEGER;
+DECLARE curr_d INTEGER;
+
+-- [1-7][日-六]
+DECLARE curr_day_of_week INTEGER DEFAULT 1;
+DECLARE tmp_count INTEGER DEFAULT 0;
+DECLARE tmp_is_holiday TINYINT DEFAULT 0;
+DECLARE tmp_memo VARCHAR(128) DEFAULT NULL;
+
+SET now_date = DATE_FORMAT(begin_date,'%Y%m%d');
+SET end_tmp = DATE_FORMAT(end_date,'%Y%m%d');
+
+WHILE now_date<=end_tmp DO
+
+SELECT year(now_date) INTO curr_y;
+SELECT month(now_date) INTO curr_m;
+SELECT DAYOFMONTH(now_date) INTO curr_d;
+SELECT DAYOFWEEK(now_date) INTO curr_day_of_week;
+SELECT COUNT(*) FROM tb_uplan_work_day WHERE year_no=''+curr_y AND month_no= LPAD(curr_m,2,'0') AND day_no=LPAD(curr_d,2,'0') INTO tmp_count;
+SET now_date = DATE_ADD(now_date,INTERVAL 1 DAY);
+SET total_days = total_days + 1;
+IF curr_day_of_week=1 or curr_day_of_week=7 THEN 
+SET tmp_is_holiday = 1;
+SET tmp_memo = '周末';
+ELSE
+SET tmp_is_holiday = 0;
+SET tmp_memo = NULL;
+END IF;
+IF tmp_count = 0 THEN
+INSERT INTO tb_uplan_work_day (year_no, month_no, day_no, day_of_month, is_holiday, memo, `status`)
+VALUES (curr_y, LPAD(curr_m,2,'0'), LPAD(curr_d,2,'0'),  curr_d, tmp_is_holiday, tmp_memo, 1);
+END IF;
+END WHILE;
+
+RETURN total_days;
+END
+
+SELECT gen_for_tb_uplan_work_day('2017-01-01','2017-12-31')
+
+#原本是周末，更新memo字段为节日
+UPDATE tb_uplan_work_day SET memo='元旦' WHERE is_holiday=1 AND year_no=2017 AND month_no=1 AND day_no=1;
+UPDATE tb_uplan_work_day SET memo='春节' WHERE is_holiday=1 AND year_no=2017 AND month_no=1 AND day_no=28;
+UPDATE tb_uplan_work_day SET memo='春节' WHERE is_holiday=1 AND year_no=2017 AND month_no=1 AND day_no=29;
+UPDATE tb_uplan_work_day SET memo='清明' WHERE is_holiday=1 AND year_no=2017 AND month_no=4 AND day_no=2;
+UPDATE tb_uplan_work_day SET memo='劳动节' WHERE is_holiday=1 AND year_no=2017 AND month_no=4 AND day_no=29;
+UPDATE tb_uplan_work_day SET memo='劳动节' WHERE is_holiday=1 AND year_no=2017 AND month_no=4 AND day_no=30;
+UPDATE tb_uplan_work_day SET memo='端午' WHERE is_holiday=1 AND year_no=2017 AND month_no=5 AND day_no=28;
+UPDATE tb_uplan_work_day SET memo='国庆' WHERE is_holiday=1 AND year_no=2017 AND month_no=10 AND day_no=1;
+UPDATE tb_uplan_work_day SET memo='国庆' WHERE is_holiday=1 AND year_no=2017 AND month_no=10 AND day_no=7;
+UPDATE tb_uplan_work_day SET memo='国庆' WHERE is_holiday=1 AND year_no=2017 AND month_no=10 AND day_no=8;
+
+#串休
+UPDATE tb_uplan_work_day SET is_holiday=1,memo='元旦' WHERE is_holiday=0 AND year_no=2017 AND month_no=1 AND day_no=2;
+UPDATE tb_uplan_work_day SET is_holiday=1,memo='除夕' WHERE is_holiday=0 AND year_no=2017 AND month_no=1 AND day_no=27;
+UPDATE tb_uplan_work_day SET is_holiday=1,memo='春节' WHERE is_holiday=0 AND year_no=2017 AND month_no=1 AND day_no=30;
+UPDATE tb_uplan_work_day SET is_holiday=1,memo='春节' WHERE is_holiday=0 AND year_no=2017 AND month_no=1 AND day_no=31;
+UPDATE tb_uplan_work_day SET is_holiday=0,memo='春节调休' WHERE is_holiday=1 AND year_no=2017 AND month_no=1 AND day_no=22;
+UPDATE tb_uplan_work_day SET is_holiday=1,memo='春节' WHERE is_holiday=0 AND year_no=2017 AND month_no=2 AND day_no=1;
+UPDATE tb_uplan_work_day SET is_holiday=1,memo='春节' WHERE is_holiday=0 AND year_no=2017 AND month_no=2 AND day_no=2;
+UPDATE tb_uplan_work_day SET is_holiday=0,memo='春节调休' WHERE is_holiday=1 AND year_no=2017 AND month_no=2 AND day_no=4;
+UPDATE tb_uplan_work_day SET is_holiday=1,memo='清明' WHERE is_holiday=0 AND year_no=2017 AND month_no=4 AND day_no=3;
+UPDATE tb_uplan_work_day SET is_holiday=1,memo='清明' WHERE is_holiday=0 AND year_no=2017 AND month_no=4 AND day_no=4;
+UPDATE tb_uplan_work_day SET is_holiday=0,memo='清明调休' WHERE is_holiday=1 AND year_no=2017 AND month_no=4 AND day_no=1;
+UPDATE tb_uplan_work_day SET is_holiday=1,memo='劳动节' WHERE is_holiday=0 AND year_no=2017 AND month_no=5 AND day_no=1;
+UPDATE tb_uplan_work_day SET is_holiday=1,memo='端午' WHERE is_holiday=0 AND year_no=2017 AND month_no=5 AND day_no=29;
+UPDATE tb_uplan_work_day SET is_holiday=1,memo='端午' WHERE is_holiday=0 AND year_no=2017 AND month_no=5 AND day_no=30;
+UPDATE tb_uplan_work_day SET is_holiday=0,memo='端午调休' WHERE is_holiday=1 AND year_no=2017 AND month_no=5 AND day_no=27;
+UPDATE tb_uplan_work_day SET is_holiday=0,memo='国庆调休' WHERE is_holiday=1 AND year_no=2017 AND month_no=9 AND day_no=30;
+UPDATE tb_uplan_work_day SET is_holiday=1,memo='国庆' WHERE is_holiday=0 AND year_no=2017 AND month_no=10 AND day_no=2;
+UPDATE tb_uplan_work_day SET is_holiday=1,memo='国庆' WHERE is_holiday=0 AND year_no=2017 AND month_no=10 AND day_no=3;
+UPDATE tb_uplan_work_day SET is_holiday=1,memo='国庆' WHERE is_holiday=0 AND year_no=2017 AND month_no=10 AND day_no=4;
+UPDATE tb_uplan_work_day SET is_holiday=1,memo='国庆' WHERE is_holiday=0 AND year_no=2017 AND month_no=10 AND day_no=5;
+UPDATE tb_uplan_work_day SET is_holiday=1,memo='国庆' WHERE is_holiday=0 AND year_no=2017 AND month_no=10 AND day_no=6;
+
+
+
+SELECT * FROM tb_uplan_work_day WHERE year_no=2017 AND month_no=5 AND day_no=27
+
+DELETE FROM tb_uplan_work_day

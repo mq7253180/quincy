@@ -1,0 +1,15 @@
+keytool.exe -importkeystore -srckeystore hce-test.pfx -destkeystore ./java/anxinsign.jks -srcstoretype PKCS12 -deststoretype JKS
+keytool -importkeystore -srckeystore ./java/anxinsign.jks -destkeystore ./java/anxinsign.jks -deststoretype pkcs12 -storepass 1qazxsw23edc
+keytool -changealias -keystore ./java/anxinsign.jks -alias {3ae68516-06cc-4b5c-aa90-24af1fbd2921} -destalias anxinsign -storepass 1qazxsw23edc
+keytool.exe -import -alias cfcaevroot -keystore ./java/anxinsign.jks -trustcacerts -file CFCA_EV_ROOT.cer -storepass 1qazxsw23edc
+keytool.exe -import -alias cfcaevoca -keystore ./java/anxinsign.jks -trustcacerts -file CFCA_EV_OCA.cer -storepass 1qazxsw23edc
+keytool.exe -import -alias cfcaaesca -keystore ./java/anxinsign.jks -trustcacerts -file CFCA_ACS_CA.cer -storepass 1qazxsw23edc
+keytool.exe -import -alias cfcaaesoca31 -keystore ./java/anxinsign.jks -trustcacerts -file CFCA_ACS_OCA31.cer -storepass 1qazxsw23edc
+keytool.exe -import -alias cfcatestcsca -keystore ./java/anxinsign.jks -trustcacerts -file CFCA_TEST_CS_CA.cer -storepass 1qazxsw23edc
+keytool.exe -import -alias cfcatestoca1 -keystore ./java/anxinsign.jks -trustcacerts -file CFCA_TEST_OCA1.cer -storepass 1qazxsw23edc
+keytool.exe -import -alias cfcatestoca11 -keystore ./java/anxinsign.jks -trustcacerts -file CFCA_TEST_OCA11.cer -storepass 1qazxsw23edc
+
+keytool.exe -importkeystore -srckeystore hce-prod.pfx -destkeystore ./java/anxinsign.jks -srcstoretype PKCS12 -deststoretype JKS
+keytool -changealias -keystore ./java/anxinsign.jks -alias {3ae68516-06cc-4b5c-aa90-24af1fbd2921} -destalias anxinsign -storepass 1qazxsw23edc
+
+keytool -list -v -keystore .\java\anxinsign.jks -storepass 1qazxsw23edc

@@ -1,0 +1,11 @@
+localhost:9200
+localhost:9200/_cluster/health?pretty
+curl -XPUT 'localhost:9200/geo-service?pretty'
+
+curl -XPUT 'localhost:9200/geo-service/zone/1?pretty' -d '{"name": "John Doe"}'
+
+curl -XGET 'localhost:9200/geo-service/zone/1?pretty'
+
+curl -XDELETE 'localhost:9200/geo-service?pretty'
+
+curl -XPUT 'localhost:9200/geo-service?pretty' -d '{"mappings": {"zone": {"properties": {"ggCentralCoordinate": {"type": "geo_point"},"bdCentralCoordinate": {"type": "geo_point"},"polygonInfo": {"type": "geo_shape"}}}}}'

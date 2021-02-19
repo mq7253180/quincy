@@ -1,0 +1,146 @@
+Linux安装
+groupadd mysql
+useradd -r -m -d /usr/mysql -g mysql -s /bin/false mysql
+passwd mysql
+chown -R mysql:mysql ./mysql
+su - mysql
+解压
+
+5.6.*版
+将data目录剪切出来
+删除support-files/my-default.cnf
+将配置好的my.cnf复制替换support-files/my-default.cnf
+./mysql/scripts/mysql_install_db --defaults-file=/quincy/mysql/my-master.cnf --user=mysql
+
+5.7.*及以上版
+./mysql/bin/mysqld --initialize --explicit_defaults_for_timestamp --basedir=/quincy/mysql/mysql --datadir=/quincy/mysql/data --user=mysql
+
+CentOS7
+5.6.*版报
+FATAL ERROR: please install the following Perl modules before executing ./scripts/mysql_install_db:
+Data::Dumper
+安装
+yum -y install autoconf
+或
+yum -y install perl-Module-Install.noarch
+
+报
+Installing MySQL system tables..../bin/mysqld: error while loading shared libraries: libaio.so.1: cannot open shared object file: No such file or directory
+安装
+yum install libaio
+
+启动
+/quincy/mysql/mysql/bin/mysqld --defaults-file=/quincy/mysql/my-master.cnf --user=mysql
+
+登录
+/quincy/mysql/mysql/bin/mysql --socket=/mysql/mysqld.socket -uroot -p
+
+更改用用户: 
+ALTER USER 'root'@'localhost' IDENTIFIED BY '1qazxsw2';
+ALTER USER SET user.host='%' WHERE user.user='root';
+
+8版客户端登录报: ERROR 2059(HY000): Authentication plugin 'caching_sha2_password' cannot be loaded: 
+ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY '1qazxsw2';
+
+给haproxy建立健康检查无密码无权限用户
+CREATE USER 'haproxy'@'localhost';
+
+创建、授权用户:
+5以下版本: 
+GRANT ALL PRIVILEGES ON *.* TO 'jlcedu'@'localhost' IDENTIFIED BY 'xxx' WITH GRANT OPTION;
+GRANT ALL PRIVILEGES ON *.* TO 'jlcedu'@'localhost' IDENTIFIED BY 'xxx' WITH GRANT OPTION;
+GRANT ALL PRIVILEGES ON *.* TO 'jlcedu'@'127.0.0.1' IDENTIFIED BY 'xxx' WITH GRANT OPTION;
+GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED BY '1qazxsw2' WITH GRANT OPTION;
+GRANT SELECT ON jlcedu.* TO 'jlcedu'@'%' IDENTIFIED BY 'xxx' WITH GRANT OPTION;
+
+8以上版本: 
+CREATE USER 'maqiang'@'%' IDENTIFIED BY '1qazxsw23edc';
+GRANT ALL PRIVILEGES ON *.* TO 'maqiang'@'%' WITH GRANT OPTION;
+
+FLUSH PRIVILEGES;
+
+关闭
+/quincy/mysql/mysql/bin/mysqladmin shutdown --socket=/mysql/mysqld.socket (-uroot -p1qazxsw2)
+-------------------------------------------------------------------------------------
+创建软链接
+ln -sf /servers/mysql/mysql-master/bin/mysql /usr/local/bin/mysql
+
+复制启动脚本到初始化目录
+cp support-files/mysql.server /etc/init.d/mysql
+
+修改root密码
+./bin/mysqladmin -u root password '密码'
+
+ps -ef|grep mysql|grep -v grep
+
+/quincy/mysql/mysql/bin/mysqladmin --socket=/quincy/mysql/mysqld.socket shutdown
+=====================================Windows安装=====================================================
+E:\mysql\mysql-master\mysql\bin\mysqld --initialize-insecure --explicit_defaults_for_timestamp --datadir=E:\mysql\mysql-master\data(5.7之后版需要，因为没有data目录)
+
+-insecure: 在初始化时如果加上，则会创建空密码的root@localhost账号，否则会创建带密码的root@localhost账号，密码直接写在log-error日志文件中(在5.6版本中是放在~/.mysql_secret文件里，更加隐蔽，不熟悉的话可能会无所适从)
+--lc-messages-dir=
+--lc-messages=en_US
+--bootstrap
+
+net start mysql
+net stop mysql
+sc delete mysql
+
+SET PASSWORD FOR 'root'@'localhost' = PASSWORD('xxx');
+5.6之前版需要创建localhost的用户
+
+主库
+E:\mysql\mysql-master\mysql\bin\mysqld --install mysqlmaster --defaults-file="E:\mysql\my-master.ini"
+
+E:\mysql\mysql-master\mysql\bin\mysql -uroot
+
+grant all privileges on *.* to 'root'@'localhost' identified by 'xxx' with grant option;
+grant all privileges on *.* to 'root'@'127.0.0.1' identified by 'xxx' with grant option;
+grant all privileges on jlcedu.* to 'jlcedu'@'localhost' identified by 'xxx' with grant option;
+grant all privileges on jlcedu.* to 'jlcedu'@'127.0.0.1' identified by 'xxx' with grant option;
+flush privileges;
+
+create database jlcedu;
+
+从库
+E:\mysql\mysql-master\mysql\bin\mysqld --install mysqlslave --defaults-file="E:\mysql\my-slave.ini"
+
+E:\mysql\mysql-master\mysql\bin\mysql -uroot -P3308
+E:\mysql\mysql-master\mysql\bin\mysql -ujlcedu -pxxx -P3308
+
+grant select on jlcedu.* to 'jlcedu'@'localhost' identified by 'xxx' with grant option;
+grant select on jlcedu.* to 'jlcedu'@'127.0.0.1' identified by 'xxx' with grant option;
+flush privileges;
+--------------------------------------------------------------------------------------
+显示用户: SELECT DISTINCT CONCAT('User: ''',user,'''@''',host,''';') AS query FROM mysql.user;
+显示用户权限: show grants for 'nemo'@'%';
+删除用户: drop user 'nemo'@'%'
+
+显示可用的存储引擎: show engines;
+显示当前存储引擎; show variables like 'default_storage_engine';
+
+dump数据库: 
+D:\env\mysql\mysql-5.7.22-winx64\bin\mysqldump -h10.50.1.14 -P3306 -upgw –p78DdlqVhCse pgw -R -E --triggers>D:\online\core.sql
+--------------主从----------------------------------------------
+导数据
+
+主库
+show variables like '%log_bin%';
+show master status;
+show processlist\G;
+
+从库
+change master to master_host='localhost',master_port=3306,master_user='root',master_password='xxx',master_log_file='master.000001',master_log_pos=786;
+show slave status\G
+start slave;
+show slave status\G
+---------------------索引--------------------------
+DROP INDEX mobile_phone ON t_b_user;
+DROP INDEX email ON t_b_user;
+
+ALTER TABLE t_b_order ADD CONSTRAINT unq_order_no UNIQUE (`order_no`);
+ALTER TABLE t_b_suborder_head ADD CONSTRAINT unq_suborder_no UNIQUE (`suborder_no`);
+
+CREATE INDEX idx_order_no ON t_b_suborder_head(`order_no`) USING BTREE;
+CREATE INDEX idx_suborder_no ON t_b_suborder_head(`suborder_no`) USING BTREE;
+CREATE INDEX idx_suborder_no ON t_b_suborder_detail(`suborder_no`) USING BTREE;

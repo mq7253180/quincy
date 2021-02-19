@@ -1,0 +1,11 @@
+案例 location proxy_pass 结果
+1  /foo/  http://192.168.1.48/  /api
+2  /foo  http://192.168.1.48/  //api
+3  /foo/  http://192.168.1.48  /foo/api
+4  /foo  http://192.168.1.48  /foo/api
+
+案例 location proxy_pass 结果
+5  /foo/  http://192.168.1.48/bar/  /bar/api
+6  /foo  http://192.168.1.48/bar/  /bar//api
+7  /foo/  http://192.168.1.48/bar  /barapi
+8  /foo  http://192.168.1.48/bar  /bar/api

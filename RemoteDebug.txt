@@ -1,0 +1,7 @@
+Jboss: 
+run.sh: -Xdebug -Xrunjdwp:transport=dt_socket,address=8787,server=y,suspend=n
+run.conf: JAVA_OPTS="$JAVA_OPTS -Xrunjdwp:transport=dt_socket,address=8787,server=y,suspend=n"
+
+Tomcat: 
+Linux: CATALINA_OPTS="-server -Xdebug -Xnoagent -Djava.compiler=NONE -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=8787"
+Windows: set "CATALINA_OPTS=-server -Xdebug -Xnoagent -Djava.compiler=NONE -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=8787"

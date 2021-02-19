@@ -1,0 +1,71 @@
+ps -Lfp pid\ps -mp pid -o THREAD, tid, time\top -Hp pid
+printf "%x\n" 21742
+jstack 21711|grep 54ee
+
+top
+ps aux|grep PID
+ps -mp pid -o THREAD,tid,time
+printf "%x\n" [pid]
+jstack pid|grep [tid]
+
+well-known file is not secure问题: 
+我们可以在机器上找到/tmp/hsperfdata_$USER/$PID一个这样的文件，当我们执行jmap或者jstack出现上叙信息时，先检查执行该命令的用户是否和hsperfdata_$USER这个文件所属的用户一致，如果不一致，切换至成一致再执行即可。
+
+jmap -histo 9100>d:\a.txt
+jmap -dump:format=b,file=D:/java-heap-dump/DumpFileName.txt [pid]
+
+jprofiler工具、eclipse Memory Analyzer(http://www.eclipse.org/mat)、IBM Heap Analyzer
+
+jhat -J-Xmx4096m D:/java-heap-dump/java_pid30661.hprof
+IBM Heap Analyzer: java -Xmx12288m -jar ha456.jar D:\java-heap-dump\java_pid30661.hprof
+-----------------------------------------------------------------------------------------
+jinfo: 运行参数
+jstat: 监控gc
+jstack: 线程堆栈
+jmap -histo:live {pid}: 对象实例堆内存
+jps: 显示所有java进程pid
+jconsole: 
+jvisualvm:
+==========================================================================================
+native2ascii -encoding ISO8859-1 my.properties _my.properties
+==========================================================================================
+SSL: 
+
+keytool -genkey -alias tomcat -keyalg RSA -keystore <your_keystore_filename>
+keytool -certreq -keyalg RSA -alias tomcat -file certreq.csr -keystore <your_keystore_filename>
+keytool -export -keystore examplestore -alias signFiles -file Example.cer
+Import the Chain Certificate into your keystore: 
+keytool -import -alias root -keystore <your_keystore_filename> -trustcacerts -file <filename_of_the_chain_certificate>
+And finally import your new Certificate: 
+keytool -import -alias tomcat -keystore <your_keystore_filename> -file <your_certificate_filename>
+
+javax.net.ssl.trustStore=${javax.net.ssl.trustStore}
+javax.net.ssl.trustStorePassword=${javax.net.ssl.trustStorePassword}
+System.setProperty("javax.net.ssl.trustStore", properties.getProperty("javax.net.ssl.trustStore"));
+System.setProperty("javax.net.ssl.trustStorePassword", properties.getProperty("javax.net.ssl.trustStorePassword"));
+
+<Connector SSLEnabled="true" clientAuth="false" keyPass="lzh@201408.com" keystoreFile="d:/test/casserver.keystore" keystorePass="changeit" maxThreads="200" port="8443" protocol="org.apache.coyote.http11.Http11NioProtocol" scheme="https" secure="true" sslProtocol="TLS"/>
+keytool -storepasswd -new changeit -storepass IzpWin2014@9.9 -keystore d:/test/casserver.keystore
+keytool -keypasswd -alias izp_hx -keypass changeit -new lzh@201408.com -keystore d:/test/casserver.keystore
+==========================================================================================
+JVM参数: 
+
+JAVA_OPTS="-Djava.security.egd=file:/dev/./urandom "
+JAVA_OPTS="$JAVA_OPTS -Xms128m -Xmx256m -Xss256k -XX:MetaspaceSize=128m -XX:MaxMetaspaceSize=128m "
+JAVA_OPTS="$JAVA_OPTS -XX:NewRatio=3 -XX:SurvivorRatio=4 "
+JAVA_OPTS="$JAVA_OPTS -XX:+UseG1GC "
+#JAVA_OPTS="$JAVA_OPTS -XX:+UseParNewGC -XX:+UseConcMarkSweepGC -XX:ParallelGCThreads=4 -XX:+CMSScavengeBeforeRemark "
+#JAVA_OPTS="$JAVA_OPTS -XX:+UseCMSCompactAtFullCollection -XX:CMSFullGCBeforeCompaction=5 -XX:+PrintGCDetails"
+#JAVA_OPTS="$JAVA_OPTS -XX:+PrintGCDateStamps -XX:+PrintGCTimeStamps -XX:+PrintGCApplicationConcurrentTime -XX:+PrintGCApplicationStoppedTime -XX:+PrintHeapAtGC "
+JAVA_OPTS="$JAVA_OPTS -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/quincy/tmp/logs/jlcedu.hprof "
+JAVA_OPTS="$JAVA_OPTS -verbose:gc -Xloggc:/quincy/tmp/logs/jlcedu/gc.log "
+
+-XX:+UseParallelGC -XX:ParallelGCThreads=20 -XX:-PrintCompilation -XX:-PrintGC
+-XX:InitialTenuringThreshold=15 -XX:MaxTenuringThreshold=31
+-XX:PretenureSizeThreshold: 设置大对象直接进入年老代的阈值，当对象大小超过这个值时，将直接在年老代分配
+==========================================================================================
+Minor GC: 执行时间不到50ms;
+Minor GC: 执行不频繁，约10秒一次;
+Full GC: 执行时间不到1s;
+Full GC: 执行频率不算频繁，不低于10分钟1次
+

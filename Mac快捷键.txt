@@ -1,0 +1,95 @@
+轻点点击: System Preferences->Trackpad->Point & Click->Tap to click
+三指拖动: System Preferences->Accessibility->Pointer Control->Mouse & Trackpad->Trackpad Options->Enable dragging: three finger drag
+Tab键切换鼠标焦点: System Preferences->Keyboard->Shortcuts->
+Use keyboard navigation to move focus between controls
+Press the Tab key to move focus forward and Shift Tab to move focus backward.
+
+Delete: fn+Backspace
+Ctrl+Y: command+shift+z
+显示桌面: command+F3、fn+F11
+Home: fn+左
+End: fn+右
+PgUp: fn+上
+PgDn: fn+下
+
+剪切文件: 
+command+c
+command+option+V
+
+切换输入法: 
+control+space
+
+打开活动监视器: Finder->Applications->Utilities->Activity Monitor
+
+创建快捷方式: 
+Make Alias
+option+command+拖拽
+
+彻底删除: 
+option+command+删除
+
+切换窗口: 
+command+(->|)
+
+复制文件或文件夹路径: option+command+C
+
+命令行: 
+光标至行首: fn+shift+左
+光标至行尾: fn+shift+右
+
+文本编辑器: 
+光标至行首: command+左
+光标至行尾: command+右
+光标处向左选中: shift+左
+光标处向右选中: shift+右
+光标处选中至行首: control或command+shift+左
+光标处选中至行尾: control或command+shift+右
+光标处选中至页首: fn+shift+左
+光标处选中至页尾: fn+shift+右
+
+删除pkg安装的软件: 
+软件会被安装在/usr/local目录下和/usr/local/bin中的软件链接
+1. 查找软件注册名称: pkgutil --pkgs|grep git
+2. 列出软件涉及的所有文件: pkgutil --files com.git.pkg
+3. 用sudo rm -rf删除所列出的所有文件
+4. 使系统忘记该软件: pkgutil --forget com.git.pkg
+
+Eclipse: 
+Ctrl+T: fn+command+T
+Ctrl+Shift: command+shift
+注释行、注释xml行和块: command+/
+注释多行: fn+command+/
+注释块: control+command+/
+
+Navicat: 
+查看DDL: command+2调出右侧菜单->点[DDL]
+
+jdk环境变量: 
+
+#JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk1.8.0_251.jdk/Contents/Home
+#CLASSPATH=.:$JAVA_HOME/lib/tools.jar:$JAVA_HOME/lib/dt.jar
+JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk-11.0.7.jdk/Contents/Home
+CLASSPATH=.:$JAVA_HOME/lib/jrt-fs.jar
+PATH=$JAVA_HOME/bin:$PATH
+export JAVA_HOME CLASSPATH PATH
+===================================
+Navicat
+
+四条关键命令: 
+./navicat-patcher /Applications/Navicat\ Premium.app/
+codesign -f -s "Quincy" /Applications/Navicat\ Premium.app/
+codesign -f -s "Quincy" /Applications/Navicat\ Premium.app/Contents/Frameworks/libcc-premium.dylib
+./navicat-keygen ./RegPrivateKey.pem
+----------------------------------------
+报: 
+xcrun: error: invalid active developer path (/Library/Developer/CommandLineTools), missing xcrun at: /Library/Developer/CommandLineTools/usr/bin/xcrun
+执行: 
+xcode-select --install
+10.15以上版本不能安装，需要从官方网站下载安装包，进入
+https://developer.apple.com/download/more/
+搜: 
+Command Line Tools
+----------------------------------------
+OS Sierra(10.12)以上，需要⽤用终端打开『允许任何来源』，要使用这条命令来解锁任意来源
+sudo spctl --master-disable
+===================================

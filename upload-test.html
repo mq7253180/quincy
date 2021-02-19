@@ -1,0 +1,180 @@
+<HTML>
+<HEAD>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>Upload File</title>
+</HEAD>
+	<body>
+		<input type="file" id="files" name="files" multiple/><input type="button" id="testBtn" value="上传" /><input type="button" id="test2Btn" value="test" /><input type="button" id="test3Btn" value="登录" />
+	</body>
+	<script type="text/javascript" src="jquery-3.4.1.min.js"></script>
+	<script type="text/javascript" src="core.js"></script>
+	<script type="text/javascript">
+		/*$("#testBtn").click(function() {
+			$("#files").ajaxUploadFiles({
+				//url: "http://172.16.80.12:12082/inner/cfca/3203",
+				url: "http://localhost:12081/inner/cfca/3203",
+				maxSize: 10*1024*1024,
+				acceptableTypes: [],
+				fields: {
+					"name": "wwwwwww",
+					"isSign": 0,
+					"enterpriInfos": "8C307E2D6C9C2280E05311016B0A9C34,驼铃商业保理(广州)有限公司(公章),8C3FA71246D00F29E05312016B0ACA49,100,0/8C499228654E2711E05312016B0A4965,【骆驼国际贸易有限公司】,8CA46F29428B1C25E05311016B0A31DC,100,0,83,83",
+					"userInfo": ["8C2FC88F74EE678BE05312016B0A10BB", "【出口商户全称】(公章)：", "170", "-93"]
+				},
+				validationFailed: function(msg) {
+					alert(msg);
+				},
+				handle: function(data) {
+					alert(data);
+				},
+				after: function() {
+					//alert("xxxx");
+				}
+			});
+		});*/
+		/*$("#testBtn").click(function() {
+			$("#files").ajaxUploadFiles({
+				//url: "http://172.16.80.12:12082/inner/cfca/3011",
+				url: "http://localhost:12081/inner/cfca/3011",
+				maxSize: 10*1024*1024,
+				acceptableTypes: [],
+				fields: {
+					"userid": "8C499228654E2711E05312016B0A4965"
+				},
+				validationFailed: function(msg) {
+					alert(msg);
+				},
+				handle: function(data) {
+					alert(data);
+				},
+				after: function() {
+					//alert("xxxx");
+				}
+			});
+		});*/
+		$("#testBtn").click(function() {
+			$("#files").ajaxUploadFiles({
+				//url: "http://172.16.80.12:12082/inner/cfca/3012",
+				url: "http://localhost:12081/inner/cfca/3012",
+				maxSize: 10*1024*1024,
+				acceptableTypes: [],
+				fields: {
+					"userid": "8C499228654E2711E05312016B0A4965",
+					"sealid": "95642920EBCB544BE05311016B0A345F"
+				},
+				validationFailed: function(msg) {
+					alert(msg);
+				},
+				handle: function(data) {
+					alert(data);
+				},
+				after: function() {
+					//alert("xxxx");
+				}
+			});
+		});
+		/*$("#testBtn").click(function() {
+			$("#files").ajaxUploadFiles({
+				url: "http://localhost:12081/account/company/upload/master?hcesessionid=3535477bde65440b8a43ca84184e01e1",
+				//url: "http://localhost:12081/sys/init",
+				maxSize: 20*1024*1024,
+				acceptableTypes: [],
+				validationFailed: function(msg) {
+					alert(msg);
+				},
+				handle: function(data) {
+					alert(data.status+"---"+data.msg+"---------"+data.data.name+"---------"+data.data.num+"---------"+data.data.addr);
+					//alert(data.status+"---"+data.msg);
+				},
+				after: function() {
+					//alert("xxxx");
+				}
+			});
+		});*/
+		/*$("#testBtn").click(function() {
+			$("#files").ajaxUploadFiles({
+				url: "http://172.16.80.12:12081/account/company/upload/licence?hcesessionid=90a53d6cc48d40a8924da9fd26abc799",
+				//url: "http://localhost:12081/sys/init",
+				maxSize: 10*1024*1024,
+				acceptableTypes: [],
+				fields: {
+					"countryLicenceId": 6,
+					"no": "4564646546464",
+					"validFrom": "2019-03-19",
+					"validTo": "2020-03-18",
+				},
+				validationFailed: function(msg) {
+					alert(msg);
+				},
+				handle: function(data) {
+					alert(data.status+"---"+data.msg);
+				},
+				after: function() {
+					//alert("xxxx");
+				}
+			});
+		});*/
+		/*$("#testBtn").click(function() {
+			$("#files").ajaxUploadFiles({
+				//url: "http://172.16.80.12:12081/account/company/upload/member?hcesessionid=b73521f00627463da250455295694505",
+				url: "http://localhost:12081/account/company/upload/member?hcesessionid=b73521f00627463da250455295694505",
+				maxSize: 10*1024*1024,
+				acceptableTypes: [],
+				fields: {
+					"memberType": 2,
+					"type": 1,
+					"countryId": 1,
+					"name": "王树彤"
+				},
+				validationFailed: function(msg) {
+					alert(msg);
+				},
+				handle: function(data) {
+					alert(data.status+"---"+data.msg);
+				},
+				after: function() {
+					//alert("xxxx");
+				}
+			});
+		});*/
+		/*$("#testBtn").click(function() {
+			$("#files").ajaxUploadFiles({
+				url: "http://localhost:12081/account/company/upload/auth2?hcesessionid=256ddd3f94824c4aa533b4f842bac178",
+				//url: "http://localhost:12081/sys/init",
+				maxSize: 10*1024*1024,
+				acceptableTypes: [],
+				validationFailed: function(msg) {
+					alert(msg);
+				},
+				handle: function(data) {
+					alert(data.status+"---"+data.msg);
+				},
+				after: function() {
+					//alert("xxxx");
+				}
+			});
+		});*/
+		/*$("#testBtn").click(function() {
+			$("#files").ajaxUploadFiles({
+				url: "http://172.16.80.12:12082/account/company/upload/member2?hcesessionid=0b669877bf204444b2688ce832d433a3",
+				//url: "http://localhost:12081/account/company/upload/member2?hcesessionid=0b669877bf204444b2688ce832d433a3",
+				maxSize: 10*1024*1024,
+				acceptableTypes: [],
+				fields: {
+					"id": 32
+				},
+				validationFailed: function(msg) {
+					alert(msg);
+				},
+				handle: function(data) {
+					alert(data.msg)
+					if(data.status==1)
+						alert(data.data.url);
+				},
+				after: function() {
+					//alert("xxxx");
+				}
+			});
+		});*/
+	</script>
+</HTML>

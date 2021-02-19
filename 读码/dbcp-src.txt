@@ -1,0 +1,23 @@
+继承关系: 
+
+PoolingConnection---|
+		    --->DelegatingConnection-Connection
+PoolableConnection--|
+
+DefaultPooledObject->PooledObject
+
+GenericObjectPool->ObjectPool
+
+BasicDataSource--------------------------|
+					 ----->DataSource
+PoolingDataSource<C extends Connection>--|
+
+Wrap层次: 
+Connection->PoolingConnection->PoolableConnection->DefaultPooledObject<PoolableConnection>
+
+
+
+
+
+org.apache.commons.pool2.impl.LinkedBlockingDeque<PooledObject<T>>
+java.util.concurrent.ConcurrentHashMap<IdentityWrapper<T>, PooledObject<T>>

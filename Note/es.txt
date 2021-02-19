@@ -1,0 +1,49 @@
+启动: bin/elasticsearch -E cluster.name= -E node.name= -E path.data= -E http.port=9200
+=============================================================
+create: 
+POST _doc: 自动生成id
+PUT _doc/{id}?op_type=create: 指定id, 如果id已经存在, 报错
+PUT _create/{id}: 指定id, 如果id已经存在, 报错
+
+index: 
+PUT _doc/{id}
+
+update: 
+POST _update/{id}
+
+批量: 
+POST _bulk
+=============================================================
+分词器
+
+英文: 
+Standard: 按非字符符号，保留单个字符，转小写
+Simple: 与Standard相比，按词(不保留单字符)
+Stop: 与Simple比，去掉the、a、is、to等词
+Whitespace: 与Standard相比，保留其他符号
+Keyword: 不做分词
+Pattern: 默认\W+
+${Language}: 
+Customer: 
+
+中文
+ICU: 提供了Unicode支持，更好的支持亚洲语言;
+IK: 社区的，支持自定义词库，热更新分词字典;
+THULAC: 清华大学自然语言处理和社会人文计算实验室的
+HanLP: 基于深度学习，结合词语出现频率和上下文，具备较好的学习能力。并且可配置自定义远程字典;
+Pinyin: 
+-----------------------------------------------------------
+测试: 
+GET _analyze
+{
+	"analyzer": "",
+	"text": ""
+}
+-----------------------------------------------------------
+Query:
+
+Term、Phrase、Disjunction、Boolean
+match_all、match、match_phrase、query_string、simple_query_string
+=============================================================
+讲座
+集群、分片(Cerebro): 10、37、38
