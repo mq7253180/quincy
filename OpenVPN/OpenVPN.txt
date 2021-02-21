@@ -24,3 +24,31 @@ autoreconf -ivf
 
 下载并解压Easy-RSA: 
 https://github.com/OpenVPN/easy-rsa/archive/v3.0.8.tar.gz
+
+解压缩
+进入easyrsa3目录
+copy一份vars.example为vars并修改信息
+./easyrsa init-pki
+./easyrsa build-ca
+./easyrsa gen-req motor nopass
+./easyrsa sign-req server motor
+./easyrsa gen-dh
+./easyrsa gen-req ducati nopass
+./easyrsa sign-req client ducats
+
+开启转发功能并生效: 
+grep 'net.ipv4.ip_forward' /etc/sysctl.conf
+echo "net.ipv4.ip_forward = 1" >> /etc/sysctl.conf
+sysctl -p
+
+进行nat配置: 
+iptables -t nat -A POSTROUTING -s 10.8.0.0/24 -o eth0 -j MASQUERADE
+iptables-save > /etc/sysconfig/iptables
+iptables -L -n -t nat
+
+iptables -t nat -D POSTROUTING 1
+
+客户端: 
+Mac: 
+下载并安装Tunnelblick
+
