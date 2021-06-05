@@ -13,3 +13,14 @@ keytool.exe -importkeystore -srckeystore hce-prod.pfx -destkeystore ./java/anxin
 keytool -changealias -keystore ./java/anxinsign.jks -alias {3ae68516-06cc-4b5c-aa90-24af1fbd2921} -destalias anxinsign -storepass 1qazxsw23edc
 
 keytool -list -v -keystore .\java\anxinsign.jks -storepass 1qazxsw23edc
+
+生成证书请求文件: 
+keytool -certreq -alias qqxq -keystore "E:\env\xxx.keystore" -file "E:\env\qqxq.csr"
+
+导出自签名证书: 
+keytool -export -alias qqxq -keystore "E:\env\xxx.keystore" -rfc -file "E:\env\qqxq.key"
+
+导出私钥: 
+keytool -importkeystore -srckeystore "E:\env\xxx.keystore" -destkeystore "E:\env\xxx.p12" -deststoretype pkcs12
+openssl pkcs12 -in "E:\env\xxx.p12" -out "E:\env\qqxqwww.pem"
+
