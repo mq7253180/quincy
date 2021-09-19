@@ -1,9 +1,0 @@
-SpringMVC中获取request两种方式: 
-
-一: 
-@Autowired
-private HttpServletRequest request;
-
-二: 
-HttpServletRequest request = ((ServletRequestAttributes)(RequestContextHolder.currentRequestAttributes())).getRequest();
-

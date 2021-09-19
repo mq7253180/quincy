@@ -1,4 +1,5 @@
 Linux安装
+
 groupadd mysql
 useradd -r -m -d /usr/mysql -g mysql -s /bin/false mysql
 passwd mysql
@@ -61,7 +62,7 @@ FLUSH PRIVILEGES;
 
 关闭
 /quincy/mysql/mysql/bin/mysqladmin shutdown --socket=/mysql/mysqld.socket (-uroot -p1qazxsw2)
--------------------------------------------------------------------------------------
+
 创建软链接
 ln -sf /servers/mysql/mysql-master/bin/mysql /usr/local/bin/mysql
 
@@ -75,9 +76,12 @@ ps -ef|grep mysql|grep -v grep
 
 /quincy/mysql/mysql/bin/mysqladmin --socket=/quincy/mysql/mysqld.socket shutdown
 =====================================Windows安装=====================================================
-E:\mysql\mysql-master\mysql\bin\mysqld --initialize-insecure --explicit_defaults_for_timestamp --datadir=E:\mysql\mysql-master\data(5.7之后版需要，因为没有data目录)
+由于找不到VCRUNTIME140_1.dll: 下载一个vcruntime140_1.dll放到C:\Windows\System32目录下
+
+E:\mysql\mysql-master\mysql\bin\mysqld --initialize-insecure --explicit_defaults_for_timestamp --console --datadir=E:\mysql\mysql-master\data(5.7之后版需要，因为没有data目录)
 
 -insecure: 在初始化时如果加上，则会创建空密码的root@localhost账号，否则会创建带密码的root@localhost账号，密码直接写在log-error日志文件中(在5.6版本中是放在~/.mysql_secret文件里，更加隐蔽，不熟悉的话可能会无所适从)
+--console: 显示控制台日志，不加-insecure时可以显示初始root密码
 --lc-messages-dir=
 --lc-messages=en_US
 --bootstrap
@@ -86,7 +90,6 @@ net start mysql
 net stop mysql
 sc delete mysql
 
-SET PASSWORD FOR 'root'@'localhost' = PASSWORD('xxx');
 5.6之前版需要创建localhost的用户
 
 主库
@@ -111,17 +114,56 @@ E:\mysql\mysql-master\mysql\bin\mysql -ujlcedu -pxxx -P3308
 grant select on jlcedu.* to 'jlcedu'@'localhost' identified by 'xxx' with grant option;
 grant select on jlcedu.* to 'jlcedu'@'127.0.0.1' identified by 'xxx' with grant option;
 flush privileges;
---------------------------------------------------------------------------------------
+=====================================================================================
 显示用户: SELECT DISTINCT CONCAT('User: ''',user,'''@''',host,''';') AS query FROM mysql.user;
 显示用户权限: show grants for 'nemo'@'%';
 删除用户: drop user 'nemo'@'%'
+修改密码: SET PASSWORD FOR 'root'@'localhost' = PASSWORD('xxx');
 
 显示可用的存储引擎: show engines;
 显示当前存储引擎; show variables like 'default_storage_engine';
 
+查看进程: 
+show processlist;
+select * from information_schema.processlist;
+
 dump数据库: 
 D:\env\mysql\mysql-5.7.22-winx64\bin\mysqldump -h10.50.1.14 -P3306 -upgw –p78DdlqVhCse pgw -R -E --triggers>D:\online\core.sql
---------------主从----------------------------------------------
+------------------------------------binlog---------------------------------------
+查看是否开启binlog: 
+show variables like '%log_bin%';
+
+查看所有binglog文件名: 
+show binary logs;
+
+查看当前binlog文件是哪个: 
+show master status;
+
+查看binlog事件：show binlog events in 'binlog.000001';
+
+mysql> show binlog events in 'binlog.000005';
++---------------+-----+----------------+-----------+-------------+--------------------------------------+
+| Log_name      | Pos | Event_type     | Server_id | End_log_pos | Info                                 |
++---------------+-----+----------------+-----------+-------------+--------------------------------------+
+| binlog.000005 |   4 | Format_desc    |         1 |         125 | Server ver: 8.0.26, Binlog ver: 4    |
+| binlog.000005 | 125 | Previous_gtids |         1 |         156 |                                      |
+| binlog.000005 | 156 | Anonymous_Gtid |         1 |         235 | SET @@SESSION.GTID_NEXT= 'ANONYMOUS' |
+| binlog.000005 | 235 | Query          |         1 |         317 | BEGIN                                |
+| binlog.000005 | 317 | Query          |         1 |         414 | use `test`; DELETE FROM b_region     |
+| binlog.000005 | 414 | Xid            |         1 |         445 | COMMIT /* xid=66 */                  |
++---------------+-----+----------------+-----------+-------------+--------------------------------------+
+6 rows in set (0.01 sec)
+---------------------索引--------------------------
+DROP INDEX mobile_phone ON t_b_user;
+DROP INDEX email ON t_b_user;
+
+ALTER TABLE t_b_order ADD CONSTRAINT unq_order_no UNIQUE (`order_no`);
+ALTER TABLE t_b_suborder_head ADD CONSTRAINT unq_suborder_no UNIQUE (`suborder_no`);
+
+CREATE INDEX idx_order_no ON t_b_suborder_head(`order_no`) USING BTREE;
+CREATE INDEX idx_suborder_no ON t_b_suborder_head(`suborder_no`) USING BTREE;
+CREATE INDEX idx_suborder_no ON t_b_suborder_detail(`suborder_no`) USING BTREE;
+---------------------主从----------------------------------------------
 导数据
 
 主库
@@ -134,13 +176,14 @@ change master to master_host='localhost',master_port=3306,master_user='root',mas
 show slave status\G
 start slave;
 show slave status\G
----------------------索引--------------------------
-DROP INDEX mobile_phone ON t_b_user;
-DROP INDEX email ON t_b_user;
-
-ALTER TABLE t_b_order ADD CONSTRAINT unq_order_no UNIQUE (`order_no`);
-ALTER TABLE t_b_suborder_head ADD CONSTRAINT unq_suborder_no UNIQUE (`suborder_no`);
-
-CREATE INDEX idx_order_no ON t_b_suborder_head(`order_no`) USING BTREE;
-CREATE INDEX idx_suborder_no ON t_b_suborder_head(`suborder_no`) USING BTREE;
-CREATE INDEX idx_suborder_no ON t_b_suborder_detail(`suborder_no`) USING BTREE;
+----------------------------------------------------
+RU和RC隔离级别：无论条件字段加不加索引，无论等值还是范围，均锁全部记录，但不会锁表，INSERT还是可以执行成功的
+RR隔离级别：
+ 条件不加索引：锁表，连INSERT都不可以
+ 条件加索引：间隙锁，会将各值之间分隔为[)的小区间
+  等值：
+   条件值落在区间之间：锁当前区间
+   条件值落在区间端点：锁当前区间和相临的前一个区间
+  范围：
+   条件lower值落在区间之间：锁当前区间
+   条件lower值落在区间端点：锁当前区间和相临的前一个区间

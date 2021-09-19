@@ -1,6 +1,3 @@
-mvnrepository: 
-http://mvnrepository.com/artifact/taglibs
--------------------------------------------------
 Tomcat用Redis共享Session: 
 
 <Valve className="com.radiadesign.catalina.session.RedisSessionHandlerValve" />
@@ -24,3 +21,15 @@ Eclipse: Cannot create a server using the selected type
 2. 到[工程目录下]/.metadata/.plugins/org.eclipse.core.runtime/.settings
 3. 把org.eclipse.wst.server.core.prefs和org.eclipse.jst.server.tomcat.core.prefs这两个文件去掉
 4. 重启eclipse
+-------------------------------------------------
+对象转json: JSON.stringify()
+json转对象: JSON.parse()、eval()
+-------------------------------------------------
+SpringMVC中获取request两种方式: 
+
+一: 
+@Autowired
+private HttpServletRequest request;
+
+二: 
+HttpServletRequest request = ((ServletRequestAttributes)(RequestContextHolder.currentRequestAttributes())).getRequest();
