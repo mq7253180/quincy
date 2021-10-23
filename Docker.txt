@@ -1,0 +1,98 @@
+安装WSL 2: 
+https://docs.microsoft.com/zh-cn/windows/wsl/wsl2-kernel
+
+安装后以管理员身份运行PowerShell执行: 
+wsl --set-version Ubuntu-20.04 2
+wsl --set-default-version 2
+验证: 
+wsl -l -v
+
+更改镜像文件路径: 
+mklink /J "C:\Users\Public\Documents\Hyper-V\Virtual hard disks" "D:\Virtual hard disks"
+
+Try running a container: Copy and paste this command into your terminal and then come back
+docker run -d -p 80:80 docker/getting-started
+
+docker build --rm -f "Dockerfile" -t java-hello:latest .
+docker run --name xxx -d java-hello:latest
+docker run --name zzz -d -p 9090:8080 aliyun/gts:1.0
+docker exec -it [] bash
+
+删除一个镜像: 
+docker rmi 容器id
+docker image rm
+
+K8S命令: 
+kubectl get cm tesla-svc -o yaml
+kubectl get deploy --show-labels
+kubectl apply -f tesla-svc.yaml
+kubectl exec -ti [] bash
+docker exec -it [] bash
+
+在K8S中创建SLB型svc时一直创建中: 
+kubectl get svc
+显示EXTERNAL-IP一直处于<pending>状态
+
+kubectl describe svc/tesla-slb: 查看服务详细
+kubectl get svc --all-namespaces: 看下集群内部pending状态的svc多么
+kubectl get pods -n kube-system|grep cloud-c: 112分钟重启了20次，观察10分钟，看下是否还有重启记录
+kubectl get po: 列出所有容器
+kubectl logs -f 容器name
+docker ps -a|grep cloud-c
+docker logs -f --tail 50 $containerid: 看下这个容器退出日志
+kubectl get po -n kube-system|grep nginx
+kubectl get pods --kubeconfig=
+kubectl get statefulset edas-eam-edas -o yaml|grep mem
+kubectl edit statefulset edas-eam-edas
+
+NodeIP、PodIP、ClusterIP
+
+port、targetPort、nodePort
+========================================
+区别：
+RUN、CMD、ENTRYPOINT
+ADD、COPY
+==================================================
+<plugin>
+             <groupId>com.spotify</groupId>
+             <artifactId>docker-maven-plugin</artifactId>
+             <version>1.2.2</version>
+             <configuration>
+                 <imageName>aliyun/gts</imageName>
+                 <imageTags>
+                  <imageTag>1.0</imageTag>
+                 </imageTags>
+                 <forceTags>true</forceTags>
+                 <!-- <dockerHost>http://localhost:2375</dockerHost>
+                 <registryUrl>localhost:5000</registryUrl>
+                 <pushImage>true</pushImage>
+                 <pushImageTag>true</pushImageTag> -->
+
+     <!-- Dockerfile两种方式 -->
+     <!-- 方式一：插件自动生成 -->
+     <baseImage>openjdk:11</baseImage>
+     <workdir>/application/gts</workdir>
+     <cmd>["java", "-version"]</cmd>
+     <entryPoint>["java", "-jar", "${project.build.finalName}.jar"]</entryPoint>
+     <maintainer>aliyun-gts@alibaba-inc.com</maintainer>
+
+     <!-- 方式二：手动编写 -->
+                 <!-- 指定Dockerfile所在目录，会将该目录下所有文件复制到targetPath，所以将Dockerfile单独放在一个目录中，还可以将配置jvm参数的conf文件放在里面一起被复制过去 -->
+                 <!-- <dockerDirectory>${pom.basedir}/docker</dockerDirectory> -->
+                 <resources>
+                  <!-- targetPath的根目录是工程目录中的target/docker目录，Dockerfile、jar和conf等文件都会被复制过来，并添加到镜像中的对应目录中 -->
+                     <resource>
+                      <!-- 复制jar文件 -->
+                         <targetPath>/application/gts</targetPath>
+                         <directory>${project.build.directory}</directory>
+                         <include>${project.build.finalName}.jar</include>
+                     </resource>
+                     <!-- 复制conf文件，方式二不需要 -->
+                     <resource>
+                         <targetPath>/application/gts</targetPath>
+                         <directory>${pom.basedir}/docker/application/gts</directory>
+                         <include>${project.build.finalName}.conf</include>
+                     </resource>
+                 </resources>
+             </configuration>
+         </plugin>
