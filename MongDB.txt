@@ -1,0 +1,24 @@
+MongoAutoConfiguration类中使用了@ConditionalOnMissingBean注解，意思是在容器加载它作用的bean时，检查容器中是否存在type参数指定的目标类型的bean，如果存在这跳过原始bean的默认加载动作。
+------------------------------------------------------------------------------------
+Windows
+
+启动: 
+E:\env\mongo\bin\bin\mongod --dbpath E:\env\mongo\data\db
+
+注册服务: 
+E:\env\mongo\bin\bin\mongod --config "E:\env\mongo\d.cfg" --install --serviceName "MongoDB" --serviceDisplayName "MongoDBDN"
+
+移除服务: 
+E:\env\mongo\bin\bin\mongod --remove
+
+登录:
+E:\env\mongo\bin\bin\mongo
+
+show dbs
+show collections
+db.test2.find()
+
+------------------------------------------------------------------------------------
+Linux
+
+/opt/tutou/mongo/bin/bin/mongod --config "/opt/tutou/mongo/d.cfg" --install --serviceName "MongoDB" --serviceDisplayName "MongoDBDN"
