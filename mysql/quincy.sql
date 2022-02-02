@@ -24,6 +24,8 @@ CREATE TABLE s_transaction_atomic (
 	status INT(1) NOT NULL DEFAULT 0 COMMENT '确认方法: 2已执行撤消; 1成功; 0未成功',
 	sort TINYINT(2) NOT NULL COMMENT '顺序',
 	msg VARCHAR(200) COMMENT '失败信息',
+	ret_class VARCHAR(200) DEFAULT NULL COMMENT '返回类型',
+	ret_value VARCHAR(1500) DEFAULT NULL COMMENT '返回值',
 	PRIMARY KEY (id),
 	KEY idx_union (tx_id, status) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
