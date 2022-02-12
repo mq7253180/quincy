@@ -35,7 +35,7 @@ CREATE TABLE s_transaction_arg (
 	id INT(11) NOT NULL AUTO_INCREMENT,
 	parent_id INT(11) NOT NULL COMMENT '事务或原子操作id',
 	class VARCHAR(200) NOT NULL COMMENT '类型',
-	_value VARCHAR(1000) NOT NULL COMMENT '值',
+	_value VARCHAR(1500) NOT NULL COMMENT '值',
 	sort TINYINT(2) NOT NULL COMMENT '顺序',
 	type TINYINT(1) NOT NULL COMMENT '0事务; 1原子操作',
 	PRIMARY KEY (id),
