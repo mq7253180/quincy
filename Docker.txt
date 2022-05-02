@@ -23,6 +23,12 @@ docker rmi 容器id
 docker image rm
 
 K8S命令: 
+kubectl get 资源类型 --all-namespaces
+kubectl describe 资源类型 -n NAMESPACE NAME
+kubectl logs -f --tail -n NAMESPACE NAME
+kubectl delete pod -n NAMESPACE NAME
+kubens NAMESPACE
+
 kubectl get cm tesla-svc -o yaml
 kubectl get deploy --show-labels
 kubectl apply -f tesla-svc.yaml
