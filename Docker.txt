@@ -33,6 +33,7 @@ kubectl get cm tesla-svc -o yaml
 kubectl get deploy --show-labels
 kubectl apply -f tesla-svc.yaml
 kubectl exec -ti [] bash
+kubectl exec -it -n NAMESPACE NAME bash
 docker exec -it [] bash
 
 在K8S中创建SLB型svc时一直创建中: 
@@ -102,3 +103,69 @@ ADD、COPY
                  </resources>
              </configuration>
          </plugin>
+
+mvn构建spring boot工程时加上docker:build
+
+报错: No plugin found for prefix 'docker' in the current project and in the plugin groups
+在settings.xml中加<pluginGroup>com.spotify</pluginGroup>
+==================================================================
+专有钉钉交付
+
+本机
+docker login tesla-registry.cn-zhangjiakou.cr.aliyuncs.com
+docker pull NAME[:TAG|@DIGEST]
+docker save –o [生成tar文件的路径] [IMAGES...]
+
+云上k8s主节点
+docker login
+docker load < [镜像文件路径]将镜像文件加载到本地仓库（tar、tar.gz均可）
+docker tag tesla-registry.cn-zhangjiakou.cr.aliyuncs.com/tesla_online/one-security:1.3.2 qqq.xxx.com/zzz-pro/one-security:1.3.2
+docker push qqq.xxx.com/zzz-pro/one-security:1.3.2
+
+创建ConfigMap
+kubectl apply –f tesla-ConfigMap.yaml
+
+创建Pod启动服务
+kubectl apply –f tesla-Deployment.yaml
+kubectl get po可查看状态，READY字段值为1/1代表部署成功
+kubectl logs -f --tail 50 tesla-client-deployment-54d75b45d-b7nw6
+
+创建service
+kubectl apply –f tesla-Service .yaml
+
+-------------------------------------------阿里云容器镜像仓库------------------------------------------------------------
+1. 登录企业版实例
+
+$ docker login --username=霍邱县第一人民医院 bcpopen-registry.cn-hangzhou.cr.aliyuncs.com
+
+用于登录的用户名为阿里云账号全名，密码为开通服务时设置的密码。
+
+您可以在访问凭证页面修改凭证密码。
+2. 从Registry中拉取镜像
+
+$ docker pull bcpopen-registry.cn-hangzhou.cr.aliyuncs.com/bcpopen-1/bcpopen-1:[镜像版本号]
+
+3. 将镜像推送到Registry
+
+$ docker login --username=霍邱县第一人民医院 bcpopen-registry.cn-hangzhou.cr.aliyuncs.com
+$ docker tag [ImageId] bcpopen-registry.cn-hangzhou.cr.aliyuncs.com/bcpopen-1/bcpopen-1:[镜像版本号]
+$ docker push bcpopen-registry.cn-hangzhou.cr.aliyuncs.com/bcpopen-1/bcpopen-1:[镜像版本号]
+
+请根据实际镜像信息替换示例中的[ImageId]和[镜像版本号]参数。
+4. 选择合适的镜像仓库地址
+
+从ECS推送镜像时，可以选择使用镜像仓库内网地址。推送速度将得到提升并且将不会损耗您的公网流量。
+
+如果您使用的机器位于VPC网络，请使用 bcpopen-registry-vpc.cn-hangzhou.cr.aliyuncs.com 作为Registry的域名登录。
+5. 示例
+
+使用"docker tag"命令重命名镜像，并将它通过专有网络地址推送至Registry。
+
+$ docker images
+REPOSITORY                                                         TAG                 IMAGE ID            CREATED             VIRTUAL SIZE
+registry.aliyuncs.com/acs/agent                                    0.7-dfb6816         37bb9c63c8b2        7 days ago          37.89 MB
+$ docker tag 37bb9c63c8b2 bcpopen-registry-vpc.cn-hangzhou.cr.aliyuncs.com/acs/agent:0.7-dfb6816
+
+使用 "docker push" 命令将该镜像推送至远程。
+
+$ docker push bcpopen-registry-vpc.cn-hangzhou.cr.aliyuncs.com/acs/agent:0.7-dfb6816
