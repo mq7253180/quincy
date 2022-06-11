@@ -13,6 +13,7 @@ mklink /J "C:\Users\Public\Documents\Hyper-V\Virtual hard disks" "D:\Virtual har
 Try running a container: Copy and paste this command into your terminal and then come back
 docker run -d -p 80:80 docker/getting-started
 
+docker search -f stars=10 java
 docker build --rm -f "Dockerfile" -t java-hello:latest .
 docker run --name xxx -d java-hello:latest
 docker run --name zzz -d -p 9090:8080 aliyun/gts:1.0
@@ -25,7 +26,7 @@ docker image rm
 K8S命令: 
 kubectl get 资源类型 --all-namespaces
 kubectl describe 资源类型 -n NAMESPACE NAME
-kubectl logs -f --tail -n NAMESPACE NAME
+kubectl logs -f --tail -n NAMESPACE NAME -c CONTAINER_NAME
 kubectl delete pod -n NAMESPACE NAME
 kubens NAMESPACE
 
