@@ -14,14 +14,35 @@ Try running a container: Copy and paste this command into your terminal and then
 docker run -d -p 80:80 docker/getting-started
 
 docker search -f stars=10 java
+docker search jdk
+docker pull openjdk:11
 docker build --rm -f "Dockerfile" -t java-hello:latest .
 docker run --name xxx -d java-hello:latest
 docker run --name zzz -d -p 9090:8080 aliyun/gts:1.0
 docker exec -it [] bash
 
+镜像仓库：
+docker pull registry
+docker run -p 5000:5000 -v D:/docker/registry:/var/lib/registry -d --restart=always registry
+docker tag aliyun/gts:1.0 localhost:5000/aliyun/gts:1.0
+docker push localhost:5000/aliyun/gts:1.0
+
+http://ip:port/v2/_catalog
+http://ip:port/v2/镜像名称/tags/list
+
 删除一个镜像: 
-docker rmi 容器id
-docker image rm
+docker image rm REPOSITORY或IMAGE ID
+docker rmi REPOSITORY或IMAGE ID
+
+同一个IMAGE ID可能被多个REPOSITORY指向，如果多个REPOSITORY指向同一个IMAGE ID
+删除IMAGE ID会报Error response from daemon: conflict: unable to delete 5384c7dab7fe (must be forced) - image is referenced in multiple repositories
+删除REPOSITORY只会Untagged当前一条
+剩最后一条时再删除REPOSITORY会报：Error response from daemon: conflict: unable to remove repository reference "aliyun/gts:latest" (must force) - container ef1aa42cad22 is using its referenced image 5384c7dab7fe
+
+停止一个容器：
+docker stop CONTAINER_ID
+删除一个容器：
+docker rm CONTAINER_ID
 
 K8S命令: 
 kubectl get 资源类型 --all-namespaces
