@@ -57,7 +57,12 @@ DNS2=8.8.8.8
 
 重启网卡
 systemctl restart network
----------------------
+---------------------------------------------------
+telnet报No route to host:
+
+iptables -A IN_public_allow -p tcp --dport 端口 -j ACCEPT
+service iptables save
+---------------------------------------------------
 压缩、解压缩
 
 将压缩文件text.zip在当前目录下解压缩: 
@@ -135,7 +140,7 @@ ln -s /quincy/env/openssl-bin/lib/libcrypto.so.1.1 /usr/lib64/libcrypto.so.1.1
 
 安装nginx: 
 安装zlib、pcre、openssl
-./configure --prefix=/quincy/env/nginx/nginx-bin --with-stream --with-openssl=/quincy/env/nginx/openssl-src --with-http_ssl_module --with-pcre=/quincy/env/nginx/pcre-src --with-zlib=/quincy/env/nginx/zlib-src --with-http_stub_status_module --with-stream --with-stream_ssl_preread_module --with-stream_ssl_module
+./configure --prefix=/quincy/env/nginx/nginx-bin --with-http_ssl_module --with-http_stub_status_module --with-stream --with-stream_ssl_preread_module --with-stream_ssl_module --with-openssl=/quincy/env/nginx/openssl-src --with-pcre=/quincy/env/nginx/pcre-src --with-zlib=/quincy/env/nginx/zlib-src
 报[error] invalid PID number: nginx -c <配置文件路径>
 
 查看pcre是否安装: 
