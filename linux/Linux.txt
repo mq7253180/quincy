@@ -21,6 +21,13 @@ cat /proc/cpuinfo|grep "cpu cores"|uniq|awk -F: '{print $2}'
 查看core id的数量,即为所有物理CPU上的core的个数
 cat /proc/cpuinfo|grep "core id"|uniq|wc -l
 
+查看版本：
+uname -a
+cat /proc/version
+lsb_release -a
+cat /etc/redhat-release
+cat /etc/issue
+
 查看组: cat /etc/group
 查看用户: cat /etc/passwd|cut -f 1 -d :
 groupadd admin
