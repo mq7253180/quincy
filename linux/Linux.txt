@@ -379,3 +379,31 @@ wget -O /etc/yum.repos.d/epel-Aliyun.repo https://mirrors.aliyun.com/repo/epel-7
 
 yum clean all
 yum makecache
+---------------------------------------------------------------
+Keepalived坑：
+
+安装keepalived在./configure时报：
+configure: error:
+  !!! OpenSSL is not properly installed on your system. !!!
+  !!! Can not include OpenSSL headers files.            !!!
+
+需要按下面步骤安装openssl：
+./config shared zlib
+make depend
+make
+make install
+
+
+因后续分配的主机的iptables都加了
+REJECT     all  --  anywhere             anywhere             reject-with icmp-host-prohibited
+导致备启动时也生成了VIP，直接脑裂
+
+添加一条规则
+iptables -I INPUT {icmp-host-prohibited的序号} -p vrrp -j ACCEPT
+service iptables save
+
+
+用kill -9杀死进程后VIP依然存在：
+手动删除：ip addr del 10.5.37.30/32 dev enp4s3
+要用pkill -15
+
