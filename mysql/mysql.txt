@@ -129,6 +129,14 @@ select * from information_schema.processlist;
 
 dump数据库: 
 D:\env\mysql\mysql-5.7.22-winx64\bin\mysqldump -h10.50.1.14 -P3306 -upgw –p78DdlqVhCse pgw -R -E --triggers>D:\online\core.sql
+/data/mysql/bin/mysqldump -h10.5.37.226 -P3306 -uroot -pYjbAky@2022 --flush-logs --lock-all-tables yjglb_model_city -R -E --triggers > /data/mysql-related/sb.sql
+所有库：-A
+单张表：test1
+多张表：--databases test1 test2
+–lock-all-tables, -x：锁定所有库中所有的表，这是通过在整个dump的过程中持有全局读锁来实现的，自动关闭-single-transaction和-lock-tables选项
+
+导入：
+/data/mysql/bin/mysql --socket=/data/mysql-related/mysqld.socket -uroot -pYh?8JHguIS6R yjglb_model_city < /data/mysql-related/sb.sql
 ------------------------------------binlog---------------------------------------
 查看是否开启binlog: 
 show variables like '%log_bin%';

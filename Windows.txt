@@ -1,2 +1,3 @@
 IE设置在新选项卡打开: 以管理员身份运行inetcpl.cpl
 查看端口: netstat -aon|findstr 1883
+添加静态路由：route add 10.0.0.0 MASK 255.0.0.0 -p 10.17.90.254
