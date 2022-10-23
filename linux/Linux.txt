@@ -353,32 +353,6 @@ u=User.where(id:1).first
 u.password='mq62455878'
 u.password_confirmation='mq62455878'
 u.save!
--------------------------------------------------------------
-安装MySQL报：
-mysqld: error while loading shared libraries: libnuma.so.1: cannot open shared object file: No such file or directory
-mysqld: error while loading shared libraries: libaio.so.1: cannot open shared object file: No such file or directory
-yum -y install numactl
-报：
-Setting up Install Process
-http://yum.tbsite.net/centos/6/os/x86_64/repodata/repomd.xml: [Errno 14] PYCURL ERROR 22 - "The requested URL returned error: 404 Not Found"
-Trying other mirror.
-To address this issue please refer to the below knowledge base article 
-
-https://access.redhat.com/articles/1320623
-
-If above article doesn't help to resolve this issue please open a ticket with Red Hat Support.
-
-Error: Cannot retrieve repository metadata (repomd.xml) for repository: base. Please verify its path and try again
-
-更改yum源和epel源
-mv /etc/yum.repos.d/CentOS-Base.repo /etc/yum.repos.d/CentOS-Base.repo.backup
-mv /etc/yum.repos.d/epel.repo /etc/yum.repos.d/epel.repo.backup
-
-wget -O /etc/yum.repos.d/CentOS-Base-Aliyun.repo https://mirrors.aliyun.com/repo/Centos-7.repo
-wget -O /etc/yum.repos.d/epel-Aliyun.repo https://mirrors.aliyun.com/repo/epel-7.repo
-
-yum clean all
-yum makecache
 ---------------------------------------------------------------
 Keepalived坑：
 
