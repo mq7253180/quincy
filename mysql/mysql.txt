@@ -202,6 +202,12 @@ CREATE INDEX idx_suborder_no ON t_b_suborder_head(`suborder_no`) USING BTREE;
 CREATE INDEX idx_suborder_no ON t_b_suborder_detail(`suborder_no`) USING BTREE;
 ---------------------主从----------------------------------------------
 导数据
+报：
+mysqldump: Couldn't execute 'FLUSH TABLES': Access denied; you need (at least one of) the RELOAD privilege(s) for this operation (1227)
+GRANT RELOAD ON *.* TO 'root'@'%';
+报：
+mysqldump: Error: 'Access denied; you need (at least one of) the PROCESS privilege(s) for this operation' when trying to dump tablespaces
+GRANT PROCESS ON *.* TO 'root'@'%';
 
 主库
 show variables like '%log_bin%';
@@ -213,6 +219,16 @@ change master to master_host='localhost',master_port=3306,master_user='root',mas
 show slave status\G
 start slave;
 show slave status\G
+
+将坏掉的主库修复为新的备库步骤：
+1. 导出：/space/supdata/mysql/bin/mysqldump -h10.5.37.88 -P3306 -uroot -pYjbAky@2022 --flush-logs --lock-all-tables --databases yjglb_model_city yjglb_technology_track -R -E --triggers > /space/supdata/xxx.sql
+2. 登录88的数据库执行show master status;或查看index文件查看当前binlog文件名称
+3. 导入：/space/supdata/mysql/bin/mysql -h127.0.0.1 -P3306 -uroot -pYjbAky@2022 < /space/supdata/xxx.sql
+4. 设置为新的从库：
+ change master to master_host='10.5.37.88',master_port=3306,master_user='root',master_password='YjbAky@2022',master_log_file='第2步中查到的文件名称',master_log_pos=154;
+ start slave;
+ show slave status\G
+5 作为备启动keepalived：nohup /space/keepalived/sbin/keepalived -f /space/kald-backup.conf 2>&1 &
 ======================================================================
 BTREE索引
 
