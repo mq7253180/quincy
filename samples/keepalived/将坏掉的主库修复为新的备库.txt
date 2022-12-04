@@ -1,0 +1,32 @@
+10.5.37.226：
+
+登录：
+mysql -h127.0.0.1 -P3306 -uroot -pYjbAky@2022
+
+切换至88后修复为新的备库：
+1. 导出：/space/supdata/mysql/bin/mysqldump -h10.5.37.88 -P3306 -uroot -pYjbAky@2022 --flush-logs --lock-all-tables --databases yjglb_model_city yjglb_technology_track -R -E --triggers > /space/supdata/xxx.sql
+2. 登录88的数据库执行show master status;查看binlog文件名
+3. 导入：/space/supdata/mysql/bin/mysql -h127.0.0.1 -P3306 -uroot -pYjbAky@2022 < /space/supdata/xxx.sql
+4. 设置为新的从库：
+ change master to master_host='10.5.37.88',master_port=3306,master_user='root',master_password='YjbAky@2022',master_log_file='bcd.000001',master_log_pos=154;
+ start slave;
+ show slave status\G
+5 作为备启动keepalived：nohup /space/keepalived/sbin/keepalived -f /space/kald-backup.conf 2>&1 &
+------------------------------------------------------------------------------------
+10.5.37.88：
+
+启动MySQL：
+nohup /data/mysql/bin/mysqld --defaults-file=/data/mysql-related/my-backup.cnf --user=mysql 2>&1 &
+
+登录MySQL：
+/data/mysql/bin/mysql --socket=/data/mysql-related/mysqld.socket -uroot -pYh?8JHguIS6R
+
+切换至226后修复为新的备库步骤：
+1. 导出：/data/mysql/bin/mysqldump -h10.5.37.226 -P3306 -uroot -pYjbAky@2022 --flush-logs --lock-all-tables --databases yjglb_model_city yjglb_technology_track -R -E --triggers > /data/mysql-related/xxx.sql
+2. 登录226的数据库执行show master status;查看binlog文件名
+3. 导入：/data/mysql/bin/mysql --socket=/data/mysql-related/mysqld.socket -uroot -pYh?8JHguIS6R < /data/mysql-related/xxx.sql
+4. 设置为新的从库：
+ change master to master_host='10.5.37.226',master_port=3306,master_user='root',master_password='YjbAky@2022',master_log_file='abc.000015',master_log_pos=154;
+ start slave;
+ show slave status\G
+5. 作为备启动keepalived：nohup /data/keepalived/sbin/keepalived -f /data/kald-backup.conf 2>&1 &
