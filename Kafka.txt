@@ -1,3 +1,13 @@
+service.properties必要配置：
+broker.id=0
+listeners=PLAINTEXT://127.0.0.1:9092
+advertised.listeners=PLAINTEXT://47.93.89.0:9092
+log.dirs=/quincy/env/kafka-logs
+num.partitions=1
+zookeeper.connect=localhost:2181,localhost:2182,localhost:2183
+zookeeper.connection.timeout.ms=18000
+
+
 启动：/quincy/env/kafka_2.13-3.3.1/bin/kafka-server-start.sh -daemon /quincy/env/kafka_2.13-3.3.1/config/server.properties
 停止：/quincy/env/kafka_2.13-3.3.1/bin/kafka-server-stop.sh
 
