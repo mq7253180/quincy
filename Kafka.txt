@@ -1,0 +1,15 @@
+启动：/quincy/env/kafka_2.13-3.3.1/bin/kafka-server-start.sh -daemon /quincy/env/kafka_2.13-3.3.1/config/server.properties
+停止：/quincy/env/kafka_2.13-3.3.1/bin/kafka-server-stop.sh
+
+查看topic：/quincy/env/kafka_2.13-3.3.1/bin/kafka-topics.sh --bootstrap-server localhost:9092 --list
+创建topic：/quincy/env/kafka_2.13-3.3.1/bin/kafka-topics.sh --bootstrap-server localhost:9092 --create --topic aaa --partitions 5 --replication-factor 1
+删除topic：/quincy/env/kafka_2.13-3.3.1/bin/kafka-topics.sh --bootstrap-server localhost:9092 --delete --topic aaa
+
+抛异常：
+一、org.apache.kafka.common.errors.TimeoutException: Expiring 2 record(s) for aaa-4:120002 ms has passed since batch creation
+server.properties中没有配置listeners或advertised.listeners项
+
+二、org.apache.kafka.common.errors.TimeoutException: Topic aaa not present in metadata after 60000 ms.
+listeners或advertised.listeners项配了但是IP地址没配对
+
+
