@@ -20,6 +20,9 @@ docker build --rm -f "Dockerfile" -t java-hello:latest .
 docker run --name xxx -d java-hello:latest
 docker run --name zzz -d -p 9090:8080 aliyun/gts:1.0
 docker exec -it [] bash
+docker container rm CONTAINER ID
+docker container kill CONTAINER ID
+docker container stop CONTAINER ID
 
 镜像仓库：
 docker pull registry
@@ -154,7 +157,14 @@ kubectl logs -f --tail 50 tesla-client-deployment-54d75b45d-b7nw6
 
 创建service
 kubectl apply –f tesla-Service .yaml
+-------------------------------------------统计云OCR--------------------------------------------------------------
+统计局OCR
 
+docker inspect 8d3|grep duguangExposePort
+
+docker exec -t xxxx ps -aux
+
+nvidia-docker run -d --privileged --restart=always --net=host --add-host=dsjc-test.obsv3.gtzx-dsjyyq-3.tjy.stats.gov.cn:10.211.16.253 -e APES_ADDRS=127.0.0.1 -e APES_PORT=8088 -e duguangExposePort=80 ${tag:version}
 -------------------------------------------阿里云容器镜像仓库------------------------------------------------------------
 1. 登录企业版实例
 

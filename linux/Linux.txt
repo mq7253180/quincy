@@ -204,6 +204,12 @@ service iptables save
 iptables -A INPUT -m state --state ESTABLISHED,RELATED -j ACCEPT 
 iptables -A OUTPUT -m state --state ESTABLISHED,RELATED -j ACCEPT
 -----------------------------------------------------------------
+NTP
+
+查看：chronyc -n sources、ntpq -p、ntpstat
+同步：
+    修改/etc/chrony.conf，添加server 10.211.234.3 iburst，service chronyd restart ntpdate
+---------------------------------------------------------
 sed -n 'x,yp' filename
 find filename|xargs grep ""
 
