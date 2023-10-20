@@ -19,6 +19,8 @@ docker pull openjdk:11
 docker build --rm -f "Dockerfile" -t java-hello:latest .
 docker run --name xxx -d java-hello:latest
 docker run --name zzz -d -p 9090:8080 aliyun/gts:1.0
+docker run --name ddd -d -p 11080:12080 quincy/ducati:latest
+docker run --name spcl -d -p 8761:8761 quincy/spcl:latest
 docker exec -it [] bash
 docker container rm CONTAINER ID
 docker container kill CONTAINER ID
