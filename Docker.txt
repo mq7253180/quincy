@@ -36,8 +36,8 @@ http://ip:port/v2/_catalog
 http://ip:port/v2/镜像名称/tags/list
 
 删除一个镜像: 
-docker image rm REPOSITORY或IMAGE ID
-docker rmi REPOSITORY或IMAGE ID
+docker image rm REPOSITORY:TAG或IMAGE ID
+docker rmi REPOSITORY:TAG或IMAGE ID
 
 同一个IMAGE ID可能被多个REPOSITORY指向，如果多个REPOSITORY指向同一个IMAGE ID
 删除IMAGE ID会报Error response from daemon: conflict: unable to delete 5384c7dab7fe (must be forced) - image is referenced in multiple repositories
