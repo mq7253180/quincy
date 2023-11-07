@@ -1,3 +1,7 @@
+安装docker
+
+Windows：
+
 安装WSL 2: 
 https://docs.microsoft.com/zh-cn/windows/wsl/wsl2-kernel
 
@@ -9,13 +13,48 @@ wsl -l -v
 
 更改镜像文件路径: 
 mklink /J "C:\Users\Public\Documents\Hyper-V\Virtual hard disks" "D:\Virtual hard disks"
+------------------------------------------------------------------
+Linux：
 
+从https://download.docker.com/下载对应版本的压缩文件
+
+daemon.json
+{
+  "data-root": "/home/docker",
+  "insecure-registries": ["127.0.0.1:5000"],
+  "registry-mirrors": ["你的镜像加速地址"]
+}
+
+解压文件
+ln -s /quincy/docker/docker/containerd /usr/local/bin/containerd
+ln -s /quincy/docker/docker/runc /usr/local/bin/runc
+ln -s /quincy/docker/docker/docker /usr/local/bin/docker
+ln -s /quincy/docker/docker/docker-init /usr/local/bin/docker-init
+/quincy/docker/docker/dockerd --selinux-enabled=false --config-file=/quincy/docker/daemon.json -H tcp://0.0.0.0:2375 -H unix:///var/run/docker.sock -D >> /quincy/tmp/logs/dockerd.log 2>&1 &
+
+其他
+--insecure-registry=127.0.0.1
+--containerd=/run/containerd/containerd.sock
+--restart=always
+-H fd://
+------------------------------------------------------------------
+搭建私服仓库
+
+ln -s /quincy/docker/docker/docker-proxy /usr/bin/docker-proxy
+docker pull registry
+docker run --entrypoint htpasswd registry:2 -Bbn myuser mypassword > /quincy/docker/auth/htpasswd
+docker run --name registry -d -p 5000:5000 registry:latest
+
+如果报Bind for 0.0.0.0:5000 failed: port is already allocated：是因为二次run，虽然容器没有拉起，但也占着端口，需要重启docker守护进程
+
+docker login -u root 47.93.89.0:5000
+------------------------------------------------------------------
 Try running a container: Copy and paste this command into your terminal and then come back
 docker run -d -p 80:80 docker/getting-started
 
 docker search -f stars=10 java
 docker search jdk
-docker pull openjdk:11
+docker pull openjdk:17
 docker build --rm -f "Dockerfile" -t java-hello:latest .
 docker run --name xxx -d java-hello:latest
 docker run --name zzz -d -p 9090:8080 aliyun/gts:1.0
@@ -25,6 +64,7 @@ docker exec -it [] bash
 docker container rm CONTAINER ID
 docker container kill CONTAINER ID
 docker container stop CONTAINER ID
+docker pull registry.cn-hangzhou.aliyuncs.com/space_test/demo:v1
 
 镜像仓库：
 docker pull registry

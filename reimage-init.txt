@@ -1,0 +1,9 @@
+mkdir /quincy
+mount /dev/vdb1 /quincy
+cp /quincy/sysbackup/root/* ./
+mkdir /mysql
+mkdir /mysql/logs
+groupadd mysql
+useradd -r -m -d /usr/mysql -g mysql -s /bin/false mysql
+chown -R mysql:mysql /mysql
+yum install -y libaio
