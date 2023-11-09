@@ -27,8 +27,10 @@ yum -y install perl-Module-Install.noarch
 
 报
 Installing MySQL system tables..../bin/mysqld: error while loading shared libraries: libaio.so.1: cannot open shared object file: No such file or directory
-安装
-yum install libaio
+或
+mysqld: error while loading shared libraries: libaio.so.1: cannot open shared object file: No such file or directory
+安装libaio：http://mirror.centos.org/centos/7/os/x86_64/Packages/libaio-0.3.109-13.el7.x86_64.rpm
+libaio-devel-0.3.109-13.el7.x86_64.rpm
 
 启动
 /quincy/mysql/mysql/bin/mysqld --defaults-file=/quincy/mysql/my-master.cnf --user=mysql
@@ -76,11 +78,8 @@ ps -ef|grep mysql|grep -v grep
 
 /quincy/mysql/mysql/bin/mysqladmin --socket=/quincy/mysql/mysqld.socket shutdown
 -------------------------------------------------------------
-报：
-mysqld: error while loading shared libraries: libaio.so.1: cannot open shared object file: No such file or directory
-yum install -y libaio.so.1
-如果还不行：
-yum install -y libaio
+报：mysqld: error while loading shared libraries: libaio.so.1: cannot open shared object file: No such file or directory
+安装libaio：http://mirror.centos.org/centos/7/os/x86_64/Packages/libaio-0.3.109-13.el7.x86_64.rpm
 
 报：
 mysqld: error while loading shared libraries: libnuma.so.1: cannot open shared object file: No such file or directory

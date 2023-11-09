@@ -21,7 +21,7 @@ Linux：
 daemon.json
 {
   "data-root": "/home/docker",
-  "insecure-registries": ["127.0.0.1:5000"],
+  "insecure-registries": ["127.0.0.1:5000", "10.27.74.163:5000", "47.93.89.0:5000"],
   "registry-mirrors": ["你的镜像加速地址"]
 }
 
@@ -32,6 +32,8 @@ ln -s /quincy/docker/docker/docker /usr/local/bin/docker
 ln -s /quincy/docker/docker/docker-init /usr/local/bin/docker-init
 /quincy/docker/docker/dockerd --selinux-enabled=false --config-file=/quincy/docker/daemon.json -H tcp://0.0.0.0:2375 -H unix:///var/run/docker.sock -D >> /quincy/tmp/logs/dockerd.log 2>&1 &
 
+/quincy/docker/docker/dockerd --selinux-enabled=false --config-file=/quincy/docker/daemon.json --insecure-registry=47.93.89.0 -H tcp://0.0.0.0:2375 -H unix:///var/run/docker.sock -D >> /quincy/tmp/logs/dockerd.log 2>&1 &
+
 其他
 --insecure-registry=127.0.0.1
 --containerd=/run/containerd/containerd.sock
@@ -40,14 +42,42 @@ ln -s /quincy/docker/docker/docker-init /usr/local/bin/docker-init
 ------------------------------------------------------------------
 搭建私服仓库
 
+yum install -y libxml2-devel
+必须在安装apr之前，否则在安装httpd，make时报错：
+make[2]: *** [htpasswd] Error 1
+make[1]: *** [all-recursive] Error 1
+make: *** [all-recursive] Error 1
+
+安装apr、apr-util：
+下载地址：https://apr.apache.org/download.cgi或http://archive.apache.org/dist/
+
+apr-util：
+./configure --prefix=/quincy/env/apr-util-bin --with-apr=/quincy/env/apr-src(bin也行)
+yum install expat-devel
+make
+make install
+
+安装htpasswd(httpd)：
+./configure --prefix=/quincy/env/httpd-bin --with-apr=/quincy/env/apr-src --with-apr-util=/quincy/env/apr-util-src
+./configure --prefix=/quincy/env/httpd-bin --with-apr=/quincy/env/apr-bin --with-apr-util=/quincy/env/apr-util-bin也行
+	报configure: error: Did not find working script at pcre-config：ln -s /quincy/env/pcre-bin/bin/pcre-config /usr/local/bin/pcre-config
+make
+make install
+ln -s /quincy/env/httpd-bin/bin/htpasswd /usr/local/bin/htpasswd
+
 ln -s /quincy/docker/docker/docker-proxy /usr/bin/docker-proxy
 docker pull registry
-docker run --entrypoint htpasswd registry:2 -Bbn myuser mypassword > /quincy/docker/auth/htpasswd
 docker run --name registry -d -p 5000:5000 registry:latest
+
+带密码认证的：
+docker run --entrypoint htpasswd registry:2 -Bbn myuser mypassword > /quincy/docker/auth/htpasswd
+htpasswd -Bbn admin 1qazxsw2 > /quincy/docker/registry/auth/htpasswd
+
+docker run --name registry -d -p 5000:5000 -v /quincy/docker/registry/data:/var/lib/registry -v /quincy/docker/registry/auth:/auth -e "REGISTRY_AUTH=htpasswd" -e "REGISTRY_AUTH_HTPASSWD_REALM=Registry Realm" -e REGISTRY_AUTH_HTPASSWD_PATH=/auth/htpasswd registry:latest
 
 如果报Bind for 0.0.0.0:5000 failed: port is already allocated：是因为二次run，虽然容器没有拉起，但也占着端口，需要重启docker守护进程
 
-docker login -u root 47.93.89.0:5000
+docker login -u admin 47.93.89.0:5000
 ------------------------------------------------------------------
 Try running a container: Copy and paste this command into your terminal and then come back
 docker run -d -p 80:80 docker/getting-started

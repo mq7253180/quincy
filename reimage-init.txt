@@ -6,4 +6,4 @@ mkdir /mysql/logs
 groupadd mysql
 useradd -r -m -d /usr/mysql -g mysql -s /bin/false mysql
 chown -R mysql:mysql /mysql
-yum install -y libaio
+rpm -ivh /quincy/env/libaio-0.3.109-13.el7.x86_64.rpm

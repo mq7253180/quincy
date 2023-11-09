@@ -125,8 +125,22 @@ GPG
 删除私钥: gpg --delete-secret-key(s) newkey
 -----------------------------------------------------------------
 安装gcc: 
-yum install -y gcc gcc-c++
+联机：yum install -y gcc gcc-c++
+离线
+下载地址：http://mirrors.163.com/centos/7/os/x86_64/Packages/、https://pkgs.org/
+安装顺序：
+libmpfr：https://pkgs.org/download/libmpfr6、http://rpmfind.net/linux/RPM/opensuse/15.2/x86_64/libmpfr6-4.0.1-lp152.3.113.x86_64.html
+libmpc
 
+https://gcc.gnu.org/
+./configure --prefix=/quincy/env/gcc-bin --enable-checking=release --enable-languages=c,c++ --disable-multilib
+
+报错：
+configure: error: no acceptable C compiler found in $PATH
+
+make -j4
+make install
+-----------------------------------------------------------------
 安装rz、sz: 
 yum install -y lrzsz
 
@@ -142,17 +156,18 @@ make prefix=/quincy/env/git-bin install
 ln -s /quincy/env/git-bin/bin/git /usr/local/bin/git
 
 安装openssl: 
-ln -s /quincy/env/nginx/openssl-bin/lib/libssl.so.1.1 /usr/lib64/libssl.so.1.1
-ln -s /quincy/env/nginx/openssl-bin/lib/libcrypto.so.1.1 /usr/lib64/libcrypto.so.1.1
-
-安装nginx: 
-安装zlib、pcre、openssl
-./configure --prefix=/quincy/env/nginx/nginx-bin --with-http_ssl_module --with-http_stub_status_module --with-stream --with-stream_ssl_preread_module --with-stream_ssl_module --with-openssl=/quincy/env/nginx/openssl-src --with-pcre=/quincy/env/nginx/pcre-src --with-zlib=/quincy/env/nginx/zlib-src
-报[error] invalid PID number: nginx -c <配置文件路径>
+ln -s /quincy/env/openssl-bin/lib/libssl.so.1.1 /usr/lib64/libssl.so.1.1
+ln -s /quincy/env/openssl-bin/lib/libcrypto.so.1.1 /usr/lib64/libcrypto.so.1.1
 
 查看pcre是否安装: 
 rpm -qa pcre
 rpm -qa|grep pcre
+下载地址：https://sourceforge.net/projects/pcre/files/pcre/
+
+安装nginx: 
+安装zlib、pcre、openssl
+./configure --prefix=/quincy/env/nginx-bin --with-http_ssl_module --with-http_stub_status_module --with-stream --with-stream_ssl_preread_module --with-stream_ssl_module --with-openssl=/quincy/env/openssl-src --with-pcre=/quincy/env/pcre-src --with-zlib=/quincy/env/zlib-src
+报[error] invalid PID number: nginx -c <配置文件路径>
 
 安装telnet：http://www.rpmfind.net/linux/rpm2html
 
@@ -162,7 +177,8 @@ rpm -ivh报“conflicts with file from package wget-1.14-18.el7_6.1.x86_64”：
 
 安装curl：
 下载地址：https://curl.se/download.html
-./configure --prefix=/quincy/env/curl-bin --with-openssl=/quincy/env/nginx/openssl-bin
+./configure --prefix=/quincy/env/curl-bin --with-openssl=/quincy/env/openssl-bin
+注意：此处--with-openssl=一定要指定安装后的路径，和安装Nginx时不一样，如果指定源码路径会报：configure: error: --with-openssl was given but OpenSSL could not be detected
 make
 make install
 ln -s /quincy/env/curl-bin/bin/curl /usr/local/bin/curl
