@@ -1,3 +1,12 @@
+安装
+yum install snapd
+systemctl enable --now snapd.socket
+ln -s /var/lib/snapd/snap /snap
+systemctl start snapd
+snap install --classic certbot
+systemctl stop snapd
+ln -s /snap/bin/certbot /usr/bin/certbot
+
 ImportError: No module named 'requests.packages.urllib3'
 pip install --upgrade --force-reinstall 'requests==2.6.0' urllib3
 -------------------------------------------
@@ -60,7 +69,7 @@ IMPORTANT NOTES:
    visiting https://act.eff.org.
 -------------------------------------------
 Wildcard certificate: 
-certbot certonly -d "*.maqiangcgq.com" --manual --preferred-challenges dns
+certbot certonly -d "*.maqiang777.com" --manual --register-unsafely-without-email --preferred-challenges dns
 
 Renewal: 
 修改/etc/letsencrypt/renewal/maqiangcgq.com.conf，指定manual_auth_hook = /root/callAliyun.sh

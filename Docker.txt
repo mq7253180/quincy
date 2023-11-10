@@ -201,7 +201,11 @@ ADD、COPY
              </configuration>
          </plugin>
 
-mvn构建spring boot工程时加上docker:build
+<serverId>docker-registry</serverId>
+					<!--<registryUrl>https://registry.maqiang777.com/v2/</registryUrl>-->
+					<registryUrl>http://47.93.89.0:5000/v2/</registryUrl>
+
+mvn构建spring boot工程时加上docker:build，如果需要推送到远程仓库需要：-DpushImage
 
 报错: No plugin found for prefix 'docker' in the current project and in the plugin groups
 在settings.xml中加<pluginGroup>com.spotify</pluginGroup>
