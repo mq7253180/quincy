@@ -217,7 +217,7 @@ mvn构建spring boot工程时加上docker:build，如果需要推送到远程仓
 在settings.xml的pluginGroups节点下加<pluginGroup>com.spotify</pluginGroup>
 
 报错：Cannot run program "docker-credential-osxkeychain(或desktop)": error=2, No such file or directory
-将用户目录的.docker/config.json文件中的auths和credsStore节点删除
+将用户目录的.docker/config.json文件中的credsStore节点删除，并且删除auths节点或删除里面的内容
 ==================================================================
 专有钉钉交付
 
