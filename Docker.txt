@@ -157,7 +157,7 @@ port、targetPort、nodePort
 RUN、CMD、ENTRYPOINT
 ADD、COPY
 ==================================================
-<plugin>
+			<plugin>
 				<groupId>com.spotify</groupId>
 				<artifactId>docker-maven-plugin</artifactId>
 				<version>1.2.2</version>
@@ -167,10 +167,6 @@ ADD、COPY
 						<imageTag>1.0</imageTag>
 					</imageTags>
 					<forceTags>true</forceTags>
-					<!-- <dockerHost>http://localhost:2375</dockerHost>
-					<registryUrl>localhost:5000</registryUrl>
-					<pushImage>true</pushImage>
-					<pushImageTag>true</pushImageTag> -->
 
 					<!-- Dockerfile两种方式 -->
 					<!-- 方式一：插件自动生成 -->
@@ -198,9 +194,11 @@ ADD、COPY
 							<include>${project.build.finalName}.conf</include>
 						</resource>
 					</resources>
-					<serverId>docker-registry</serverId><!-- 对应maven的settings.xml中server节点的id节点的值，以获取用户名和密码 -->
+					<!-- <dockerHost>http://47.93.89.0:2375</dockerHost>
 					<registryUrl>https://registry.maqiang777.com</registryUrl>
-					<!--<registryUrl>http://47.93.89.0:5000</registryUrl>-->
+					<pushImage>true</pushImage>
+					<pushImageTag>true</pushImageTag> -->
+					<serverId>docker-registry</serverId><!-- 对应maven的settings.xml中server节点的id节点的值，以获取用户名和密码 -->
 				</configuration>
 			</plugin>
 
