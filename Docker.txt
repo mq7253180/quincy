@@ -217,6 +217,9 @@ mvn构建spring boot工程时加上docker:build，如果需要推送到远程仓
 报错：Cannot run program "docker-credential-osxkeychain(或desktop)": error=2, No such file or directory
 将用户目录的.docker/config.json文件中的credsStore节点删除，并且删除auths节点或删除里面的内容
 
+https://registry.maqiang777.com/v2/_catalog
+https://registry.maqiang777.com/v2/quincy/spcl/tags/list
+
 删除：
 获取摘要：curl -I -sS -X GET --header "Accept:application/vnd.docker.distribution.manifest.v2+json" -u admin:1qazxsw2 https://registry.maqiang777.com/v2/quincy/spcl/manifests/1.0
 删除：curl -I -X DELETE -u admin:1qazxsw2 https://registry.maqiang777.com/v2/quincy/spcl/manifests/sha256:f31b7729437427a17281e0427d00183ac6118e7e1e664d86c72e80eeef372756
