@@ -13,7 +13,7 @@ wsl -l -v
 
 更改镜像文件路径: 
 mklink /J "C:\Users\Public\Documents\Hyper-V\Virtual hard disks" "D:\Virtual hard disks"
-------------------------------------------------------------------
+================================================================================
 Linux：
 
 从https://download.docker.com/下载对应版本的压缩文件
@@ -70,93 +70,15 @@ docker pull registry
 docker run --name registry -d -p 5000:5000 registry:latest
 
 带密码认证的：
-docker run --entrypoint htpasswd registry:2 -Bbn myuser mypassword > /quincy/docker/auth/htpasswd
 htpasswd -Bbn admin 1qazxsw2 > /quincy/docker/registry/auth/htpasswd
+docker run --entrypoint htpasswd registry:2 -Bbn myuser mypassword > /quincy/docker/auth/htpasswd
 
 docker run --name registry -d -p 5000:5000 -v /quincy/docker/registry/data:/var/lib/registry -v /quincy/docker/registry/auth:/auth -e "REGISTRY_AUTH=htpasswd" -e "REGISTRY_AUTH_HTPASSWD_REALM=Registry Realm" -e REGISTRY_AUTH_HTPASSWD_PATH=/auth/htpasswd registry:latest
 
 如果报Bind for 0.0.0.0:5000 failed: port is already allocated：是因为二次run，虽然容器没有拉起，但也占着端口，需要重启docker守护进程
-
-docker login -u admin 47.93.89.0:5000
 ------------------------------------------------------------------
-Try running a container: Copy and paste this command into your terminal and then come back
-docker run -d -p 80:80 docker/getting-started
+IDE中通过插件构建并推送：
 
-docker search -f stars=10 java
-docker search jdk
-docker pull openjdk:17
-docker build --rm -f "Dockerfile" -t java-hello:latest .
-docker run --name xxx -d java-hello:latest
-docker run --name zzz -d -p 9090:8080 aliyun/gts:1.0
-docker run --name ddd -d -p 11080:12080 quincy/ducati:latest
-docker run --name spcl -d -p 8761:8761 -v /quincy/github/configuration:/quincy/github/configuration quincy/spcl:latest
-docker exec -it [] bash
-docker container rm CONTAINER ID
-docker container kill CONTAINER ID
-docker container stop CONTAINER ID
-docker pull registry.cn-hangzhou.aliyuncs.com/space_test/demo:v1
-
-镜像仓库：
-docker pull registry
-docker run -p 5000:5000 -v D:/docker/registry:/var/lib/registry -d --restart=always registry
-docker tag aliyun/gts:1.0 localhost:5000/aliyun/gts:1.0
-docker push localhost:5000/aliyun/gts:1.0
-
-http://ip:port/v2/_catalog
-http://ip:port/v2/镜像名称/tags/list
-
-删除一个镜像: 
-docker image rm REPOSITORY:TAG或IMAGE ID
-docker rmi REPOSITORY:TAG或IMAGE ID
-
-同一个IMAGE ID可能被多个REPOSITORY指向，如果多个REPOSITORY指向同一个IMAGE ID
-删除IMAGE ID会报Error response from daemon: conflict: unable to delete 5384c7dab7fe (must be forced) - image is referenced in multiple repositories
-删除REPOSITORY只会Untagged当前一条
-剩最后一条时再删除REPOSITORY会报：Error response from daemon: conflict: unable to remove repository reference "aliyun/gts:latest" (must force) - container ef1aa42cad22 is using its referenced image 5384c7dab7fe
-
-停止一个容器：
-docker stop CONTAINER_ID
-删除一个容器：
-docker rm CONTAINER_ID
-
-K8S命令: 
-kubectl get 资源类型 --all-namespaces
-kubectl describe 资源类型 -n NAMESPACE NAME
-kubectl logs -f --tail -n NAMESPACE NAME -c CONTAINER_NAME
-kubectl delete pod -n NAMESPACE NAME
-kubens NAMESPACE
-
-kubectl get cm tesla-svc -o yaml
-kubectl get deploy --show-labels
-kubectl apply -f tesla-svc.yaml
-kubectl exec -ti [] bash
-kubectl exec -it -n NAMESPACE NAME bash
-docker exec -it [] bash
-
-在K8S中创建SLB型svc时一直创建中: 
-kubectl get svc
-显示EXTERNAL-IP一直处于<pending>状态
-
-kubectl describe svc/tesla-slb: 查看服务详细
-kubectl get svc --all-namespaces: 看下集群内部pending状态的svc多么
-kubectl get pods -n kube-system|grep cloud-c: 112分钟重启了20次，观察10分钟，看下是否还有重启记录
-kubectl get po: 列出所有容器
-kubectl logs -f 容器name
-docker ps -a|grep cloud-c
-docker logs -f --tail 50 $containerid: 看下这个容器退出日志
-kubectl get po -n kube-system|grep nginx
-kubectl get pods --kubeconfig=
-kubectl get statefulset edas-eam-edas -o yaml|grep mem
-kubectl edit statefulset edas-eam-edas
-
-NodeIP、PodIP、ClusterIP
-
-port、targetPort、nodePort
-========================================
-区别：
-RUN、CMD、ENTRYPOINT
-ADD、COPY
-==================================================
 			<plugin>
 				<groupId>com.spotify</groupId>
 				<artifactId>docker-maven-plugin</artifactId>
@@ -239,7 +161,85 @@ X-Content-Type-Options: nosniff
 
 垃圾回收：registry garbage-collect /etc/docker/registry/config.yml
 彻底删除：进入容器删除/var/lib/registry/docker/registry/v2/repositories中对应的目录
-==================================================================
+================================================================================
+Try running a container: Copy and paste this command into your terminal and then come back
+docker run -d -p 80:80 docker/getting-started
+
+docker search -f stars=10 java
+docker search jdk
+docker pull openjdk:17
+docker build --rm -f "Dockerfile" -t java-hello:latest .
+docker run --name xxx -d java-hello:latest
+docker run --name zzz -d -p 9090:8080 aliyun/gts:1.0
+docker run --name ddd -d -p 11080:12080 quincy/ducati:latest
+docker run --name spcl -d -p 8761:8761 -v /quincy/github/configuration:/quincy/github/configuration quincy/spcl:latest
+docker exec -it [] bash
+docker container rm CONTAINER ID
+docker container kill CONTAINER ID
+docker container stop CONTAINER ID
+docker pull registry.cn-hangzhou.aliyuncs.com/space_test/demo:v1
+
+镜像仓库：
+docker pull registry
+docker run -p 5000:5000 -v D:/docker/registry:/var/lib/registry -d --restart=always registry
+docker tag aliyun/gts:1.0 localhost:5000/aliyun/gts:1.0
+docker push localhost:5000/aliyun/gts:1.0
+
+http://ip:port/v2/_catalog
+http://ip:port/v2/镜像名称/tags/list
+
+删除一个镜像: 
+docker image rm REPOSITORY:TAG或IMAGE ID
+docker rmi REPOSITORY:TAG或IMAGE ID
+
+同一个IMAGE ID可能被多个REPOSITORY指向，如果多个REPOSITORY指向同一个IMAGE ID
+删除IMAGE ID会报Error response from daemon: conflict: unable to delete 5384c7dab7fe (must be forced) - image is referenced in multiple repositories
+删除REPOSITORY只会Untagged当前一条
+剩最后一条时再删除REPOSITORY会报：Error response from daemon: conflict: unable to remove repository reference "aliyun/gts:latest" (must force) - container ef1aa42cad22 is using its referenced image 5384c7dab7fe
+
+停止一个容器：
+docker stop CONTAINER_ID
+删除一个容器：
+docker rm CONTAINER_ID
+
+K8S命令: 
+kubectl get 资源类型 --all-namespaces
+kubectl describe 资源类型 -n NAMESPACE NAME
+kubectl logs -f --tail -n NAMESPACE NAME -c CONTAINER_NAME
+kubectl delete pod -n NAMESPACE NAME
+kubens NAMESPACE
+
+kubectl get cm tesla-svc -o yaml
+kubectl get deploy --show-labels
+kubectl apply -f tesla-svc.yaml
+kubectl exec -ti [] bash
+kubectl exec -it -n NAMESPACE NAME bash
+docker exec -it [] bash
+
+在K8S中创建SLB型svc时一直创建中: 
+kubectl get svc
+显示EXTERNAL-IP一直处于<pending>状态
+
+kubectl describe svc/tesla-slb: 查看服务详细
+kubectl get svc --all-namespaces: 看下集群内部pending状态的svc多么
+kubectl get pods -n kube-system|grep cloud-c: 112分钟重启了20次，观察10分钟，看下是否还有重启记录
+kubectl get po: 列出所有容器
+kubectl logs -f 容器name
+docker ps -a|grep cloud-c
+docker logs -f --tail 50 $containerid: 看下这个容器退出日志
+kubectl get po -n kube-system|grep nginx
+kubectl get pods --kubeconfig=
+kubectl get statefulset edas-eam-edas -o yaml|grep mem
+kubectl edit statefulset edas-eam-edas
+
+NodeIP、PodIP、ClusterIP
+
+port、targetPort、nodePort
+========================================
+区别：
+RUN、CMD、ENTRYPOINT
+ADD、COPY
+========================================
 专有钉钉交付
 
 本机
