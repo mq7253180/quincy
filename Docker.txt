@@ -65,7 +65,7 @@ make
 make install
 ln -s /quincy/env/httpd-bin/bin/htpasswd /usr/local/bin/htpasswd
 
-ln -s /quincy/docker/docker/docker-proxy /usr/bin/docker-proxy
+ln -s /quincy/docker/docker/docker-proxy /usr/local/bin/docker-proxy
 docker pull registry
 docker run --name registry -d -p 5000:5000 registry:latest
 
