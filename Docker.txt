@@ -232,9 +232,9 @@ kubectl get pods --kubeconfig=
 kubectl get statefulset edas-eam-edas -o yaml|grep mem
 kubectl edit statefulset edas-eam-edas
 
-NodeIP、PodIP、ClusterIP
+NodeIP、ClusterIP、PodIP
 
-port、targetPort、nodePort
+nodePort、port、targetPort
 ========================================
 区别：
 RUN、CMD、ENTRYPOINT
