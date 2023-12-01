@@ -262,7 +262,7 @@ kubectl get po可查看状态，READY字段值为1/1代表部署成功
 kubectl logs -f --tail 50 tesla-client-deployment-54d75b45d-b7nw6
 
 创建service
-kubectl apply –f tesla-Service .yaml
+kubectl apply –f tesla-Service.yaml
 -------------------------------------------统计云OCR--------------------------------------------------------------
 统计局OCR
 
