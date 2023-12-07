@@ -59,6 +59,10 @@ GRANT SELECT ON jlcedu.* TO 'jlcedu'@'%' IDENTIFIED BY 'xxx' WITH GRANT OPTION;
 8以上版本: 
 CREATE USER 'maqiang'@'%' IDENTIFIED BY '1qazxsw23edc';
 GRANT ALL PRIVILEGES ON *.* TO 'maqiang'@'%' WITH GRANT OPTION;
+GRANT ALL PRIVILEGES ON test.* TO 'admin'@'localhost' IDENTIFIED BY 'nimda' WITH GRANT OPTION;
+GRANT SELECT ON test.* TO 'admin'@'%' IDENTIFIED BY 'nimda' WITH GRANT OPTION;
+REVOKE ALL PRIVILEGES ON test.* FROM 'admin'@'localhost';
+GRANT ALL PRIVILEGES ON ducati.* TO 'making'@'localhost' IDENTIFIED BY '1qazxsw23edc' WITH GRANT OPTION;
 
 FLUSH PRIVILEGES;
 
