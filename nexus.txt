@@ -1,0 +1,5 @@
+/quincy/nexus/nexus-3.62.0-01/bin/nexus run &
+/quincy/nexus/nexus-3.62.0-01/bin/nexus start
+/quincy/nexus/nexus-3.62.0-01/bin/nexus stop
+
+默认admin密码在/quincy/nexus/sonatype-work/nexus3/admin.password中保存

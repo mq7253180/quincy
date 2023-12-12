@@ -1,0 +1,4 @@
+http://47.93.89.0:8761/eureka/apps
+http://47.93.89.0:8761/actuator
+http://47.93.89.0:8761/cfg/ducati/pro
+http://localhost:12081/actuator

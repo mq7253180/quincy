@@ -76,6 +76,12 @@ docker run --entrypoint htpasswd registry:2 -Bbn myuser mypassword > /quincy/doc
 docker run --name registry -d -p 5000:5000 -v /quincy/docker/registry/data:/var/lib/registry -v /quincy/docker/registry/auth:/auth -e "REGISTRY_AUTH=htpasswd" -e "REGISTRY_AUTH_HTPASSWD_REALM=Registry Realm" -e REGISTRY_AUTH_HTPASSWD_PATH=/auth/htpasswd registry:latest
 
 如果报Bind for 0.0.0.0:5000 failed: port is already allocated：是因为二次run，虽然容器没有拉起，但也占着端口，需要重启docker守护进程
+
+http://47.93.89.0:2375/version
+http://47.93.89.0:2375/containers/json
+http://47.93.89.0:2375/v1.39/containers/json
+https://registry.maqiang777.com/v2/_catalog
+https://registry.maqiang777.com/v2/quincy/spcl/tags/list
 ------------------------------------------------------------------
 IDE中通过插件构建并推送：
 
