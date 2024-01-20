@@ -238,6 +238,16 @@ kubectl get pods --kubeconfig=
 kubectl get statefulset edas-eam-edas -o yaml|grep mem
 kubectl edit statefulset edas-eam-edas
 
+Pod的名称、状态、IP地址等基本信息：
+kubectl get pod -o wide
+
+查看内存：
+kubectl describe pod <pod_name> | grep "Memory"
+
+使用标签选择器：
+kubectl describe pod $(kubectl get pod -l <label_selector>)|grep "Memory"
+将 <label_selector> 替换为适合你的场景的标签选择器表达式。此命令将返回符合条件的所有Pod的内存使用情况。
+
 NodeIP、ClusterIP、PodIP
 
 nodePort、port、targetPort
