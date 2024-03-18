@@ -159,7 +159,7 @@ flush privileges;
 
 查看进程: 
 show processlist;
-select * from information_schema.processlist;
+SELECT * FROM INFORMATION_SCHEMA.PROCESSLIST WHERE USER = 'user123' AND TIME > 300;
 
 dump数据库: 
 D:\env\mysql\mysql-5.7.22-winx64\bin\mysqldump -h10.50.1.14 -P3306 -upgw –p78DdlqVhCse pgw -R -E --triggers>D:\online\core.sql

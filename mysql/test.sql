@@ -1,3 +1,5 @@
+DROP TABLE test;
+
 CREATE TABLE test (
 	id INT(11) NOT NULL,
 	aaa VARCHAR(20) NOT NULL,
@@ -6,6 +8,8 @@ CREATE TABLE test (
 	KEY idx_bbb(bbb) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+ALTER TABLE test ADD CONSTRAINT unq_bbb UNIQUE (`bbb`);
+ALTER TABLE test DROP INDEX unq_bbb;
 
 DELETE FROM test;
 INSERT INTO test VALUES(1, 'aaa1', 15);
@@ -18,7 +22,7 @@ INSERT INTO test VALUES(7, 'aaa7', 7);
 INSERT INTO test VALUES(8, 'aaa8', 12);
 INSERT INTO test VALUES(9, 'aaa9', 9);
 INSERT INTO test VALUES(10, 'aaa0', 21);
-SELECT * FROM test;
+SELECT * FROM test ORDER BY bbb;
 
 
 INSERT INTO test VALUES(12, 'aaa12', 32);
@@ -49,8 +53,4 @@ UPDATE test SET aaa=CONCAT(aaa, '_www') WHERE bbb=21;
 
 UPDATE test SET aaa=CONCAT(aaa, '_www') WHERE bbb=15;
 UPDATE test SET aaa=CONCAT(aaa, '_www') WHERE bbb=21;
-
-
-
-
 
