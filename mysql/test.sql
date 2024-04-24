@@ -8,6 +8,9 @@ CREATE TABLE test (
 	KEY idx_bbb(bbb) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+
+CREATE INDEX idx_bbb ON test (bbb);
+ALTER TABLE idx_bbb ADD INDEX test (bbb);
 ALTER TABLE test ADD CONSTRAINT unq_bbb UNIQUE (`bbb`);
 ALTER TABLE test DROP INDEX unq_bbb;
 
