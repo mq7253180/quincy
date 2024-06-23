@@ -323,3 +323,15 @@ $ docker tag 37bb9c63c8b2 bcpopen-registry-vpc.cn-hangzhou.cr.aliyuncs.com/acs/a
 使用 "docker push" 命令将该镜像推送至远程。
 
 $ docker push bcpopen-registry-vpc.cn-hangzhou.cr.aliyuncs.com/acs/agent:0.7-dfb6816
+==============================================
+安装docker-compose：新版必须要在版本号前加v，-o的路径必须一致
+
+curl -L https://github.com/docker/compose/releases/download/1.21.1/docker-compose-`uname -s`-`uname -m` -o /Users/maqiang/Documents/fastgpt/docker-compose
+curl -L https://github.com/docker/compose/releases/download/v2.27.1/docker-compose-`uname -s`-`uname -m` -o /Users/maqiang/Documents/fastgpt/docker-compose
+curl -L https://github.com/docker/compose/releases/download/v2.27.1/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose
+
+执行docker-compose up -d报：
+Error response from daemon: driver failed programming external connectivity on endpoint mysql (3d5c65a99ea2527cf785ec6bc0f503bf0a027168582eab0d445dc232e2fb2c71): Bind for 0.0.0.0:3306 failed: port is already allocated
+
+反复重启docker服务后解决
+

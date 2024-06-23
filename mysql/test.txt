@@ -1,0 +1,145 @@
+DROP TABLE test;
+
+CREATE TABLE test (
+	id INT(11) NOT NULL,
+	aaa VARCHAR(20) NOT NULL,
+	bbb INT(10) NOT NULL,
+	PRIMARY KEY (id),
+	KEY idx_bbb(bbb) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE INDEX idx_bbb ON test(bbb);
+ALTER TABLE idx_bbb ADD INDEX test(bbb);
+ALTER TABLE test ADD CONSTRAINT unq_bbb UNIQUE(`bbb`);
+ALTER TABLE test DROP INDEX unq_bbb;
+
+DELETE FROM test;
+INSERT INTO test VALUES(1, 'aaa1', 15);
+INSERT INTO test VALUES(2, 'aaa2', 5);
+INSERT INTO test VALUES(3, 'aaa3', 32);
+INSERT INTO test VALUES(4, 'aaa4', 56);
+INSERT INTO test VALUES(5, 'aaa5', 87);
+INSERT INTO test VALUES(6, 'aaa6', 2);
+INSERT INTO test VALUES(7, 'aaa7', 7);
+INSERT INTO test VALUES(8, 'aaa8', 12);
+INSERT INTO test VALUES(9, 'aaa9', 9);
+INSERT INTO test VALUES(10, 'aaa0', 21);
+SELECT * FROM test ORDER BY bbb;
+
+
+INSERT INTO test VALUES(12, 'aaa12', 32);
+INSERT INTO test VALUES(11, 'aaa11', 9);
+
+INSERT INTO test VALUES(11, 'aaa11', 12);
+INSERT INTO test VALUES(12, 'aaa12', 21);
+INSERT INTO test VALUES(13, 'aaa13', 12);
+
+INSERT INTO test VALUES(14, 'aaa14', 20);
+INSERT INTO test VALUES(15, 'aaa15', 13);
+
+INSERT INTO test VALUES(12, 'aaa12', 20);
+INSERT INTO test VALUES(13, 'aaa13', 14);
+
+
+2, 5, 7, 9, 12, 15, 21, 32, 56, 87
+
+
+UPDATE test SET aaa=CONCAT(aaa, '_www') WHERE id=9;
+UPDATE test SET aaa=CONCAT(aaa, '_www') WHERE id=3;
+
+UPDATE test SET aaa=CONCAT(aaa, '_www') WHERE id=8;
+UPDATE test SET aaa=CONCAT(aaa, '_www') WHERE id=10;
+
+UPDATE test SET aaa=CONCAT(aaa, '_www') WHERE bbb=12;
+UPDATE test SET aaa=CONCAT(aaa, '_www') WHERE bbb=21;
+
+UPDATE test SET aaa=CONCAT(aaa, '_www') WHERE bbb=15;
+UPDATE test SET aaa=CONCAT(aaa, '_www') WHERE bbb=21;
+========================================================
+CREATE TABLE uest (
+	id INT(11) NOT NULL,
+	ccc VARCHAR(20) NOT NULL,
+	ddd INT(10) NOT NULL,
+	PRIMARY KEY (id),
+	KEY idx_ddd(ddd) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE INDEX idx_ccc ON uest(ccc);
+DROP INDEX idx_ccc ON uest;
+
+INSERT INTO uest VALUES(1, 'abcd', 15);
+INSERT INTO uest VALUES(2, 'bcde', 5);
+INSERT INTO uest VALUES(3, 'cdef', 32);
+INSERT INTO uest VALUES(4, 'defg', 56);
+INSERT INTO uest VALUES(5, 'efgh', 87);
+INSERT INTO uest VALUES(6, 'fghi', 2);
+INSERT INTO uest VALUES(7, 'ghij', 7);
+INSERT INTO uest VALUES(8, 'hijk', 12);
+INSERT INTO uest VALUES(9, 'abcdef', 9);
+INSERT INTO uest VALUES(10, 'bcdefg', 21);
+INSERT INTO uest VALUES(11, 'cdefgh', 67);
+INSERT INTO uest VALUES(12, 'abefgh', 41);
+INSERT INTO uest VALUES(13, 'aefghi', 37);
+INSERT INTO uest VALUES(14, 'abcfgh', 13);
+INSERT INTO uest VALUES(15, 'cdeghes', 52);
+INSERT INTO uest VALUES(16, 'cdghasdf', 18);
+INSERT INTO uest VALUES(17, 'poijjs', 38);
+INSERT INTO uest VALUES(18, 'lkjhhd', 25);
+INSERT INTO uest VALUES(19, 'csadfdsafads', 4);
+INSERT INTO uest VALUES(20, 'dwqfwqfwq', 76);
+
+CREATE TABLE zelation (
+	id INT(11) NOT NULL AUTO_INCREMENT,
+	test_id INT(11) NOT NULL,
+	uest_id INT(11) NOT NULL,
+	PRIMARY KEY (id),
+	KEY idx_ids(test_id, uest_id) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+INSERT INTO zelation(test_id, uest_id) VALUES(6, 13);
+INSERT INTO zelation(test_id, uest_id) VALUES(7, 1);
+INSERT INTO zelation(test_id, uest_id) VALUES(3, 2);
+INSERT INTO zelation(test_id, uest_id) VALUES(9, 17);
+INSERT INTO zelation(test_id, uest_id) VALUES(10, 11);
+INSERT INTO zelation(test_id, uest_id) VALUES(4, 9);
+INSERT INTO zelation(test_id, uest_id) VALUES(1, 5);
+INSERT INTO zelation(test_id, uest_id) VALUES(6, 12);
+INSERT INTO zelation(test_id, uest_id) VALUES(2, 7);
+INSERT INTO zelation(test_id, uest_id) VALUES(7, 20);
+INSERT INTO zelation(test_id, uest_id) VALUES(5, 14);
+INSERT INTO zelation(test_id, uest_id) VALUES(8, 16);
+INSERT INTO zelation(test_id, uest_id) VALUES(4, 6);
+
+
+EXPLAIN 
+SELECT u.ddd FROM uest u INNER JOIN zelation r ON u.id=r.uest_id INNER JOIN test t ON r.test_id=t.id WHERE u.ccc='asdfasd';
+
+EXPLAIN 
+SELECT u.* FROM uest u INNER JOIN zelation r ON u.id=r.uest_id INNER JOIN test t ON r.test_id=t.id WHERE u.ccc='asdfasd';
+
+EXPLAIN 
+SELECT u.ddd FROM uest u INNER JOIN zelation r ON u.id=r.uest_id INNER JOIN test t ON r.test_id=t.id WHERE u.ddd=5;
+
+EXPLAIN 
+SELECT u.* FROM uest u INNER JOIN zelation r ON u.id=r.uest_id INNER JOIN test t ON r.test_id=t.id WHERE u.ddd=5;
+
+EXPLAIN 
+SELECT u.ddd FROM uest u INNER JOIN zelation r ON u.id=r.uest_id INNER JOIN test t ON r.test_id=t.id WHERE u.ddd BETWEEN 5 AND 23;
+
+EXPLAIN 
+SELECT u.* FROM uest u INNER JOIN zelation r ON u.id=r.uest_id INNER JOIN test t ON r.test_id=t.id WHERE u.ddd BETWEEN 5 AND 23;
+
+EXPLAIN 
+SELECT u.* FROM (SELECT id,ddd FROM uest WHERE ddd BETWEEN 5 AND 23) u INNER JOIN zelation r ON u.id=r.uest_id INNER JOIN test t ON r.test_id=t.id;
+
+EXPLAIN
+SELECT u.* FROM (SELECT * FROM uest WHERE ddd BETWEEN 5 AND 23) u INNER JOIN zelation r ON u.id=r.uest_id INNER JOIN test t ON r.test_id=t.id;
+
+EXPLAIN 
+SELECT u.ddd FROM uest u WHERE EXISTS(SELECT * FROM zelation r WHERE u.id=r.uest_id AND EXISTS(SELECT * FROM test t WHERE r.test_id=t.id)) AND u.ddd BETWEEN 5 AND 23;
+
+EXPLAIN
+SELECT u.ddd FROM uest u WHERE u.id IN (SELECT r.uest_id FROM zelation r WHERE r.test_id IN (SELECT t.id FROM test t)) AND u.ddd BETWEEN 5 AND 23;
+
+
+

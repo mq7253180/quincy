@@ -1,3 +1,10 @@
+make时报zmalloc.h:50:31: fatal error: jemalloc/jemalloc.h: No such file or directory
+yum install jemalloc-devel
+
+libhiredis.a: No such file or directory
+yum install hiredis-devel
+
+---------------------------------
 分片: 
 
 yum install ruby
