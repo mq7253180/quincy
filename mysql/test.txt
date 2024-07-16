@@ -89,28 +89,31 @@ INSERT INTO uest VALUES(18, 'lkjhhd', 25);
 INSERT INTO uest VALUES(19, 'csadfdsafads', 4);
 INSERT INTO uest VALUES(20, 'dwqfwqfwq', 76);
 
+DROP TABLE zelation;
 CREATE TABLE zelation (
 	id INT(11) NOT NULL AUTO_INCREMENT,
 	test_id INT(11) NOT NULL,
 	uest_id INT(11) NOT NULL,
+	ggg INT(11) NOT NULL,
 	PRIMARY KEY (id),
-	KEY idx_ids(test_id, uest_id) USING BTREE
+	KEY idx_ids(test_id, uest_id) USING BTREE,
+	KEY idx_ggg(ggg) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 DELETE FROM zelation;
-INSERT INTO zelation(test_id, uest_id) VALUES(6, 13);
-INSERT INTO zelation(test_id, uest_id) VALUES(7, 1);
-INSERT INTO zelation(test_id, uest_id) VALUES(3, 2);
-INSERT INTO zelation(test_id, uest_id) VALUES(9, 17);
-INSERT INTO zelation(test_id, uest_id) VALUES(10, 11);
-INSERT INTO zelation(test_id, uest_id) VALUES(4, 9);
-INSERT INTO zelation(test_id, uest_id) VALUES(1, 5);
-INSERT INTO zelation(test_id, uest_id) VALUES(6, 12);
-INSERT INTO zelation(test_id, uest_id) VALUES(2, 7);
-INSERT INTO zelation(test_id, uest_id) VALUES(7, 20);
-INSERT INTO zelation(test_id, uest_id) VALUES(5, 14);
-INSERT INTO zelation(test_id, uest_id) VALUES(8, 16);
-INSERT INTO zelation(test_id, uest_id) VALUES(4, 6);
+INSERT INTO zelation(test_id, uest_id, ggg) VALUES(6, 13, 4);
+INSERT INTO zelation(test_id, uest_id, ggg) VALUES(7, 1, 7);
+INSERT INTO zelation(test_id, uest_id, ggg) VALUES(3, 2, 12);
+INSERT INTO zelation(test_id, uest_id, ggg) VALUES(9, 17, 54);
+INSERT INTO zelation(test_id, uest_id, ggg) VALUES(10, 11, 9);
+INSERT INTO zelation(test_id, uest_id, ggg) VALUES(4, 9, 5);
+INSERT INTO zelation(test_id, uest_id, ggg) VALUES(1, 5, 6);
+INSERT INTO zelation(test_id, uest_id, ggg) VALUES(6, 12, 8);
+INSERT INTO zelation(test_id, uest_id, ggg) VALUES(2, 7, 21);
+INSERT INTO zelation(test_id, uest_id, ggg) VALUES(7, 20, 31);
+INSERT INTO zelation(test_id, uest_id, ggg) VALUES(5, 14, 75);
+INSERT INTO zelation(test_id, uest_id, ggg) VALUES(8, 16, 45);
+INSERT INTO zelation(test_id, uest_id, ggg) VALUES(4, 6, 92);
 
 DROP TABLE sub_test;
 CREATE TABLE sub_test (
@@ -419,6 +422,35 @@ EXPLAIN SELECT s.* FROM test t INNER JOIN sub_test s ON t.id=s.test_id WHERE s.f
 |  1 | SIMPLE      | s     | NULL       | range  | idx_test      | idx_test | 4       | NULL             |    2 |   100.00 | Using index condition |
 |  1 | SIMPLE      | t     | NULL       | eq_ref | PRIMARY       | PRIMARY  | 4       | ducati.s.test_id |    1 |   100.00 | Using index           |
 +----+-------------+-------+------------+--------+---------------+----------+---------+------------------+------+----------+-----------------------+
+
+
+EXPLAIN SELECT * FROM sub_test WHERE fff<5;
++----+-------------+----------+------------+-------+---------------+----------+---------+------+------+----------+-----------------------+
+| id | select_type | table    | partitions | type  | possible_keys | key      | key_len | ref  | rows | filtered | Extra                 |
++----+-------------+----------+------------+-------+---------------+----------+---------+------+------+----------+-----------------------+
+|  1 | SIMPLE      | sub_test | NULL       | range | idx_test      | idx_test | 4       | NULL |    1 |   100.00 | Using index condition |
++----+-------------+----------+------------+-------+---------------+----------+---------+------+------+----------+-----------------------+
+
+EXPLAIN SELECT * FROM sub_test WHERE fff<100;
++----+-------------+----------+------------+------+---------------+------+---------+------+------+----------+-------------+
+| id | select_type | table    | partitions | type | possible_keys | key  | key_len | ref  | rows | filtered | Extra       |
++----+-------------+----------+------------+------+---------------+------+---------+------+------+----------+-------------+
+|  1 | SIMPLE      | sub_test | NULL       | ALL  | idx_test      | NULL | NULL    | NULL |    7 |   100.00 | Using where |
++----+-------------+----------+------------+------+---------------+------+---------+------+------+----------+-------------+
+
+EXPLAIN SELECT id,fff FROM sub_test WHERE fff<100;
++----+-------------+----------+------------+-------+---------------+----------+---------+------+------+----------+--------------------------+
+| id | select_type | table    | partitions | type  | possible_keys | key      | key_len | ref  | rows | filtered | Extra                    |
++----+-------------+----------+------------+-------+---------------+----------+---------+------+------+----------+--------------------------+
+|  1 | SIMPLE      | sub_test | NULL       | index | idx_test      | idx_test | 8       | NULL |    7 |   100.00 | Using where; Using index |
++----+-------------+----------+------------+-------+---------------+----------+---------+------+------+----------+--------------------------+
+
+EXPLAIN SELECT id,fff FROM sub_test WHERE fff<5;
++----+-------------+----------+------------+-------+---------------+----------+---------+------+------+----------+--------------------------+
+| id | select_type | table    | partitions | type  | possible_keys | key      | key_len | ref  | rows | filtered | Extra                    |
++----+-------------+----------+------------+-------+---------------+----------+---------+------+------+----------+--------------------------+
+|  1 | SIMPLE      | sub_test | NULL       | range | idx_test      | idx_test | 4       | NULL |    1 |   100.00 | Using where; Using index |
++----+-------------+----------+------------+-------+---------------+----------+---------+------+------+----------+--------------------------+
 
 
 
