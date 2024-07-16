@@ -67,6 +67,7 @@ CREATE TABLE uest (
 CREATE INDEX idx_ccc ON uest(ccc);
 DROP INDEX idx_ccc ON uest;
 
+DELETE FROM uest;
 INSERT INTO uest VALUES(1, 'abcd', 15);
 INSERT INTO uest VALUES(2, 'bcde', 5);
 INSERT INTO uest VALUES(3, 'cdef', 32);
@@ -96,6 +97,7 @@ CREATE TABLE zelation (
 	KEY idx_ids(test_id, uest_id) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+DELETE FROM zelation;
 INSERT INTO zelation(test_id, uest_id) VALUES(6, 13);
 INSERT INTO zelation(test_id, uest_id) VALUES(7, 1);
 INSERT INTO zelation(test_id, uest_id) VALUES(3, 2);
@@ -124,6 +126,7 @@ CREATE TABLE sub_test (
 ALTER TABLE sub_test ADD CONSTRAINT unq_eee UNIQUE (`eee`);
 ALTER TABLE sub_test ADD INDEX idx_test(test_id,fff);
 
+DELETE FROM sub_test;
 INSERT INTO sub_test VALUES(1, 6, 'abcd', 15);
 INSERT INTO sub_test VALUES(2, 2, 'bcde', 5);
 INSERT INTO sub_test VALUES(3, 5, 'cdef', 32);
@@ -178,6 +181,27 @@ SELECT u.* FROM uest u INNER JOIN zelation r ON u.id=r.uest_id INNER JOIN test t
 |  1 | SIMPLE      | r     | NULL       | index  | idx_ids         | idx_ids | 8       | NULL             |   13 |    10.00 | Using where; Using index; Using join buffer (Block Nested Loop) |
 |  1 | SIMPLE      | t     | NULL       | eq_ref | PRIMARY         | PRIMARY | 4       | ducati.r.test_id |    1 |   100.00 | Using index                                                     |
 +----+-------------+-------+------------+--------+-----------------+---------+---------+------------------+------+----------+-----------------------------------------------------------------+
+
+EXPLAIN
+SELECT u.ddd FROM uest u INNER JOIN zelation r ON u.id=r.uest_id INNER JOIN test t ON r.test_id=t.id WHERE u.ddd>5;
++----+-------------+-------+------------+--------+-----------------+---------+---------+------------------+------+----------+-------------+
+| id | select_type | table | partitions | type   | possible_keys   | key     | key_len | ref              | rows | filtered | Extra       |
++----+-------------+-------+------------+--------+-----------------+---------+---------+------------------+------+----------+-------------+
+|  1 | SIMPLE      | t     | NULL       | index  | PRIMARY         | idx_bbb | 4       | NULL             |   10 |   100.00 | Using index |
+|  1 | SIMPLE      | r     | NULL       | ref    | idx_ids         | idx_ids | 4       | ducati.t.id      |    1 |   100.00 | Using index |
+|  1 | SIMPLE      | u     | NULL       | eq_ref | PRIMARY,idx_ddd | PRIMARY | 4       | ducati.r.uest_id |    1 |    85.00 | Using where |
++----+-------------+-------+------------+--------+-----------------+---------+---------+------------------+------+----------+-------------+
+
+EXPLAIN
+SELECT u.* FROM uest u INNER JOIN zelation r ON u.id=r.uest_id INNER JOIN test t ON r.test_id=t.id WHERE u.ddd>5;
++----+-------------+-------+------------+--------+-----------------+---------+---------+------------------+------+----------+-------------+
+| id | select_type | table | partitions | type   | possible_keys   | key     | key_len | ref              | rows | filtered | Extra       |
++----+-------------+-------+------------+--------+-----------------+---------+---------+------------------+------+----------+-------------+
+|  1 | SIMPLE      | t     | NULL       | index  | PRIMARY         | idx_bbb | 4       | NULL             |   10 |   100.00 | Using index |
+|  1 | SIMPLE      | r     | NULL       | ref    | idx_ids         | idx_ids | 4       | ducati.t.id      |    1 |   100.00 | Using index |
+|  1 | SIMPLE      | u     | NULL       | eq_ref | PRIMARY,idx_ddd | PRIMARY | 4       | ducati.r.uest_id |    1 |    85.00 | Using where |
++----+-------------+-------+------------+--------+-----------------+---------+---------+------------------+------+----------+-------------+
+
 
 EXPLAIN 
 SELECT u.ddd FROM uest u INNER JOIN zelation r ON u.id=r.uest_id INNER JOIN test t ON r.test_id=t.id WHERE u.ddd BETWEEN 5 AND 23;
@@ -268,6 +292,25 @@ fff,test_id联合
 +----+-------------+-------+------------+--------+---------------+----------+---------+------------------+------+----------+--------------------------+
 
 EXPLAIN
+SELECT s.id,s.fff FROM test t INNER JOIN sub_test s ON t.id=s.test_id;
+主票数据多
++----+-------------+-------+------------+-------+---------------+----------+---------+-------------+------+----------+-------------+
+| id | select_type | table | partitions | type  | possible_keys | key      | key_len | ref         | rows | filtered | Extra       |
++----+-------------+-------+------------+-------+---------------+----------+---------+-------------+------+----------+-------------+
+|  1 | SIMPLE      | t     | NULL       | index | PRIMARY       | idx_bbb  | 4       | NULL        |   10 |   100.00 | Using index |
+|  1 | SIMPLE      | s     | NULL       | ref   | idx_test      | idx_test | 4       | ducati.t.id |    1 |   100.00 | NULL        |
++----+-------------+-------+------------+-------+---------------+----------+---------+-------------+------+----------+-------------+
+
+子表数据多
++----+-------------+-------+------------+--------+---------------+---------+---------+------------------+------+----------+-------------+
+| id | select_type | table | partitions | type   | possible_keys | key     | key_len | ref              | rows | filtered | Extra       |
++----+-------------+-------+------------+--------+---------------+---------+---------+------------------+------+----------+-------------+
+|  1 | SIMPLE      | s     | NULL       | ALL    | idx_test      | NULL    | NULL    | NULL             |    3 |   100.00 | NULL        |
+|  1 | SIMPLE      | t     | NULL       | eq_ref | PRIMARY       | PRIMARY | 4       | ducati.s.test_id |    1 |   100.00 | Using index |
++----+-------------+-------+------------+--------+---------------+---------+---------+------------------+------+----------+-------------+
+
+
+EXPLAIN
 SELECT s.id,s.fff FROM test t INNER JOIN sub_test s ON t.id=s.test_id WHERE s.fff=13;
 
 fff,test_id
@@ -352,6 +395,30 @@ EXPLAIN SELECT id,fff FROM sub_test WHERE eee='abcd';
 +----+-------------+----------+------------+-------+---------------+---------+---------+-------+------+----------+-------+
 |  1 | SIMPLE      | sub_test | NULL       | const | unq_eee       | unq_eee | 62      | const |    1 |   100.00 | NULL  |
 +----+-------------+----------+------------+-------+---------------+---------+---------+-------+------+----------+-------+
+
+EXPLAIN SELECT s.* FROM test t INNER JOIN sub_test s ON t.id=s.test_id;
++----+-------------+-------+------------+-------+---------------+----------+---------+-------------+------+----------+-------------+
+| id | select_type | table | partitions | type  | possible_keys | key      | key_len | ref         | rows | filtered | Extra       |
++----+-------------+-------+------------+-------+---------------+----------+---------+-------------+------+----------+-------------+
+|  1 | SIMPLE      | t     | NULL       | index | PRIMARY       | idx_bbb  | 4       | NULL        |   10 |   100.00 | Using index |
+|  1 | SIMPLE      | s     | NULL       | ref   | idx_test      | idx_test | 4       | ducati.t.id |    2 |   100.00 | NULL        |
++----+-------------+-------+------------+-------+---------------+----------+---------+-------------+------+----------+-------------+
+
+EXPLAIN SELECT t.* FROM test t INNER JOIN sub_test s ON t.id=s.test_id;
++----+-------------+-------+------------+------+---------------+----------+---------+-------------+------+----------+-------------+
+| id | select_type | table | partitions | type | possible_keys | key      | key_len | ref         | rows | filtered | Extra       |
++----+-------------+-------+------------+------+---------------+----------+---------+-------------+------+----------+-------------+
+|  1 | SIMPLE      | t     | NULL       | ALL  | PRIMARY       | NULL     | NULL    | NULL        |   10 |   100.00 | NULL        |
+|  1 | SIMPLE      | s     | NULL       | ref  | idx_test      | idx_test | 4       | ducati.t.id |    2 |   100.00 | Using index |
++----+-------------+-------+------------+------+---------------+----------+---------+-------------+------+----------+-------------+
+
+EXPLAIN SELECT s.* FROM test t INNER JOIN sub_test s ON t.id=s.test_id WHERE s.fff<6;
++----+-------------+-------+------------+--------+---------------+----------+---------+------------------+------+----------+-----------------------+
+| id | select_type | table | partitions | type   | possible_keys | key      | key_len | ref              | rows | filtered | Extra                 |
++----+-------------+-------+------------+--------+---------------+----------+---------+------------------+------+----------+-----------------------+
+|  1 | SIMPLE      | s     | NULL       | range  | idx_test      | idx_test | 4       | NULL             |    2 |   100.00 | Using index condition |
+|  1 | SIMPLE      | t     | NULL       | eq_ref | PRIMARY       | PRIMARY  | 4       | ducati.s.test_id |    1 |   100.00 | Using index           |
++----+-------------+-------+------------+--------+---------------+----------+---------+------------------+------+----------+-----------------------+
 
 
 
