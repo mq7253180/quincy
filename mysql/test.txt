@@ -114,6 +114,9 @@ INSERT INTO zelation(test_id, uest_id, ggg) VALUES(7, 20, 31);
 INSERT INTO zelation(test_id, uest_id, ggg) VALUES(5, 14, 75);
 INSERT INTO zelation(test_id, uest_id, ggg) VALUES(8, 16, 45);
 INSERT INTO zelation(test_id, uest_id, ggg) VALUES(4, 6, 92);
+INSERT INTO zelation VALUES(19, 4, 6, 92);
+
+SELECT AUTO_INCREMENT FROM information_schema.TABLES WHERE table_schema='ducati' AND table_name='zelation';
 
 DROP TABLE sub_test;
 CREATE TABLE sub_test (
@@ -129,6 +132,9 @@ CREATE TABLE sub_test (
 ALTER TABLE sub_test ADD CONSTRAINT unq_eee UNIQUE (`eee`);
 ALTER TABLE sub_test ADD INDEX idx_test(test_id,fff);
 
+
+DELETE FROM s_updation;
+DELETE FROM s_updation_field;
 DELETE FROM sub_test;
 INSERT INTO sub_test VALUES(1, 6, 'abcd', 15);
 INSERT INTO sub_test VALUES(2, 2, 'bcde', 5);
@@ -143,13 +149,21 @@ INSERT INTO sub_test VALUES(10, 9, 'bcdefg', 21);
 INSERT INTO sub_test VALUES(11, 2, 'cdefgh', 67);
 INSERT INTO sub_test VALUES(12, 7, 'abefgh', 41);
 INSERT INTO sub_test VALUES(13, 4, 'aefghi', 37);
-INSERT INTO sub_test VALUES(14, 3, 'abcfgh', 13);
+INSERT INTO sub_test VALUES(14, 3, 'abcfgh', 21);
 INSERT INTO sub_test VALUES(15, 4, 'cdeghes', 52);
 INSERT INTO sub_test VALUES(16, 7, 'cdghasdf', 18);
-INSERT INTO sub_test VALUES(17, 5, 'poijjs', 38);
+INSERT INTO sub_test VALUES(17, 5, 'poijjs', 21);
 INSERT INTO sub_test VALUES(18, 6, 'lkjhhd', 25);
 INSERT INTO sub_test VALUES(19, 2, 'csadfdsafads', 4);
 INSERT INTO sub_test VALUES(20, 1, 'dwqfwqfwq', 76);
+SELECT * FROM sub_test;
+SELECT * FROM s_updation;
+SELECT * FROM s_updation_field;
+
+SELECT u.data_id,f.name,f.old_value,f.new_value,u.id,u.creation_time FROM s_updation_field f LEFT OUTER JOIN s_updation u ON f.p_id=u.id WHERE u.table_name='sub_test' AND u.creation_time BETWEEN '2024-07-24 15:30:00' AND '2024-07-24 16:30:00' ORDER BY u.creation_time DESC,u.data_id;
+
+
+UPDATE test t INNER JOIN sub_test s ON t.id=s.test_id SET t.aaa='www',s.eee='xxx' WHERE s.fff=21;
 
 
 EXPLAIN 

@@ -176,6 +176,9 @@ D:\env\mysql\mysql-5.7.22-winx64\bin\mysqldump -h10.50.1.14 -P3306 -upgw –p78D
 
 创建数据库：
 CREATE DATABASE IF NOT EXISTS yjglb_model_city DEFAULT CHARACTER SET utf8 DEFAULT COLLATE utf8_general_ci;
+
+查询一张表的下一个自增值
+SELECT AUTO_INCREMENT FROM information_schema.TABLES WHERE table_schema='ducati' AND table_name='zelation';
 ------------------------------------binlog---------------------------------------
 查看是否开启binlog: 
 show variables like '%log_bin%';
