@@ -304,8 +304,8 @@ INSERT INTO `s_permission` VALUES (18, 'creditMarginUpdate', '更改保证金');
 INSERT INTO `s_permission` VALUES (19, 'creditMarginAudit', '审核保证金');
 INSERT INTO `s_permission` VALUES (20, 'creditMarginDelete', '删除保证金');
 
-DROP TABLE IF EXISTS `s_role_permission_rel`;
-CREATE TABLE `s_role_permission_rel` (
+DROP TABLE IF EXISTS `s_permission_role_rel`;
+CREATE TABLE `s_permission_role_rel` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `role_id` int(11) NOT NULL COMMENT '角色id',
   `permission_id` int(11) NOT NULL COMMENT '权限id',
@@ -315,23 +315,23 @@ CREATE TABLE `s_role_permission_rel` (
   KEY `idx_role_id` (`role_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=40 DEFAULT CHARSET=utf8;
 
-INSERT INTO `s_role_permission_rel` VALUES (22, 0, 1);
-INSERT INTO `s_role_permission_rel` VALUES (27, 14, 1);
-INSERT INTO `s_role_permission_rel` VALUES (23, 0, 2);
-INSERT INTO `s_role_permission_rel` VALUES (24, 0, 3);
-INSERT INTO `s_role_permission_rel` VALUES (25, 0, 4);
-INSERT INTO `s_role_permission_rel` VALUES (26, 0, 5);
-INSERT INTO `s_role_permission_rel` VALUES (28, 0, 11);
-INSERT INTO `s_role_permission_rel` VALUES (32, 14, 11);
-INSERT INTO `s_role_permission_rel` VALUES (29, 0, 12);
-INSERT INTO `s_role_permission_rel` VALUES (30, 0, 13);
-INSERT INTO `s_role_permission_rel` VALUES (31, 0, 14);
-INSERT INTO `s_role_permission_rel` VALUES (33, 0, 15);
-INSERT INTO `s_role_permission_rel` VALUES (34, 0, 16);
-INSERT INTO `s_role_permission_rel` VALUES (35, 0, 17);
-INSERT INTO `s_role_permission_rel` VALUES (36, 0, 18);
-INSERT INTO `s_role_permission_rel` VALUES (37, 0, 19);
-INSERT INTO `s_role_permission_rel` VALUES (39, 0, 20);
+INSERT INTO `s_permission_role_rel` VALUES (22, 0, 1);
+INSERT INTO `s_permission_role_rel` VALUES (27, 14, 1);
+INSERT INTO `s_permission_role_rel` VALUES (23, 0, 2);
+INSERT INTO `s_permission_role_rel` VALUES (24, 0, 3);
+INSERT INTO `s_permission_role_rel` VALUES (25, 0, 4);
+INSERT INTO `s_permission_role_rel` VALUES (26, 0, 5);
+INSERT INTO `s_permission_role_rel` VALUES (28, 0, 11);
+INSERT INTO `s_permission_role_rel` VALUES (32, 14, 11);
+INSERT INTO `s_permission_role_rel` VALUES (29, 0, 12);
+INSERT INTO `s_permission_role_rel` VALUES (30, 0, 13);
+INSERT INTO `s_permission_role_rel` VALUES (31, 0, 14);
+INSERT INTO `s_permission_role_rel` VALUES (33, 0, 15);
+INSERT INTO `s_permission_role_rel` VALUES (34, 0, 16);
+INSERT INTO `s_permission_role_rel` VALUES (35, 0, 17);
+INSERT INTO `s_permission_role_rel` VALUES (36, 0, 18);
+INSERT INTO `s_permission_role_rel` VALUES (37, 0, 19);
+INSERT INTO `s_permission_role_rel` VALUES (39, 0, 20);
 
 DROP TABLE IF EXISTS `s_menu`;
 CREATE TABLE `s_menu` (
@@ -424,6 +424,25 @@ CREATE TABLE `s_role_user_rel` (
 
 INSERT INTO `s_role_user_rel` VALUES (12, 0, 0);
 INSERT INTO `s_role_user_rel` VALUES (13, 14, 5);
+
+CREATE TABLE s_updation (
+	id INT(11) NOT NULL AUTO_INCREMENT,
+	table_name VARCHAR(50) NOT NULL,
+	data_id VARCHAR(50) NOT NULL,
+	creation_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	PRIMARY KEY (id),
+	KEY idx_xxx(creation_time, table_name, id) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE s_updation_field (
+	id INT(11) NOT NULL AUTO_INCREMENT,
+	p_id INT(11) NOT NULL,
+	name VARCHAR(50) NOT NULL,
+	old_value VARCHAR(100),
+	new_value VARCHAR(100) NOT NULL,
+	PRIMARY KEY (id),
+	KEY idx_xxx(p_id, name) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS s_oauth2_code;
 CREATE TABLE s_oauth2_code (
