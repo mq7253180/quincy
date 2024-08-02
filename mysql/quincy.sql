@@ -434,6 +434,27 @@ CREATE TABLE s_updation (
 	KEY idx_xxx(creation_time, table_name, id) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+DROP TABLE s_updation;
+CREATE TABLE s_updation (
+	id INT(11) NOT NULL AUTO_INCREMENT,
+	sql_statement VARCHAR(500) NOT NULL,
+	params VARCHAR(100) NOT NULL,
+	creation_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	PRIMARY KEY (id),
+	KEY idx_creation_time(creation_time) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+DROP TABLE s_updation_table;
+CREATE TABLE s_updation_table (
+	id INT(11) NOT NULL AUTO_INCREMENT,
+	p_id INT(11) NOT NULL,
+	name VARCHAR(50) NOT NULL,
+	data_id VARCHAR(50) NOT NULL,
+	PRIMARY KEY (id),
+	KEY idx_xxx(name, p_id, data_id) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+DROP TABLE s_updation_field;
 CREATE TABLE s_updation_field (
 	id INT(11) NOT NULL AUTO_INCREMENT,
 	p_id INT(11) NOT NULL,
