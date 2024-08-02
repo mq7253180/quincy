@@ -425,15 +425,6 @@ CREATE TABLE `s_role_user_rel` (
 INSERT INTO `s_role_user_rel` VALUES (12, 0, 0);
 INSERT INTO `s_role_user_rel` VALUES (13, 14, 5);
 
-CREATE TABLE s_updation (
-	id INT(11) NOT NULL AUTO_INCREMENT,
-	table_name VARCHAR(50) NOT NULL,
-	data_id VARCHAR(50) NOT NULL,
-	creation_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-	PRIMARY KEY (id),
-	KEY idx_xxx(creation_time, table_name, id) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
 DROP TABLE s_updation;
 CREATE TABLE s_updation (
 	id INT(11) NOT NULL AUTO_INCREMENT,
@@ -444,14 +435,14 @@ CREATE TABLE s_updation (
 	KEY idx_creation_time(creation_time) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-DROP TABLE s_updation_table;
-CREATE TABLE s_updation_table (
+DROP TABLE s_updation_row;
+CREATE TABLE s_updation_row (
 	id INT(11) NOT NULL AUTO_INCREMENT,
 	p_id INT(11) NOT NULL,
-	name VARCHAR(50) NOT NULL,
+	table_name VARCHAR(50) NOT NULL,
 	data_id VARCHAR(50) NOT NULL,
 	PRIMARY KEY (id),
-	KEY idx_xxx(name, p_id, data_id) USING BTREE
+	KEY idx_xxx(table_name, p_id, data_id) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 DROP TABLE s_updation_field;

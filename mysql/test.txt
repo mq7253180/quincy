@@ -138,7 +138,7 @@ ALTER TABLE sub_test ADD INDEX idx_test(test_id,fff);
 
 
 DELETE FROM s_updation;
-DELETE FROM s_updation_table;
+DELETE FROM s_updation_row;
 DELETE FROM s_updation_field;
 DELETE FROM test;
 INSERT INTO test VALUES(1, 'aaa1', 15);
@@ -209,7 +209,7 @@ INSERT INTO sub_test VALUES(19, 2, 'csadfdsafads', 4);
 INSERT INTO sub_test VALUES(20, 1, 'dwqfwqfwq', 76);
 SELECT * FROM sub_test;
 SELECT * FROM s_updation;
-SELECT * FROM s_updation_table;
+SELECT * FROM s_updation_row;
 SELECT * FROM s_updation_field;
 
 SELECT u.data_id,f.name,f.old_value,f.new_value,u.id,u.creation_time FROM s_updation_field f LEFT OUTER JOIN s_updation u ON f.p_id=u.id WHERE u.table_name='sub_test' AND u.creation_time BETWEEN '2024-07-24 15:30:00' AND '2024-07-24 16:30:00' ORDER BY u.creation_time DESC,u.data_id;
