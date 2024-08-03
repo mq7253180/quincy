@@ -136,6 +136,17 @@ CREATE TABLE sub_test (
 ALTER TABLE sub_test ADD CONSTRAINT unq_eee UNIQUE (`eee`);
 ALTER TABLE sub_test ADD INDEX idx_test(test_id,fff);
 
+CREATE TABLE sub_test_test (
+	id INT(11) NOT NULL,
+	test_id INT(11) NOT NULL,
+	eee VARCHAR(20) NOT NULL,
+	fff INT(11) NOT NULL,
+	hhh DECIMAL(10, 4) NOT NULL,
+	creation_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	PRIMARY KEY (id),
+	KEY idx_pid(test_id) USING BTREE,
+	KEY idx_fff(fff) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 DELETE FROM s_updation;
 DELETE FROM s_updation_row;
@@ -211,6 +222,54 @@ SELECT * FROM sub_test;
 SELECT * FROM s_updation;
 SELECT * FROM s_updation_row;
 SELECT * FROM s_updation_field;
+
+
+DROP TABLE sub_test;
+CREATE TABLE sub_test (
+	id VARCHAR(32) NOT NULL,
+	test_id INT(11) NOT NULL,
+	eee VARCHAR(20) NOT NULL,
+	fff INT(10) NOT NULL,
+	PRIMARY KEY (id),
+	KEY idx_pid(test_id) USING BTREE,
+	KEY idx_fff(fff) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+DELETE FROM test;
+INSERT INTO test VALUES(1, 'aaa1', 15);
+INSERT INTO test VALUES(2, 'aaa2', 5);
+INSERT INTO test VALUES(3, 'aaa3', 32);
+INSERT INTO test VALUES(4, 'aaa4', 56);
+INSERT INTO test VALUES(5, 'aaa5', 87);
+INSERT INTO test VALUES(6, 'aaa6', 2);
+INSERT INTO test VALUES(7, 'aaa7', 7);
+INSERT INTO test VALUES(8, 'aaa8', 12);
+INSERT INTO test VALUES(9, 'aaa9', 9);
+INSERT INTO test VALUES(10, 'aaa0', 21);
+SELECT * FROM test ORDER BY bbb;
+DELETE FROM sub_test;
+INSERT INTO sub_test VALUES('a', 6, 'abcd', 15);
+INSERT INTO sub_test VALUES('b', 2, 'bcde', 5);
+INSERT INTO sub_test VALUES('c', 5, 'cdef', 21);
+INSERT INTO sub_test VALUES('d', 7, 'defg', 56);
+INSERT INTO sub_test VALUES('e', 1, 'efgh', 87);
+INSERT INTO sub_test VALUES('f', 10, 'fghi', 2);
+INSERT INTO sub_test VALUES('g', 3, 'ghij', 7);
+INSERT INTO sub_test VALUES('h', 9, 'hijk', 12);
+INSERT INTO sub_test VALUES('i', 6, 'abcdef', 9);
+INSERT INTO sub_test VALUES('j', 9, 'bcdefg', 21);
+INSERT INTO sub_test VALUES('k', 2, 'cdefgh', 67);
+INSERT INTO sub_test VALUES('l', 3, 'abefgh', 21);
+INSERT INTO sub_test VALUES('m', 4, 'aefghi', 37);
+INSERT INTO sub_test VALUES('n', 3, 'abcfgh', 21);
+INSERT INTO sub_test VALUES('o', 4, 'cdeghes', 52);
+INSERT INTO sub_test VALUES('p', 7, 'cdghasdf', 18);
+INSERT INTO sub_test VALUES('q', 5, 'poijjs', 21);
+INSERT INTO sub_test VALUES('r', 6, 'lkjhhd', 25);
+INSERT INTO sub_test VALUES('s', 2, 'csadfdsafads', 4);
+INSERT INTO sub_test VALUES('t', 1, 'dwqfwqfwq', 76);
+SELECT * FROM sub_test;
+
 
 SELECT u.data_id,f.name,f.old_value,f.new_value,u.id,u.creation_time FROM s_updation_field f LEFT OUTER JOIN s_updation u ON f.p_id=u.id WHERE u.table_name='sub_test' AND u.creation_time BETWEEN '2024-07-24 15:30:00' AND '2024-07-24 16:30:00' ORDER BY u.creation_time DESC,u.data_id;
 

@@ -440,9 +440,11 @@ CREATE TABLE s_updation_row (
 	id INT(11) NOT NULL AUTO_INCREMENT,
 	p_id INT(11) NOT NULL,
 	table_name VARCHAR(50) NOT NULL,
-	data_id VARCHAR(50) NOT NULL,
+	data_id_int INT(11),
+	data_id_str VARCHAR(50),
 	PRIMARY KEY (id),
-	KEY idx_xxx(table_name, p_id, data_id) USING BTREE
+	KEY idx_xxx(table_name, data_id_int, p_id) USING BTREE,
+	KEY idx_www(table_name, data_id_str, p_id) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 DROP TABLE s_updation_field;
@@ -450,8 +452,14 @@ CREATE TABLE s_updation_field (
 	id INT(11) NOT NULL AUTO_INCREMENT,
 	p_id INT(11) NOT NULL,
 	name VARCHAR(50) NOT NULL,
-	old_value VARCHAR(100),
-	new_value VARCHAR(100) NOT NULL,
+	old_value_str VARCHAR(100),
+	new_value_str VARCHAR(100),
+	old_value_int INT(11),
+	new_value_int INT(11),
+	old_value_decimal DECIMAL(10, 4),
+	new_value_decimal DECIMAL(10, 4),
+	old_value_time DATETIME,
+	new_value_time DATETIME,
 	PRIMARY KEY (id),
 	KEY idx_xxx(p_id, name) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
