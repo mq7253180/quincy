@@ -136,13 +136,14 @@ CREATE TABLE sub_test (
 ALTER TABLE sub_test ADD CONSTRAINT unq_eee UNIQUE (`eee`);
 ALTER TABLE sub_test ADD INDEX idx_test(test_id,fff);
 
+DROP TABLE sub_test_test;
 CREATE TABLE sub_test_test (
 	id INT(11) NOT NULL,
 	test_id INT(11) NOT NULL,
 	eee VARCHAR(20) NOT NULL,
 	fff INT(11) NOT NULL,
 	hhh DECIMAL(10, 4) NOT NULL,
-	creation_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	creation_time TIME,
 	PRIMARY KEY (id),
 	KEY idx_pid(test_id) USING BTREE,
 	KEY idx_fff(fff) USING BTREE
@@ -230,11 +231,18 @@ CREATE TABLE sub_test (
 	test_id INT(11) NOT NULL,
 	eee VARCHAR(20) NOT NULL,
 	fff INT(10) NOT NULL,
+	bbdd DECIMAL(10, 4),
+	ddd1 TIMESTAMP,
+	ddd2 DATETIME,
+	ddd3 DATE,
 	PRIMARY KEY (id),
 	KEY idx_pid(test_id) USING BTREE,
 	KEY idx_fff(fff) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+DELETE FROM s_updation;
+DELETE FROM s_updation_row;
+DELETE FROM s_updation_field;
 DELETE FROM test;
 INSERT INTO test VALUES(1, 'aaa1', 15);
 INSERT INTO test VALUES(2, 'aaa2', 5);
@@ -248,26 +256,26 @@ INSERT INTO test VALUES(9, 'aaa9', 9);
 INSERT INTO test VALUES(10, 'aaa0', 21);
 SELECT * FROM test ORDER BY bbb;
 DELETE FROM sub_test;
-INSERT INTO sub_test VALUES('a', 6, 'abcd', 15);
-INSERT INTO sub_test VALUES('b', 2, 'bcde', 5);
-INSERT INTO sub_test VALUES('c', 5, 'cdef', 21);
-INSERT INTO sub_test VALUES('d', 7, 'defg', 56);
-INSERT INTO sub_test VALUES('e', 1, 'efgh', 87);
-INSERT INTO sub_test VALUES('f', 10, 'fghi', 2);
-INSERT INTO sub_test VALUES('g', 3, 'ghij', 7);
-INSERT INTO sub_test VALUES('h', 9, 'hijk', 12);
-INSERT INTO sub_test VALUES('i', 6, 'abcdef', 9);
-INSERT INTO sub_test VALUES('j', 9, 'bcdefg', 21);
-INSERT INTO sub_test VALUES('k', 2, 'cdefgh', 67);
-INSERT INTO sub_test VALUES('l', 3, 'abefgh', 21);
-INSERT INTO sub_test VALUES('m', 4, 'aefghi', 37);
-INSERT INTO sub_test VALUES('n', 3, 'abcfgh', 21);
-INSERT INTO sub_test VALUES('o', 4, 'cdeghes', 52);
-INSERT INTO sub_test VALUES('p', 7, 'cdghasdf', 18);
-INSERT INTO sub_test VALUES('q', 5, 'poijjs', 21);
-INSERT INTO sub_test VALUES('r', 6, 'lkjhhd', 25);
-INSERT INTO sub_test VALUES('s', 2, 'csadfdsafads', 4);
-INSERT INTO sub_test VALUES('t', 1, 'dwqfwqfwq', 76);
+INSERT INTO sub_test VALUES('a', 6, 'abcd', 15, 3.1416, NOW(), NOW(), NOW());
+INSERT INTO sub_test VALUES('b', 2, 'bcde', 5, 3.1416, NOW(), NOW(), NOW());
+INSERT INTO sub_test VALUES('c', 5, 'cdef', 21, 3.1416, NOW(), NOW(), NOW());
+INSERT INTO sub_test VALUES('d', 7, 'defg', 56, 3.1416, NOW(), NOW(), NOW());
+INSERT INTO sub_test VALUES('e', 1, 'efgh', 87, 3.1416, NOW(), NOW(), NOW());
+INSERT INTO sub_test VALUES('f', 10, 'fghi', 2, 3.1416, NOW(), NOW(), NOW());
+INSERT INTO sub_test VALUES('g', 3, 'ghij', 7, 3.1416, NOW(), NOW(), NOW());
+INSERT INTO sub_test VALUES('h', 9, 'hijk', 12, 3.1416, NOW(), NOW(), NOW());
+INSERT INTO sub_test VALUES('i', 6, 'abcdef', 9, 3.1416, NOW(), NOW(), NOW());
+INSERT INTO sub_test VALUES('j', 9, 'bcdefg', 21, 3.1416, NOW(), NOW(), NOW());
+INSERT INTO sub_test VALUES('k', 2, 'cdefgh', 67, 3.1416, NOW(), NOW(), NOW());
+INSERT INTO sub_test VALUES('l', 3, 'abefgh', 21, 3.1416, NOW(), NOW(), NOW());
+INSERT INTO sub_test VALUES('m', 4, 'aefghi', 37, 3.1416, NOW(), NOW(), NOW());
+INSERT INTO sub_test VALUES('n', 3, 'abcfgh', 21, 3.1416, NOW(), NOW(), NOW());
+INSERT INTO sub_test VALUES('o', 4, 'cdeghes', 52, 3.1416, NOW(), NOW(), NOW());
+INSERT INTO sub_test VALUES('p', 7, 'cdghasdf', 18, 3.1416, NOW(), NOW(), NOW());
+INSERT INTO sub_test VALUES('q', 5, 'poijjs', 21, 3.1416, NOW(), NOW(), NOW());
+INSERT INTO sub_test VALUES('r', 6, 'lkjhhd', 25, 3.1416, NOW(), NOW(), NOW());
+INSERT INTO sub_test VALUES('s', 2, 'csadfdsafads', 4, 3.1416, NOW(), NOW(), NOW());
+INSERT INTO sub_test VALUES('t', 1, 'dwqfwqfwq', 76, 3.1416, NOW(), NOW(), NOW());
 SELECT * FROM sub_test;
 
 
