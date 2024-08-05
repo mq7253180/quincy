@@ -443,8 +443,10 @@ CREATE TABLE s_updation_row (
 	data_id_int INT(11),
 	data_id_str VARCHAR(50),
 	PRIMARY KEY (id),
-	KEY idx_xxx(table_name, data_id_int, p_id) USING BTREE,
-	KEY idx_www(table_name, data_id_str, p_id) USING BTREE
+	KEY idx_xxx(data_id_int, table_name, p_id) USING BTREE,
+	KEY idx_www(data_id_str, table_name, p_id) USING BTREE,
+	KEY idx_qqq(table_name, data_id_int, p_id) USING BTREE,
+	KEY idx_zzz(table_name, data_id_str, p_id) USING BTREE,
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 DROP TABLE s_updation_field;
