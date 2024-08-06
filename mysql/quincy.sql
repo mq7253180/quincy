@@ -466,6 +466,34 @@ CREATE TABLE s_updation_field (
 	KEY idx_xxx(p_id, name) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+
+DROP TABLE s_dynamic_field;
+CREATE TABLE s_dynamic_field (
+	id INT(11) NOT NULL AUTO_INCREMENT,
+	table_name VARCHAR(50) NOT NULL,
+	name VARCHAR(50) NOT NULL,
+	PRIMARY KEY (id),
+	KEY idx_table_name(table_name) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+DROP TABLE s_dynamic_field_val;
+CREATE TABLE s_dynamic_field_val (
+	id INT(11) NOT NULL AUTO_INCREMENT,
+	field_id INT(11) NOT NULL,
+	business_id_int INT(11),
+	business_id_str VARCHAR(50),
+	value_str VARCHAR(100),
+	value_int INT(11),
+	value_decimal DECIMAL(10, 4),
+	value_time DATETIME,
+	PRIMARY KEY (id),
+	KEY idx_xxx(business_id_int, field_id) USING BTREE,
+	KEY idx_xxx(business_id_str, field_id) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+
+
 DROP TABLE IF EXISTS s_oauth2_code;
 CREATE TABLE s_oauth2_code (
 	id INT(11) NOT NULL AUTO_INCREMENT,
