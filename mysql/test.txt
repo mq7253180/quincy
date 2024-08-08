@@ -292,28 +292,11 @@ INSERT INTO sub_test VALUES('s', 2, 'csadfdsafads', 4, 3.1416, NOW(), NOW(), NOW
 INSERT INTO sub_test VALUES('t', 1, 'dwqfwqfwq', 76, 3.1416, NOW(), NOW(), NOW());
 SELECT * FROM sub_test;
 
-DELETE FROM sub_test;
-INSERT INTO sub_test VALUES('a', 6, 'abcd', 15, 3.1416, NOW(), NOW(), NOW());
-INSERT INTO sub_test VALUES('b', 2, 'bcde', 5, 3.1416, NOW(), NOW(), NOW());
-INSERT INTO sub_test VALUES('c', NULL, 'cdef', 21, 3.1416, NOW(), NOW(), NOW());
-INSERT INTO sub_test VALUES('d', NULL, 'defg', 56, 3.1416, NOW(), NOW(), NOW());
-INSERT INTO sub_test VALUES('e', NULL, 'efgh', 13, 3.1416, NOW(), NOW(), NOW());
-INSERT INTO sub_test VALUES('f', NULL, 'fghi', 21, 3.1416, NOW(), NOW(), NOW());
-INSERT INTO sub_test VALUES('g', NULL, 'ghij', 7, 3.1416, NOW(), NOW(), NOW());
-INSERT INTO sub_test VALUES('h', NULL, 'hijk', 12, 3.1416, NOW(), NOW(), NOW());
-INSERT INTO sub_test VALUES('i', NULL, 'abcdef', 21, 3.1416, NOW(), NOW(), NOW());
-INSERT INTO sub_test VALUES('j', NULL, 'bcdefg', 21, 3.1416, NOW(), NOW(), NOW());
-INSERT INTO sub_test VALUES('k', NULL, 'cdefgh', 67, 3.1416, NOW(), NOW(), NOW());
-INSERT INTO sub_test VALUES('l', NULL, 'abefgh', 21, 3.1416, NOW(), NOW(), NOW());
-INSERT INTO sub_test VALUES('m', NULL, 'aefghi', 37, 3.1416, NOW(), NOW(), NOW());
-INSERT INTO sub_test VALUES('n', 3, 'abcfgh', 21, 3.1416, NOW(), NOW(), NOW());
-INSERT INTO sub_test VALUES('o', NULL, 'cdeghes', 52, 3.1416, NOW(), NOW(), NOW());
-INSERT INTO sub_test VALUES('p', NULL, 'cdghasdf', 18, 3.1416, NOW(), NOW(), NOW());
-INSERT INTO sub_test VALUES('q', NULL, 'poijjs', 21, 3.1416, NOW(), NOW(), NOW());
-INSERT INTO sub_test VALUES('r', NULL, 'lkjhhd', 25, 3.1416, NOW(), NOW(), NOW());
-INSERT INTO sub_test VALUES('s', NULL, 'csadfdsafads', 4, 3.1416, NOW(), NOW(), NOW());
-INSERT INTO sub_test VALUES('t', NULL, 'dwqfwqfwq', 21, 3.1416, NOW(), NOW(), NOW());
-SELECT * FROM sub_test;
+
+INSERT INTO sub_test VALUES('u', NULL, 'dwqfwqfwq', 57, 3.1416, NOW(), NOW(), NOW());
+UPDATE sub_test SET eee=CONCAT(eee, 'yyy') WHERE id='o';
+UPDATE sub_test SET eee=CONCAT(eee, 'yyy') WHERE id='l';
+
 
 
 SELECT u.data_id,f.name,f.old_value,f.new_value,u.id,u.creation_time FROM s_updation_field f LEFT OUTER JOIN s_updation u ON f.p_id=u.id WHERE u.table_name='sub_test' AND u.creation_time BETWEEN '2024-07-24 15:30:00' AND '2024-07-24 16:30:00' ORDER BY u.creation_time DESC,u.data_id;
@@ -610,6 +593,100 @@ EXPLAIN SELECT s.id,s.fff FROM test t INNER JOIN sub_test s ON t.id=s.test_id WH
 |  1 | SIMPLE      | t     | NULL       | ref  | PRIMARY,idx_bbb | idx_bbb | 4       | const             |    1 |   100.00 | Using index |
 |  1 | SIMPLE      | s     | NULL       | ref  | idx_xxx,idx_www | idx_xxx | 10      | const,ducati.t.id |    1 |   100.00 | Using index |
 +----+-------------+-------+------------+------+-----------------+---------+---------+-------------------+------+----------+-------------+
+
+
+EXPLAIN 
+SELECT s.id,s.eee,s.fff,f.id,f.name,f.sort,v.value_decimal 
+FROM (SELECT * FROM sub_test LIMIT 10 OFFSET 0) s 
+LEFT OUTER JOIN s_dynamic_field_val v ON s.id=v.business_id_str OR s.id=v.business_id_int 
+LEFT OUTER JOIN (SELECT * FROM s_dynamic_field WHERE table_name='sub_test' ORDER BY sort) f ON v.field_id=f.id;
++----+-------------+-----------------+------------+--------+------------------------+---------+---------+-------------------+------+----------+-------------------------------------------------+
+| id | select_type | table           | partitions | type   | possible_keys          | key     | key_len | ref               | rows | filtered | Extra                                           |
++----+-------------+-----------------+------------+--------+------------------------+---------+---------+-------------------+------+----------+-------------------------------------------------+
+|  1 | PRIMARY     | <derived2>      | NULL       | ALL    | NULL                   | NULL    | NULL    | NULL              |    5 |   100.00 | NULL                                            |
+|  1 | PRIMARY     | v               | NULL       | ALL    | idx_xxx,idx_www        | NULL    | NULL    | NULL              |   17 |   100.00 | Range checked for each record (index map: 0x18) |
+|  1 | PRIMARY     | s_dynamic_field | NULL       | eq_ref | PRIMARY,idx_table_name | PRIMARY | 4       | ducati.v.field_id |    1 |   100.00 | Using where                                     |
+|  2 | DERIVED     | sub_test        | NULL       | ref    | idx_xxx                | idx_xxx | 5       | const             |    5 |   100.00 | NULL                                            |
++----+-------------+-----------------+------------+--------+------------------------+---------+---------+-------------------+------+----------+-------------------------------------------------+
+
+EXPLAIN 
+SELECT s.id,s.eee,s.fff,s.id,f.id,f.name,v.value_decimal 
+FROM (SELECT * FROM sub_test LIMIT 10 OFFSET 0) s 
+INNER JOIN s_dynamic_field_val v ON s.id=v.business_id_str 
+INNER JOIN (SELECT * FROM s_dynamic_field ORDER BY sort) f ON v.field_id=f.id AND f.table_name='sub_test';
++----+-------------+-----------------+------------+------+-------------------------+----------------+---------+---------------------------+------+----------+-------------+
+| id | select_type | table           | partitions | type | possible_keys           | key            | key_len | ref                       | rows | filtered | Extra       |
++----+-------------+-----------------+------------+------+-------------------------+----------------+---------+---------------------------+------+----------+-------------+
+|  1 | PRIMARY     | s_dynamic_field | NULL       | ref  | PRIMARY,idx_table_name  | idx_table_name | 152     | const                     |    3 |   100.00 | Using index |
+|  1 | PRIMARY     | v               | NULL       | ref  | unq_xxx,unq_www,idx_www | unq_xxx        | 4       | ducati.s_dynamic_field.id |    5 |   100.00 | Using where |
+|  1 | PRIMARY     | <derived2>      | NULL       | ref  | <auto_key0>             | <auto_key0>    | 98      | ducati.v.business_id_str  |    2 |   100.00 | Using where |
+|  2 | DERIVED     | sub_test        | NULL       | ALL  | NULL                    | NULL           | NULL    | NULL                      |   20 |   100.00 | NULL        |
++----+-------------+-----------------+------------+------+-------------------------+----------------+---------+---------------------------+------+----------+-------------+
+
+DELETE FROM s_dynamic_field;
+INSERT INTO s_dynamic_field VALUES(1, 'sub_test', 'item1', 2);
+INSERT INTO s_dynamic_field VALUES(2, 'sub_test', 'item2', 3);
+INSERT INTO s_dynamic_field VALUES(3, 'sub_test', 'item3', 1);
+
+DELTE FROM s_dynamic_field_val;
+INSERT INTO s_dynamic_field_val(field_id, business_id_str, value_decimal) VALUES(1, 'h', 123.32);
+INSERT INTO s_dynamic_field_val(field_id, business_id_str, value_decimal) VALUES(1, 'i', 342.43);
+INSERT INTO s_dynamic_field_val(field_id, business_id_str, value_decimal) VALUES(1, 'j', 3545.23);
+INSERT INTO s_dynamic_field_val(field_id, business_id_str, value_decimal) VALUES(1, 'k', 7645.23);
+INSERT INTO s_dynamic_field_val(field_id, business_id_str, value_decimal) VALUES(1, 'l', 453.12);
+INSERT INTO s_dynamic_field_val(field_id, business_id_str, value_decimal) VALUES(2, 'h', 324234.78);
+INSERT INTO s_dynamic_field_val(field_id, business_id_str, value_decimal) VALUES(2, 'i', 3324.45);
+INSERT INTO s_dynamic_field_val(field_id, business_id_str, value_decimal) VALUES(3, 'h', 78424.67);
+INSERT INTO s_dynamic_field_val(field_id, business_id_str, value_decimal) VALUES(3, 'i', 234434.78);
+INSERT INTO s_dynamic_field_val(field_id, business_id_str, value_decimal) VALUES(3, 'j', 765.52);
+INSERT INTO s_dynamic_field_val(field_id, business_id_str, value_decimal) VALUES(3, 'k', 435.76);
+INSERT INTO s_dynamic_field_val(field_id, business_id_str, value_decimal) VALUES(1, 'm', 23423.28);
+INSERT INTO s_dynamic_field_val(field_id, business_id_str, value_decimal) VALUES(2, 'j', 453.59);
+INSERT INTO s_dynamic_field_val(field_id, business_id_str, value_decimal) VALUES(3, 'm', 12312.92);
+INSERT INTO s_dynamic_field_val(field_id, business_id_str, value_decimal) VALUES(1, 'n', 435.18);
+INSERT INTO s_dynamic_field_val(field_id, business_id_str, value_decimal) VALUES(2, 'k', 4352.73);
+INSERT INTO s_dynamic_field_val(field_id, business_id_str, value_decimal) VALUES(3, 'l', 32.83);
+SELECT * FROM s_dynamic_field_val;
+
+INSERT INTO s_dynamic_field_val(field_id, business_id_str, value_decimal) VALUES(1, 'h', 65.75);
+
++----+--------------+------+----+------+-------+---------------+
+| id | eee          | fff  | id | id   | name  | value_decimal |
++----+--------------+------+----+------+-------+---------------+
+| h  | hijk         |   12 | h  |    1 | item1 |      123.3200 |
+| i  | abcdef       |    9 | i  |    1 | item1 |      342.4300 |
+| j  | bcdefg       |   21 | j  |    1 | item1 |     3545.2300 |
+| k  | cdefgh       |   67 | k  |    1 | item1 |     7645.2300 |
+| l  | abefgh       |   21 | l  |    1 | item1 |      453.1200 |
+| m  | aefghi       |   37 | m  |    1 | item1 |    23423.2800 |
+| n  | abcfgh       |   21 | n  |    1 | item1 |      435.1800 |
+| h  | hijk         |   12 | h  |    2 | item2 |   324234.7800 |
+| i  | abcdef       |    9 | i  |    2 | item2 |     3324.4500 |
+| j  | bcdefg       |   21 | j  |    2 | item2 |      453.5900 |
+| k  | cdefgh       |   67 | k  |    2 | item2 |     4352.7300 |
+| h  | hijk         |   12 | h  |    3 | item3 |    78424.6700 |
+| i  | abcdef       |    9 | i  |    3 | item3 |   234434.7800 |
+| j  | bcdefg       |   21 | j  |    3 | item3 |      765.5200 |
+| k  | cdefgh       |   67 | k  |    3 | item3 |      435.7600 |
+| l  | abefgh       |   21 | l  |    3 | item3 |       32.8300 |
+| m  | aefghi       |   37 | m  |    3 | item3 |    12312.9200 |
+| a  | abcd         |   15 | a  | NULL | NULL  |          NULL |
+| b  | bcde         |    5 | b  | NULL | NULL  |          NULL |
+| c  | cdef         |   21 | c  | NULL | NULL  |          NULL |
+| d  | defg         |   56 | d  | NULL | NULL  |          NULL |
+| e  | efgh         |   13 | e  | NULL | NULL  |          NULL |
+| f  | fghi         |    2 | f  | NULL | NULL  |          NULL |
+| g  | ghij         |    7 | g  | NULL | NULL  |          NULL |
+| o  | cdeghes      |   52 | o  | NULL | NULL  |          NULL |
+| p  | cdghasdf     |   18 | p  | NULL | NULL  |          NULL |
+| q  | poijjs       |   21 | q  | NULL | NULL  |          NULL |
+| r  | lkjhhd       |   25 | r  | NULL | NULL  |          NULL |
+| s  | csadfdsafads |    4 | s  | NULL | NULL  |          NULL |
+| t  | dwqfwqfwq    |   76 | t  | NULL | NULL  |          NULL |
++----+--------------+------+----+------+-------+---------------+
+
+
+
 
 
 

@@ -469,11 +469,12 @@ CREATE TABLE s_updation_field (
 
 DROP TABLE s_dynamic_field;
 CREATE TABLE s_dynamic_field (
-	id INT(11) NOT NULL AUTO_INCREMENT,
+	id INT(11) NOT NULL,
 	table_name VARCHAR(50) NOT NULL,
 	name VARCHAR(50) NOT NULL,
+	sort INT(2),
 	PRIMARY KEY (id),
-	KEY idx_table_name(table_name) USING BTREE
+	KEY idx_table_name(table_name, sort, id, name) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 DROP TABLE s_dynamic_field_val;
@@ -487,8 +488,10 @@ CREATE TABLE s_dynamic_field_val (
 	value_decimal DECIMAL(10, 4),
 	value_time DATETIME,
 	PRIMARY KEY (id),
+	UNIQUE KEY `unq_xxx` (`field_id`, `business_id_int`),
+	UNIQUE KEY `unq_www` (`field_id`, `business_id_str`),
 	KEY idx_xxx(business_id_int, field_id) USING BTREE,
-	KEY idx_xxx(business_id_str, field_id) USING BTREE
+	KEY idx_www(business_id_str, field_id) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
