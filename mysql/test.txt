@@ -596,7 +596,7 @@ EXPLAIN SELECT s.id,s.fff FROM test t INNER JOIN sub_test s ON t.id=s.test_id WH
 
 
 EXPLAIN 
-SELECT s.id,s.eee,s.fff,f.id,f.name,f.sort,v.value_decimal 
+SELECT s.id,s.eee,s.fff,f.id,f.name,f.sort,v.value_decimal,v.value_str 
 FROM (SELECT * FROM sub_test LIMIT 10 OFFSET 0) s 
 LEFT OUTER JOIN s_dynamic_field_val v ON s.id=v.business_id_str OR s.id=v.business_id_int 
 LEFT OUTER JOIN (SELECT * FROM s_dynamic_field WHERE table_name='sub_test' ORDER BY sort) f ON v.field_id=f.id;
@@ -624,9 +624,9 @@ INNER JOIN (SELECT * FROM s_dynamic_field ORDER BY sort) f ON v.field_id=f.id AN
 +----+-------------+-----------------+------------+------+-------------------------+----------------+---------+---------------------------+------+----------+-------------+
 
 DELETE FROM s_dynamic_field;
-INSERT INTO s_dynamic_field VALUES(1, 'sub_test', 'item1', 2);
-INSERT INTO s_dynamic_field VALUES(2, 'sub_test', 'item2', 3);
-INSERT INTO s_dynamic_field VALUES(3, 'sub_test', 'item3', 1);
+INSERT INTO s_dynamic_field VALUES(1, 'sub_test', 'item1', 3);
+INSERT INTO s_dynamic_field VALUES(2, 'sub_test', 'item2', 1);
+INSERT INTO s_dynamic_field VALUES(3, 'sub_test', 'item3', 2);
 
 DELTE FROM s_dynamic_field_val;
 INSERT INTO s_dynamic_field_val(field_id, business_id_str, value_decimal) VALUES(1, 'h', 123.32);
@@ -634,21 +634,26 @@ INSERT INTO s_dynamic_field_val(field_id, business_id_str, value_decimal) VALUES
 INSERT INTO s_dynamic_field_val(field_id, business_id_str, value_decimal) VALUES(1, 'j', 3545.23);
 INSERT INTO s_dynamic_field_val(field_id, business_id_str, value_decimal) VALUES(1, 'k', 7645.23);
 INSERT INTO s_dynamic_field_val(field_id, business_id_str, value_decimal) VALUES(1, 'l', 453.12);
-INSERT INTO s_dynamic_field_val(field_id, business_id_str, value_decimal) VALUES(2, 'h', 324234.78);
-INSERT INTO s_dynamic_field_val(field_id, business_id_str, value_decimal) VALUES(2, 'i', 3324.45);
+INSERT INTO s_dynamic_field_val(field_id, business_id_str, value_str) VALUES(2, 'h', 'aaa');
+INSERT INTO s_dynamic_field_val(field_id, business_id_str, value_str) VALUES(2, 'i', 'and');
 INSERT INTO s_dynamic_field_val(field_id, business_id_str, value_decimal) VALUES(3, 'h', 78424.67);
 INSERT INTO s_dynamic_field_val(field_id, business_id_str, value_decimal) VALUES(3, 'i', 234434.78);
 INSERT INTO s_dynamic_field_val(field_id, business_id_str, value_decimal) VALUES(3, 'j', 765.52);
 INSERT INTO s_dynamic_field_val(field_id, business_id_str, value_decimal) VALUES(3, 'k', 435.76);
 INSERT INTO s_dynamic_field_val(field_id, business_id_str, value_decimal) VALUES(1, 'm', 23423.28);
-INSERT INTO s_dynamic_field_val(field_id, business_id_str, value_decimal) VALUES(2, 'j', 453.59);
+INSERT INTO s_dynamic_field_val(field_id, business_id_str, value_str) VALUES(2, 'j', 'ghfjg');
 INSERT INTO s_dynamic_field_val(field_id, business_id_str, value_decimal) VALUES(3, 'm', 12312.92);
 INSERT INTO s_dynamic_field_val(field_id, business_id_str, value_decimal) VALUES(1, 'n', 435.18);
-INSERT INTO s_dynamic_field_val(field_id, business_id_str, value_decimal) VALUES(2, 'k', 4352.73);
+INSERT INTO s_dynamic_field_val(field_id, business_id_str, value_str) VALUES(2, 'k', 'tyru');
 INSERT INTO s_dynamic_field_val(field_id, business_id_str, value_decimal) VALUES(3, 'l', 32.83);
+INSERT INTO s_dynamic_field_val(field_id, business_id_str, value_decimal) VALUES(3, 'c', 874.83);
+INSERT INTO s_dynamic_field_val(field_id, business_id_str, value_decimal) VALUES(1, 'c', 2345.56);
 SELECT * FROM s_dynamic_field_val;
 
-INSERT INTO s_dynamic_field_val(field_id, business_id_str, value_decimal) VALUES(1, 'h', 65.75);
+INSERT INTO s_dynamic_field_val(field_id, business_id_str, value_decimal) VALUES(3, 'h', 675.75);
+
+DELETE FROM s_dynamic_field_val WHERE field_id=2;
+
 
 +----+--------------+------+----+------+-------+---------------+
 | id | eee          | fff  | id | id   | name  | value_decimal |
@@ -684,7 +689,6 @@ INSERT INTO s_dynamic_field_val(field_id, business_id_str, value_decimal) VALUES
 | s  | csadfdsafads |    4 | s  | NULL | NULL  |          NULL |
 | t  | dwqfwqfwq    |   76 | t  | NULL | NULL  |          NULL |
 +----+--------------+------+----+------+-------+---------------+
-
 
 
 
