@@ -383,6 +383,14 @@ CREATE TABLE s_client_system (
 	UNIQUE KEY `unq_name` (`name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+DROP TABLE IF EXISTS s_enterprise;
+CREATE TABLE s_enterprise (
+	id INT(11) UNSIGNED NOT NULL,
+	name VARCHAR(50) NOT NULL,
+	PRIMARY KEY (id),
+	UNIQUE KEY `unq_name` (`name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 INSERT INTO s_client_system VALUES(1, '本系统', 'self', NULL);
 
 DROP TABLE IF EXISTS `s_user`;
@@ -406,6 +414,19 @@ CREATE TABLE `s_user` (
   KEY `idx_mobile_phone` (mobile_phone, name, gender, password, jsessionid_app, username, email) USING BTREE,
   KEY `idx_email` (email, name, gender, password, jsessionid_app, username, mobile_phone) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+DROP TABLE IF EXISTS `s_user_enterprise_rel`;
+CREATE TABLE `s_user_enterprise_rel` (
+  `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `user_id` INT(11) UNSIGNED NOT NULL,
+  `enterprise_id` INT(11) UNSIGNED NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `unq_rel` (`user_id`,`enterprise_id`),
+  KEY `idx_user_id` (`user_id`),
+  KEY `idx_enterprise_id` (`enterprise_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 
 INSERT INTO `s_user` VALUES (0, '2019-06-24 14:41:15', 'maqiang', '马强', 'dad3a37aa9d50688b5157698acfd7aee', '17810355544', 'maqiang@hce-haier.com', '3b7fa1804e7a472988cdbbb6eea9ee0a', '2019-07-24 00:20:21');
 INSERT INTO `s_user` VALUES (1, '2019-06-24 14:41:15', 'tim', 'TIM', 'dad3a37aa9d50688b5157698acfd7aee', '17310464686', 'TIM@hce-haier.com', NULL, NULL);
