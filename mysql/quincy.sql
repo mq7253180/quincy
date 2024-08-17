@@ -5,14 +5,14 @@ CREATE TABLE s_transaction (
 	bean_name VARCHAR(100) NOT NULL COMMENT 'Bean名称',
 	method_name VARCHAR(100) NOT NULL COMMENT '方法名称',
 	type TINYINT(1) NOT NULL COMMENT '1失败撤消; 0失败重试',
-	status INT(1) NOT NULL DEFAULT 0 COMMENT '1执行结束; 0正在执行',
+	status TINYINT(1) NOT NULL DEFAULT 0 COMMENT '1执行结束; 0正在执行',
 	version INT(11) NOT NULL DEFAULT 0 COMMENT '重试执行版本',
-	frequency_batch VARCHAR(10) COMMENT '频率批次名称',
+	flag_for_cron_job VARCHAR(10) COMMENT '定时任务标识',
 	in_order TINYINT(1) DEFAULT 0 COMMENT '是否有顺序: 1TRUE; 0FALSE',
 	creation_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
 	last_executed DATETIME DEFAULT NULL COMMENT '上一次执行时间',
 	PRIMARY KEY (id),
-	KEY idx_union(application_name, status, frequency_batch) USING BTREE
+	KEY idx_union(application_name, status, flag_for_cron_job) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS s_transaction_atomic;
@@ -383,15 +383,16 @@ CREATE TABLE s_client_system (
 	UNIQUE KEY `unq_name` (`name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+INSERT INTO s_client_system VALUES(1, '本系统', 'self', NULL);
+
 DROP TABLE IF EXISTS s_enterprise;
 CREATE TABLE s_enterprise (
 	id INT(11) UNSIGNED NOT NULL,
 	name VARCHAR(50) NOT NULL,
+	sharding_key TINYINT(6) UNSIGNED NOT NULL,
 	PRIMARY KEY (id),
 	UNIQUE KEY `unq_name` (`name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-INSERT INTO s_client_system VALUES(1, '本系统', 'self', NULL);
 
 DROP TABLE IF EXISTS `s_user`;
 CREATE TABLE `s_user` (
