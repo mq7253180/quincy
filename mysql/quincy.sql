@@ -13,7 +13,7 @@ CREATE TABLE s_transaction (
 	last_executed DATETIME DEFAULT NULL COMMENT '上一次执行时间',
 	PRIMARY KEY (id),
 	KEY idx_union(application_name, status, flag_for_cron_job) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 DROP TABLE IF EXISTS s_transaction_atomic;
 CREATE TABLE s_transaction_atomic (
@@ -28,7 +28,7 @@ CREATE TABLE s_transaction_atomic (
 	ret_value VARCHAR(1500) DEFAULT NULL COMMENT '返回值',
 	PRIMARY KEY (id),
 	KEY idx_union (tx_id, status) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 DROP TABLE IF EXISTS s_transaction_arg;
 CREATE TABLE s_transaction_arg (
@@ -40,8 +40,7 @@ CREATE TABLE s_transaction_arg (
 	type TINYINT(1) NOT NULL COMMENT '0事务; 1原子操作',
 	PRIMARY KEY (id),
 	KEY idx_union (parent_id, type) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 DROP TABLE IF EXISTS `b_region`;
 CREATE TABLE `b_region` (
@@ -60,7 +59,7 @@ CREATE TABLE `b_region` (
   UNIQUE KEY `unq_code` (`code`),
   UNIQUE KEY `unq_code2` (`code2`),
   KEY `idx_parent_id` (`parent_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 INSERT INTO `b_region` VALUES (1, 'China', '中国', '86', 'CHN', 'CN', 'CNY', 'zh_CN', 0);
 INSERT INTO `b_region` VALUES (2, 'Hong Kong(China)', '中国香港', '852', 'HKG', 'HK', 'HKD', 'zh_HK', 1);
@@ -261,8 +260,9 @@ DROP TABLE IF EXISTS `s_role`;
 CREATE TABLE `s_role` (
   `id` INT(11) UNSIGNED NOT NULL,
   `name` VARCHAR(50) NOT NULL COMMENT '名称',
+  `enterprise_id` INT(11) UNSIGNED,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 INSERT INTO `s_role` VALUES (0, '超级管理员');
 INSERT INTO `s_role` VALUES (1, '系统管理员（国际）');
@@ -286,7 +286,7 @@ CREATE TABLE `s_permission` (
   `name` VARCHAR(255) NOT NULL COMMENT '名称',
   `des` VARCHAR(50) NOT NULL COMMENT '描述',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 INSERT INTO `s_permission` VALUES (1, 'sysMenu', '超级管理员菜单');
 INSERT INTO `s_permission` VALUES (2, 'reloadSessionByUserId', '根据用户ID更新session');
@@ -313,7 +313,7 @@ CREATE TABLE `s_permission_role_rel` (
   UNIQUE KEY `unq_rel` (`permission_id`,`role_id`),
   KEY `idx_permission_id` (`permission_id`),
   KEY `idx_role_id` (`role_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 INSERT INTO `s_permission_role_rel` VALUES (22, 0, 1);
 INSERT INTO `s_permission_role_rel` VALUES (27, 14, 1);
@@ -342,7 +342,7 @@ CREATE TABLE `s_menu` (
   `icon` VARCHAR(50) DEFAULT NULL COMMENT '图标',
   PRIMARY KEY (`id`),
   KEY `idx_p_id` (`p_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 INSERT INTO `s_menu` VALUES (1, NULL, '系统管理', NULL, 'activity');
 INSERT INTO `s_menu` VALUES (2, NULL, '账户管理', NULL, 'package');
@@ -359,7 +359,7 @@ CREATE TABLE `s_role_menu_rel` (
   UNIQUE KEY `unq_rel` (`role_id`,`menu_id`),
   KEY `idx_role_id` (`role_id`),
   KEY `idx_menu_id` (`menu_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 INSERT INTO `s_role_menu_rel` VALUES (30, 0, 1);
 INSERT INTO `s_role_menu_rel` VALUES (34, 0, 2);
@@ -381,7 +381,7 @@ CREATE TABLE s_client_system (
 	UNIQUE KEY `unq_client_id` (`client_id`),
 	UNIQUE KEY `unq_secret` (`secret`),
 	UNIQUE KEY `unq_name` (`name`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 INSERT INTO s_client_system VALUES(1, '本系统', 'self', NULL);
 
@@ -392,7 +392,7 @@ CREATE TABLE s_enterprise (
 	sharding_key TINYINT(6) UNSIGNED NOT NULL,
 	PRIMARY KEY (id),
 	UNIQUE KEY `unq_name` (`name`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 DROP TABLE IF EXISTS `s_user`;
 CREATE TABLE `s_user` (
@@ -411,23 +411,24 @@ CREATE TABLE `s_user` (
   UNIQUE KEY `unq_username` (`username`),
   UNIQUE KEY `unq_mobile_phone` (`mobile_phone`),
   UNIQUE KEY `unq_email` (`email`),
-  KEY `idx_username` (username, name, gender, password, jsessionid_app, mobile_phone, email) USING BTREE,
-  KEY `idx_mobile_phone` (mobile_phone, name, gender, password, jsessionid_app, username, email) USING BTREE,
-  KEY `idx_email` (email, name, gender, password, jsessionid_app, username, mobile_phone) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  KEY `idx_mobile_phone` (mobile_phone, username, email, password, name, gender, jsessionid_pc_browser, jsessionid_mobile_browser, jsessionid_app) USING BTREE,
+  KEY `idx_email` (email, username, mobile_phone, password, name, gender, jsessionid_pc_browser, jsessionid_mobile_browser, jsessionid_app) USING BTREE,
+  KEY `idx_username` (username, mobile_phone, email, password, name, gender, jsessionid_pc_browser, jsessionid_mobile_browser, jsessionid_app) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-
-DROP TABLE IF EXISTS `s_user_enterprise_rel`;
-CREATE TABLE `s_user_enterprise_rel` (
-  `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `user_id` INT(11) UNSIGNED NOT NULL,
-  `enterprise_id` INT(11) UNSIGNED NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `unq_rel` (`user_id`,`enterprise_id`),
-  KEY `idx_user_id` (`user_id`),
-  KEY `idx_enterprise_id` (`enterprise_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
+DROP TABLE IF EXISTS s_enterprise;
+CREATE TABLE s_enterprise (
+	id INT(11) UNSIGNED NOT NULL,
+	sharding_key TINYINT(6) UNSIGNED NOT NULL,
+	name VARCHAR(50) NOT NULL,
+	unified_socialc_redit_identifier VARCHAR(50),
+	address VARCHAR(100),
+	contact_name VARCHAR(50),
+	contact_phone VARCHAR(50),
+	PRIMARY KEY (id),
+	UNIQUE KEY `unq_name` (`name`),
+	UNIQUE KEY `unq_unified_socialc_redit_identifier` (`unified_socialc_redit_identifier`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 INSERT INTO `s_user` VALUES (0, '2019-06-24 14:41:15', 'maqiang', '马强', 'dad3a37aa9d50688b5157698acfd7aee', '17810355544', 'maqiang@hce-haier.com', '3b7fa1804e7a472988cdbbb6eea9ee0a', '2019-07-24 00:20:21');
 INSERT INTO `s_user` VALUES (1, '2019-06-24 14:41:15', 'tim', 'TIM', 'dad3a37aa9d50688b5157698acfd7aee', '17310464686', 'TIM@hce-haier.com', NULL, NULL);
@@ -447,12 +448,12 @@ CREATE TABLE `s_role_user_rel` (
   UNIQUE KEY `unq_rel` (`role_id`,`user_id`),
   KEY `idx_role_id` (`role_id`),
   KEY `idx_user_id` (`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 INSERT INTO `s_role_user_rel` VALUES (12, 0, 0);
 INSERT INTO `s_role_user_rel` VALUES (13, 14, 5);
 
-DROP TABLE s_updation;
+DROP TABLE IF EXISTS s_updation;
 CREATE TABLE s_updation (
 	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
 	sql_statement VARCHAR(300) NOT NULL,
@@ -460,9 +461,9 @@ CREATE TABLE s_updation (
 	creation_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	PRIMARY KEY (id),
 	KEY idx_creation_time(creation_time) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-DROP TABLE s_updation_row;
+DROP TABLE IF EXISTS s_updation_row;
 CREATE TABLE s_updation_row (
 	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
 	p_id INT(11) UNSIGNED NOT NULL,
@@ -473,10 +474,10 @@ CREATE TABLE s_updation_row (
 	KEY idx_xxx(data_id_int, table_name, p_id) USING BTREE,
 	KEY idx_www(data_id_str, table_name, p_id) USING BTREE,
 	KEY idx_qqq(table_name, data_id_int, p_id) USING BTREE,
-	KEY idx_zzz(table_name, data_id_str, p_id) USING BTREE,
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+	KEY idx_zzz(table_name, data_id_str, p_id) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-DROP TABLE s_updation_field;
+DROP TABLE IF EXISTS s_updation_field;
 CREATE TABLE s_updation_field (
 	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
 	p_id INT(11) UNSIGNED NOT NULL,
@@ -491,10 +492,9 @@ CREATE TABLE s_updation_field (
 	new_value_time DATETIME,
 	PRIMARY KEY (id),
 	KEY idx_xxx(p_id, name) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-
-DROP TABLE s_dynamic_field;
+DROP TABLE IF EXISTS s_dynamic_field;
 CREATE TABLE s_dynamic_field (
 	id INT(11) UNSIGNED NOT NULL,
 	table_name VARCHAR(50) NOT NULL,
@@ -502,9 +502,9 @@ CREATE TABLE s_dynamic_field (
 	sort TINYINT(2),
 	PRIMARY KEY (id),
 	KEY idx_table_name(table_name, sort, id, name) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-DROP TABLE s_dynamic_field_val;
+DROP TABLE IF EXISTS s_dynamic_field_val;
 CREATE TABLE s_dynamic_field_val (
 	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
 	field_id INT(11) UNSIGNED NOT NULL,
@@ -519,7 +519,7 @@ CREATE TABLE s_dynamic_field_val (
 	UNIQUE KEY `unq_www` (`field_id`, `business_id_str`),
 	KEY idx_xxx(business_id_int, field_id) USING BTREE,
 	KEY idx_www(business_id_str, field_id) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 
 
@@ -533,7 +533,7 @@ CREATE TABLE s_oauth2_code (
 	PRIMARY KEY (id),
 	UNIQUE KEY `unq_union` (`user_id`, `client_system_id`),
 	UNIQUE KEY `unq_code` (`code`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 DROP TABLE IF EXISTS s_oauth2_scope;
 CREATE TABLE s_oauth2_scope (
@@ -542,4 +542,4 @@ CREATE TABLE s_oauth2_scope (
 	scope VARCHAR(20) NOT NULL COMMENT '权限',
 	PRIMARY KEY (id),
 	UNIQUE KEY `unq_union` (`code_id`, `scope`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

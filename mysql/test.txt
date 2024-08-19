@@ -704,4 +704,3 @@ ALTER TABLE sub_test DROP COLUMN ccc;
 ALTER TABLE sub_test DROP COLUMN ddd;
 ALTER TABLE sub_test DROP COLUMN ddd4;
 
-
