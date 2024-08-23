@@ -385,15 +385,6 @@ CREATE TABLE s_client_system (
 
 INSERT INTO s_client_system VALUES(1, '本系统', 'self', NULL);
 
-DROP TABLE IF EXISTS s_enterprise;
-CREATE TABLE s_enterprise (
-	id INT(11) UNSIGNED NOT NULL,
-	name VARCHAR(50) NOT NULL,
-	sharding_key TINYINT(6) UNSIGNED NOT NULL,
-	PRIMARY KEY (id),
-	UNIQUE KEY `unq_name` (`name`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
 DROP TABLE IF EXISTS `s_user`;
 CREATE TABLE `s_user` (
   `id` INT(11) UNSIGNED NOT NULL,
@@ -418,7 +409,7 @@ CREATE TABLE `s_user` (
 
 DROP TABLE IF EXISTS s_enterprise;
 CREATE TABLE s_enterprise (
-	id INT(11) UNSIGNED NOT NULL,
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
 	sharding_key TINYINT(6) UNSIGNED NOT NULL,
 	name VARCHAR(50) NOT NULL,
 	unified_socialc_redit_identifier VARCHAR(50),
@@ -444,6 +435,7 @@ CREATE TABLE `s_role_user_rel` (
   `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
   `role_id` INT(11) UNSIGNED NOT NULL COMMENT '角色id',
   `user_id` INT(11) UNSIGNED NOT NULL COMMENT '用户id',
+  `status` TINYINT(2) NOT NULL DEFAULT 1 COMMENT '-1已离职；0未激活；1正常',
   PRIMARY KEY (`id`),
   UNIQUE KEY `unq_rel` (`role_id`,`user_id`),
   KEY `idx_role_id` (`role_id`),
