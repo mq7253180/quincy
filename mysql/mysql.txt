@@ -166,6 +166,7 @@ SELECT * FROM INFORMATION_SCHEMA.PROCESSLIST WHERE USER = 'user123' AND TIME > 3
 dump数据库: 
 D:\env\mysql\mysql-5.7.22-winx64\bin\mysqldump -h10.50.1.14 -P3306 -upgw –p78DdlqVhCse pgw -R -E --triggers>D:\online\core.sql
 /data/mysql/bin/mysqldump -h10.5.37.226 -P3306 -uroot -pYjbAky@2022 --flush-logs --lock-all-tables yjglb_model_city -R -E --triggers > /data/mysql-related/sb.sql
+/quincy/mysql/mysql/bin/mysqldump -hlocalhost -P3306 -uroot -poneapimmysql ducati -R -E --triggers --socket=/mysql/mysqld.socket>/quincy/mysql/ducati.sql
 所有库：-A
 单张表：test1
 多张表：--databases test1 test2
