@@ -64,6 +64,10 @@ GRANT SELECT ON test.* TO 'admin'@'%' IDENTIFIED BY 'nimda' WITH GRANT OPTION;
 REVOKE ALL PRIVILEGES ON test.* FROM 'admin'@'localhost';
 GRANT ALL PRIVILEGES ON ducati.* TO 'making'@'localhost' IDENTIFIED BY '1qazxsw23edc' WITH GRANT OPTION;
 
+8.4版
+带IDENTIFIED BY报：ERROR 1064 (42000): You have an error in your SQL syntax
+GRANT ALL PRIVILEGES ON ducati.* TO 'admin'@'%' WITH GRANT OPTION;
+
 FLUSH PRIVILEGES;
 
 关闭
