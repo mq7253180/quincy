@@ -38,6 +38,7 @@ libaio-devel-0.3.109-13.el7.x86_64.rpm
 /quincy/mysql/mysql/bin/mysql --socket=/mysql/mysqld.socket -uroot -p
 
 更改用用户: 
+ALTER USER 'root'@'localhost' IDENTIFIED BY 'oneapimmysql';
 ALTER USER 'root'@'localhost' IDENTIFIED BY '1qazxsw2';
 ALTER USER SET user.host='%' WHERE user.user='root';
 ALTER USER 'root'@'%' IDENTIFIED WITH mysql_native_password BY 'oneapimmysql';
@@ -57,6 +58,7 @@ GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED BY '1qazxsw2' WITH GRANT OP
 GRANT SELECT ON jlcedu.* TO 'jlcedu'@'%' IDENTIFIED BY 'xxx' WITH GRANT OPTION;
 
 8以上版本: 
+CREATE USER 'admin'@'%' IDENTIFIED BY 'nimda';
 CREATE USER 'maqiang'@'%' IDENTIFIED BY '1qazxsw23edc';
 GRANT ALL PRIVILEGES ON *.* TO 'maqiang'@'%' WITH GRANT OPTION;
 GRANT ALL PRIVILEGES ON test.* TO 'admin'@'localhost' IDENTIFIED BY 'nimda' WITH GRANT OPTION;
@@ -67,6 +69,14 @@ GRANT ALL PRIVILEGES ON ducati.* TO 'making'@'localhost' IDENTIFIED BY '1qazxsw2
 8.4版
 带IDENTIFIED BY报：ERROR 1064 (42000): You have an error in your SQL syntax
 GRANT ALL PRIVILEGES ON ducati.* TO 'admin'@'%' WITH GRANT OPTION;
+GRANT ALL PRIVILEGES ON honda0.* TO 'admin'@'%' WITH GRANT OPTION;
+GRANT ALL PRIVILEGES ON honda1.* TO 'admin'@'%' WITH GRANT OPTION;
+GRANT ALL PRIVILEGES ON honda2.* TO 'admin'@'%' WITH GRANT OPTION;
+GRANT ALL PRIVILEGES ON honda3.* TO 'admin'@'%' WITH GRANT OPTION;
+GRANT ALL PRIVILEGES ON honda4.* TO 'admin'@'%' WITH GRANT OPTION;
+GRANT ALL PRIVILEGES ON honda5.* TO 'admin'@'%' WITH GRANT OPTION;
+GRANT ALL PRIVILEGES ON honda6.* TO 'admin'@'%' WITH GRANT OPTION;
+GRANT ALL PRIVILEGES ON honda7.* TO 'admin'@'%' WITH GRANT OPTION;
 
 FLUSH PRIVILEGES;
 
@@ -177,6 +187,7 @@ D:\env\mysql\mysql-5.7.22-winx64\bin\mysqldump -h10.50.1.14 -P3306 -upgw –p78D
 –lock-all-tables, -x：锁定所有库中所有的表，这是通过在整个dump的过程中持有全局读锁来实现的，自动关闭-single-transaction和-lock-tables选项
 
 导入：
+/quincy/mysql/mysql/bin/mysql --socket=/mysql/mysqld.socket -uadmin -pnimda ducati < /quincy/mysql/ducati.sql
 /data/mysql/bin/mysql --socket=/data/mysql-related/mysqld.socket -uroot -pYh?8JHguIS6R yjglb_model_city < /data/mysql-related/sb.sql
 
 创建数据库：
