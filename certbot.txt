@@ -69,7 +69,7 @@ IMPORTANT NOTES:
    visiting https://act.eff.org.
 -------------------------------------------
 Wildcard certificate: 
-certbot certonly -d "*.maqiang777.com" --manual --register-unsafely-without-email --preferred-challenges dns
+certbot certonly -d "*.jep8566.com" --manual --register-unsafely-without-email --preferred-challenges dns
 
 Renewal: 
 修改/etc/letsencrypt/renewal/maqiangcgq.com.conf，指定manual_auth_hook = /root/callAliyun.sh
