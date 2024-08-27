@@ -1,3 +1,19 @@
+安装：
+
+安装openssl、pcre、zlib
+
+安装openssl: 
+ln -s /quincy/env/openssl-bin/lib/libssl.so.1.1 /usr/lib64/libssl.so.1.1
+ln -s /quincy/env/openssl-bin/lib/libcrypto.so.1.1 /usr/lib64/libcrypto.so.1.1
+
+查看pcre是否安装: 
+rpm -qa pcre
+rpm -qa|grep pcre
+下载地址：https://sourceforge.net/projects/pcre/files/pcre/
+
+./configure --prefix=/quincy/nginx --with-http_ssl_module --with-http_stub_status_module --with-stream --with-stream_ssl_preread_module --with-stream_ssl_module --with-openssl=/quincy/env/openssl-src --with-pcre=/quincy/env/pcre-src --with-zlib=/quincy/env/zlib-src
+报[error] invalid PID number: nginx -c <配置文件路径>
+====================================================
 案例 location proxy_pass 结果
 1  /foo/  http://192.168.1.48/  /api
 2  /foo  http://192.168.1.48/  //api
@@ -9,3 +25,11 @@
 6  /foo  http://192.168.1.48/bar/  /bar//api
 7  /foo/  http://192.168.1.48/bar  /barapi
 8  /foo  http://192.168.1.48/bar  /bar/api
+=====================================================
+proxy_buffer_size   1024k;
+    proxy_buffers    16     1024k;
+    proxy_busy_buffers_size     2048k;
+    proxy_temp_file_write_size  2048k;
+
+worker_cpu_affinity 00000001 00000010 00000100 00001000 00010000 00100000 01000000 10000000;
+worker_rlimit_nofile 655340;

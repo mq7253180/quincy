@@ -155,20 +155,6 @@ make prefix=/quincy/env/git-bin all
 make prefix=/quincy/env/git-bin install
 ln -s /quincy/env/git-bin/bin/git /usr/local/bin/git
 
-安装openssl: 
-ln -s /quincy/env/openssl-bin/lib/libssl.so.1.1 /usr/lib64/libssl.so.1.1
-ln -s /quincy/env/openssl-bin/lib/libcrypto.so.1.1 /usr/lib64/libcrypto.so.1.1
-
-查看pcre是否安装: 
-rpm -qa pcre
-rpm -qa|grep pcre
-下载地址：https://sourceforge.net/projects/pcre/files/pcre/
-
-安装nginx: 
-安装zlib、pcre、openssl
-./configure --prefix=/quincy/nginx --with-http_ssl_module --with-http_stub_status_module --with-stream --with-stream_ssl_preread_module --with-stream_ssl_module --with-openssl=/quincy/env/openssl-src --with-pcre=/quincy/env/pcre-src --with-zlib=/quincy/env/zlib-src
-报[error] invalid PID number: nginx -c <配置文件路径>
-
 安装telnet：http://www.rpmfind.net/linux/rpm2html
 
 安装wget：
