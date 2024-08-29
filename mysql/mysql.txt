@@ -59,8 +59,9 @@ GRANT SELECT ON jlcedu.* TO 'jlcedu'@'%' IDENTIFIED BY 'xxx' WITH GRANT OPTION;
 
 8以上版本: 
 CREATE USER 'admin'@'%' IDENTIFIED BY 'nimda';
+CREATE USER 'finder'@'%' IDENTIFIED BY 'rednif';
 CREATE USER 'maqiang'@'%' IDENTIFIED BY '1qazxsw23edc';
-GRANT ALL PRIVILEGES ON *.* TO 'maqiang'@'%' WITH GRANT OPTION;
+CREATE USER 'maqiang'@'localhost' IDENTIFIED BY '1qazxsw23edc';
 GRANT ALL PRIVILEGES ON test.* TO 'admin'@'localhost' IDENTIFIED BY 'nimda' WITH GRANT OPTION;
 GRANT SELECT ON test.* TO 'admin'@'%' IDENTIFIED BY 'nimda' WITH GRANT OPTION;
 REVOKE ALL PRIVILEGES ON test.* FROM 'admin'@'localhost';
@@ -68,6 +69,9 @@ GRANT ALL PRIVILEGES ON ducati.* TO 'making'@'localhost' IDENTIFIED BY '1qazxsw2
 
 8.4版
 带IDENTIFIED BY报：ERROR 1064 (42000): You have an error in your SQL syntax
+
+GRANT ALL PRIVILEGES ON ducati.* TO 'maqiang'@'localhost' WITH GRANT OPTION;
+GRANT SELECT ON ducati.* TO 'maqiang'@'%';
 GRANT ALL PRIVILEGES ON ducati.* TO 'admin'@'%' WITH GRANT OPTION;
 GRANT ALL PRIVILEGES ON honda0.* TO 'admin'@'%' WITH GRANT OPTION;
 GRANT ALL PRIVILEGES ON honda1.* TO 'admin'@'%' WITH GRANT OPTION;
@@ -77,6 +81,16 @@ GRANT ALL PRIVILEGES ON honda4.* TO 'admin'@'%' WITH GRANT OPTION;
 GRANT ALL PRIVILEGES ON honda5.* TO 'admin'@'%' WITH GRANT OPTION;
 GRANT ALL PRIVILEGES ON honda6.* TO 'admin'@'%' WITH GRANT OPTION;
 GRANT ALL PRIVILEGES ON honda7.* TO 'admin'@'%' WITH GRANT OPTION;
+
+GRANT SELECT ON ducati.* TO 'finder'@'%';
+GRANT SELECT ON honda0.* TO 'finder'@'%';
+GRANT SELECT ON honda1.* TO 'finder'@'%';
+GRANT SELECT ON honda2.* TO 'finder'@'%';
+GRANT SELECT ON honda3.* TO 'finder'@'%';
+GRANT SELECT ON honda4.* TO 'finder'@'%';
+GRANT SELECT ON honda5.* TO 'finder'@'%';
+GRANT SELECT ON honda6.* TO 'finder'@'%';
+GRANT SELECT ON honda7.* TO 'finder'@'%';
 
 FLUSH PRIVILEGES;
 
