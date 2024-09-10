@@ -73,6 +73,7 @@ GRANT ALL PRIVILEGES ON ducati.* TO 'making'@'localhost' IDENTIFIED BY '1qazxsw2
 GRANT ALL PRIVILEGES ON ducati.* TO 'maqiang'@'localhost' WITH GRANT OPTION;
 GRANT SELECT ON ducati.* TO 'maqiang'@'%';
 GRANT ALL PRIVILEGES ON ducati.* TO 'admin'@'%' WITH GRANT OPTION;
+GRANT ALL PRIVILEGES ON honda.* TO 'admin'@'%' WITH GRANT OPTION;
 GRANT ALL PRIVILEGES ON honda0.* TO 'admin'@'%' WITH GRANT OPTION;
 GRANT ALL PRIVILEGES ON honda1.* TO 'admin'@'%' WITH GRANT OPTION;
 GRANT ALL PRIVILEGES ON honda2.* TO 'admin'@'%' WITH GRANT OPTION;
@@ -83,6 +84,7 @@ GRANT ALL PRIVILEGES ON honda6.* TO 'admin'@'%' WITH GRANT OPTION;
 GRANT ALL PRIVILEGES ON honda7.* TO 'admin'@'%' WITH GRANT OPTION;
 
 GRANT SELECT ON ducati.* TO 'finder'@'%';
+GRANT SELECT ON honda.* TO 'finder'@'%';
 GRANT SELECT ON honda0.* TO 'finder'@'%';
 GRANT SELECT ON honda1.* TO 'finder'@'%';
 GRANT SELECT ON honda2.* TO 'finder'@'%';
