@@ -1,0 +1,64 @@
+npm install -g @vue/cli：将vue命令安装到了node/bin目录
+npm config set registry https://registry.npmmirror.com：更改镜像地址，原始地址https://registry.npmjs.org/
+npm create vue@latest：创建一个空工程
+	构建工具：vite
+	配置文件：vite.config.js
+	index.html：public外面
+vue create 工程名：创建一个初始化vue工程
+	构建工具：vue-cli-service
+	配置文件：vue.config.js
+	index.html：public里面
+npm cache clean --force：清缓存
+npm config delete registry：删镜像，恢复原始镜像地址
+npm get registry：查看镜像地址
+npm config list：查看安装信息
+npm install vue：菜鸟教程
+
+构建工具：vite、vue-cli-service、gulp、nx(Google和Nrwl团队开发的开源工具集)、umi(蚂蚁金服的底层前端React框架)
+
+添加前缀：vue.config.js
+module.exports = defineConfig({
+  publicPath: "."
+})
+==============================================
+vue-element-admin：
+
+报sh: vue-cli-service: command not found：
+	切换目录至node/lib/node_modules/npm(执行npm config list查看npm local prefix)执行：
+		npm i -D --force @vue/cli-service
+
+报错：
+192:npm maqiang$ npm i -D --force @vue/cli-service
+npm warn using --force Recommended protections disabled.
+npm error code E404
+npm error 404 Not Found - GET https://registry.npmjs.org/@npmcli%2fdocs - Not found
+npm error 404
+npm error 404  '@npmcli/docs@^1.0.0' is not in this registry.
+npm error 404
+npm error 404 Note that you can also install from a
+npm error 404 tarball, folder, http url, or git url.
+npm error A complete log of this run can be found in: /Users/maqiang/.npm/_logs/2024-09-06T15_53_03_873Z-debug-0.log
+
+npm install -g npm：解决，但是又报
+Error: ENOENT: no such file or directory, uv_cwd
+重启命令行终端再执行：npm i -D --force @vue/cli-service
+又报E404了
+	切换至新建目录再执行：
+		npm i -D --force @vue/cli-service
+
+npm run dev：
+/Users/maqiang/workspaces/vue-element-admin/node_modules/watchpack/node_modules/chokidar/lib/fsevents-handler.js:94
+  const stop = fsevents.watch(path, callback);
+                        ^
+
+TypeError: fsevents.watch is not a function
+    at createFSEventsInstance (/Users/maqiang/workspaces/vue-element-admin/node_modules/watchpack/node_modules/chokidar/lib/fsevents-handler.js:94:25)
+    at setFSEventsListener (/Users/maqiang/workspaces/vue-element-admin/node_modules/watchpack/node_modules/chokidar/lib/fsevents-handler.js:150:16)
+    at FsEventsHandler._watchWithFsEvents (/Users/maqiang/workspaces/vue-element-admin/node_modules/watchpack/node_modules/chokidar/lib/fsevents-handler.js:353:18)
+    at FsEventsHandler.initWatch (/Users/maqiang/workspaces/vue-element-admin/node_modules/watchpack/node_modules/chokidar/lib/fsevents-handler.js:429:23)
+    at FsEventsHandler._addToFsEvents (/Users/maqiang/workspaces/vue-element-admin/node_modules/watchpack/node_modules/chokidar/lib/fsevents-handler.js:518:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+
+npm install watchman
+
+
