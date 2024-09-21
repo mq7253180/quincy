@@ -22,6 +22,9 @@ java.lang.RuntimeException: Fontconfig head is null, check your fonts or fonts c
 	at com.quincy.core.web.VCodeController.genVCode(VCodeController.java:73)
 
 yum install -y fontconfig：可以看到/usr/share中有fontconfig、fonts两个目录了，可以执行fc-cache --force、fc-list了
+fc-cache --force
+重启服务
+
 yum install -y ttmkfdir
 
 Dockerfile文件容器镜像需要安装相应的依赖包：
