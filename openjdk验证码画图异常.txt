@@ -1,0 +1,36 @@
+java.lang.RuntimeException: Fontconfig head is null, check your fonts or fonts configuration
+	at java.desktop/sun.awt.FontConfiguration.getVersion(FontConfiguration.java:1263)
+	at java.desktop/sun.awt.FontConfiguration.readFontConfigFile(FontConfiguration.java:221)
+	at java.desktop/sun.awt.FontConfiguration.init(FontConfiguration.java:105)
+	at java.desktop/sun.awt.X11FontManager.createFontConfiguration(X11FontManager.java:696)
+	at java.desktop/sun.font.SunFontManager$2.run(SunFontManager.java:352)
+	at java.desktop/sun.font.SunFontManager$2.run(SunFontManager.java:309)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:319)
+	at java.desktop/sun.font.SunFontManager.<init>(SunFontManager.java:309)
+	at java.desktop/sun.awt.FcFontManager.<init>(FcFontManager.java:35)
+	at java.desktop/sun.awt.X11FontManager.<init>(X11FontManager.java:55)
+	at java.desktop/sun.font.PlatformFontInfo.createFontManager(PlatformFontInfo.java:37)
+	at java.desktop/sun.font.FontManagerFactory.getInstance(FontManagerFactory.java:51)
+	at java.desktop/java.awt.Font.getFont2D(Font.java:526)
+	at java.desktop/java.awt.Font$FontAccessImpl.getFont2D(Font.java:265)
+	at java.desktop/sun.font.FontUtilities.getFont2D(FontUtilities.java:151)
+	at java.desktop/sun.java2d.SunGraphics2D.checkFontInfo(SunGraphics2D.java:671)
+	at java.desktop/sun.java2d.SunGraphics2D.getFontInfo(SunGraphics2D.java:837)
+	at java.desktop/sun.java2d.pipe.GlyphListPipe.drawString(GlyphListPipe.java:46)
+	at java.desktop/sun.java2d.pipe.ValidatePipe.drawString(ValidatePipe.java:165)
+	at java.desktop/sun.java2d.SunGraphics2D.drawString(SunGraphics2D.java:2931)
+	at com.quincy.core.web.VCodeController.genVCode(VCodeController.java:73)
+
+yum install -y fontconfig：可以看到/usr/share中有fontconfig、fonts两个目录了，可以执行fc-cache --force、fc-list了
+yum install -y ttmkfdir
+
+Dockerfile文件容器镜像需要安装相应的依赖包：
+RUN apk add --update;apk add ttf-dejavu;apk add fontconfig
+RUN apk add --update font-adobe-100dpi ttf-dejavu fontconfig
+
+
+
+
+
+
+
