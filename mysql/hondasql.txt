@@ -1,0 +1,247 @@
+CREATE DATABASE honda0 CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+CREATE DATABASE honda1 CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+CREATE DATABASE honda2 CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+CREATE DATABASE honda3 CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+CREATE DATABASE honda4 CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+CREATE DATABASE honda5 CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+CREATE DATABASE honda6 CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+CREATE DATABASE honda7 CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+USE honda0;
+
+DROP TABLE IF EXISTS s_transaction;
+CREATE TABLE s_transaction (
+	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+	application_name VARCHAR(20) NOT NULL COMMENT '应用服务名称',
+	bean_name VARCHAR(100) NOT NULL COMMENT 'Bean名称',
+	method_name VARCHAR(100) NOT NULL COMMENT '方法名称',
+	type TINYINT NOT NULL COMMENT '1失败撤消; 0失败重试',
+	status TINYINT NOT NULL DEFAULT 0 COMMENT '1执行结束; 0正在执行',
+	version INT NOT NULL DEFAULT 0 COMMENT '重试执行版本',
+	flag_for_cron_job VARCHAR(10) COMMENT '定时任务标识',
+	in_order TINYINT DEFAULT 0 COMMENT '是否有顺序: 1TRUE; 0FALSE',
+	creation_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+	last_executed DATETIME DEFAULT NULL COMMENT '上一次执行时间',
+	PRIMARY KEY (id),
+	KEY idx_union(application_name, status, flag_for_cron_job) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+DROP TABLE IF EXISTS s_transaction_atomic;
+CREATE TABLE s_transaction_atomic (
+	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+	tx_id INT UNSIGNED NOT NULL COMMENT '事务id',
+	bean_name VARCHAR(100) NOT NULL COMMENT 'Bean名称',
+	method_name VARCHAR(100) NOT NULL COMMENT '失败后需要执行的方法名',
+	status TINYINT UNSIGNED NOT NULL DEFAULT 0 COMMENT '确认方法: 2已执行撤消; 1成功; 0未成功',
+	sort TINYINT NOT NULL COMMENT '顺序',
+	msg VARCHAR(200) COMMENT '失败信息',
+	ret_class VARCHAR(200) DEFAULT NULL COMMENT '返回类型',
+	ret_value VARCHAR(1500) DEFAULT NULL COMMENT '返回值',
+	PRIMARY KEY (id),
+	KEY idx_union (tx_id, status) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+DROP TABLE IF EXISTS s_transaction_arg;
+CREATE TABLE s_transaction_arg (
+	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+	parent_id INT UNSIGNED NOT NULL COMMENT '事务或原子操作id',
+	class VARCHAR(200) NOT NULL COMMENT '类型',
+	_value VARCHAR(1500) NOT NULL COMMENT '值',
+	sort TINYINT NOT NULL COMMENT '顺序',
+	type TINYINT NOT NULL COMMENT '0事务; 1原子操作',
+	PRIMARY KEY (id),
+	KEY idx_union (parent_id, type) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+DROP TABLE IF EXISTS s_enterprise;
+CREATE TABLE s_enterprise (
+	id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+	name VARCHAR(50) NOT NULL,
+	unified_socialc_redit_identifier VARCHAR(50),
+	address VARCHAR(100),
+	contact_name VARCHAR(50),
+	contact_phone VARCHAR(50),
+	PRIMARY KEY (id),
+	UNIQUE KEY `unq_name` (`name`),
+	UNIQUE KEY `unq_unified_socialc_redit_identifier` (`unified_socialc_redit_identifier`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+DROP TABLE IF EXISTS `s_role`;
+CREATE TABLE `s_role` (
+  `id` INT UNSIGNED NOT NULL,
+  `name` VARCHAR(50) NOT NULL COMMENT '名称',
+  `enterprise_id` BIGINT UNSIGNED,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+DROP TABLE IF EXISTS `s_permission`;
+CREATE TABLE `s_permission` (
+  `id` INT UNSIGNED NOT NULL,
+  `name` VARCHAR(255) NOT NULL COMMENT '名称',
+  `des` VARCHAR(50) NOT NULL COMMENT '描述',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+DROP TABLE IF EXISTS `s_permission_role_rel`;
+CREATE TABLE `s_permission_role_rel` (
+  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `role_id` INT UNSIGNED NOT NULL COMMENT '角色id',
+  `permission_id` INT UNSIGNED NOT NULL COMMENT '权限id',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `unq_rel` (`permission_id`,`role_id`),
+  KEY `idx_permission_id` (`permission_id`),
+  KEY `idx_role_id` (`role_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+DROP TABLE IF EXISTS `s_menu`;
+CREATE TABLE `s_menu` (
+  `id` INT UNSIGNED NOT NULL,
+  `p_id` INT UNSIGNED DEFAULT NULL COMMENT '父id',
+  `name` VARCHAR(20) NOT NULL COMMENT '名称',
+  `uri` VARCHAR(200) DEFAULT NULL COMMENT 'uri',
+  `icon` VARCHAR(50) DEFAULT NULL COMMENT '图标',
+  PRIMARY KEY (`id`),
+  KEY `idx_p_id` (`p_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+DROP TABLE IF EXISTS `s_role_menu_rel`;
+CREATE TABLE `s_role_menu_rel` (
+  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `role_id` INT UNSIGNED NOT NULL COMMENT '角色id',
+  `menu_id` INT UNSIGNED NOT NULL COMMENT '菜单id',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `unq_rel` (`role_id`,`menu_id`),
+  KEY `idx_role_id` (`role_id`),
+  KEY `idx_menu_id` (`menu_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+DROP TABLE IF EXISTS `b_user`;
+CREATE TABLE `b_user` (
+  `id` BIGINT UNSIGNED NOT NULL,
+  `creation_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `username` VARCHAR(50) NOT NULL,
+  `name` VARCHAR(50) NOT NULL,
+  `gender` TINYINT UNSIGNED NOT NULL COMMENT '0女；1男',
+  `password` VARCHAR(128),
+  `mobile_phone` VARCHAR(20) NOT NULL,
+  `email` VARCHAR(50),
+  `jsessionid_pc_browser` VARCHAR(128),
+  `jsessionid_mobile_browser` VARCHAR(128),
+  `jsessionid_app` VARCHAR(128),
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `unq_username` (`username`),
+  UNIQUE KEY `unq_mobile_phone` (`mobile_phone`),
+  UNIQUE KEY `unq_email` (`email`),
+  KEY `idx_mobile_phone` (mobile_phone, username, email, password, name, gender, jsessionid_pc_browser, jsessionid_mobile_browser, jsessionid_app) USING BTREE,
+  KEY `idx_email` (email, username, mobile_phone, password, name, gender, jsessionid_pc_browser, jsessionid_mobile_browser, jsessionid_app) USING BTREE,
+  KEY `idx_username` (username, mobile_phone, email, password, name, gender, jsessionid_pc_browser, jsessionid_mobile_browser, jsessionid_app) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+DROP TABLE IF EXISTS `b_user_ext`;
+CREATE TABLE `b_user_ext` (
+  `id` BIGINT UNSIGNED NOT NULL,
+  `updation_status` TINYINT UNSIGNED NOT NULL DEFAULT 1 COMMENT '0待同步；1无需同步',
+  `updation_version` INT UNSIGNED NOT NULL DEFAULT 0 COMMENT '更新版本，用于乐观锁',
+  `last_updation_time` DATETIME,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+DROP TABLE IF EXISTS `s_role_user_rel`;
+CREATE TABLE `s_role_user_rel` (
+  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `role_id` INT UNSIGNED NOT NULL COMMENT '角色id',
+  `user_id` BIGINT UNSIGNED NOT NULL COMMENT '用户id',
+  `status` TINYINT NOT NULL DEFAULT 1 COMMENT '-1已离职；0未激活；1正常',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `unq_rel` (`role_id`,`user_id`),
+  KEY `idx_role_id` (`role_id`),
+  KEY `idx_user_id` (`user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+DROP TABLE IF EXISTS s_updation;
+CREATE TABLE s_updation (
+	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+	sql_statement VARCHAR(300) NOT NULL,
+	params VARCHAR(100) NOT NULL,
+	creation_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	PRIMARY KEY (id),
+	KEY idx_creation_time(creation_time) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+DROP TABLE IF EXISTS s_updation_row;
+CREATE TABLE s_updation_row (
+	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+	p_id INT UNSIGNED NOT NULL,
+	table_name VARCHAR(50) NOT NULL,
+	data_id_int INT UNSIGNED,
+	data_id_str VARCHAR(50),
+	PRIMARY KEY (id),
+	KEY idx_xxx(data_id_int, table_name, p_id) USING BTREE,
+	KEY idx_www(data_id_str, table_name, p_id) USING BTREE,
+	KEY idx_qqq(table_name, data_id_int, p_id) USING BTREE,
+	KEY idx_zzz(table_name, data_id_str, p_id) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+DROP TABLE IF EXISTS s_updation_field;
+CREATE TABLE s_updation_field (
+	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+	p_id INT UNSIGNED NOT NULL,
+	name VARCHAR(50) NOT NULL,
+	old_value_str VARCHAR(100),
+	new_value_str VARCHAR(100),
+	old_value_int INT,
+	new_value_int INT,
+	old_value_decimal DECIMAL(10, 4),
+	new_value_decimal DECIMAL(10, 4),
+	old_value_time DATETIME,
+	new_value_time DATETIME,
+	PRIMARY KEY (id),
+	KEY idx_xxx(p_id, name) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+DROP TABLE IF EXISTS s_dynamic_field;
+CREATE TABLE s_dynamic_field (
+	id INT UNSIGNED NOT NULL,
+	table_name VARCHAR(50) NOT NULL,
+	name VARCHAR(50) NOT NULL,
+	sort TINYINT,
+	PRIMARY KEY (id),
+	KEY idx_table_name(table_name, sort, id, name) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+DROP TABLE IF EXISTS s_dynamic_field_val;
+CREATE TABLE s_dynamic_field_val (
+	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+	field_id INT UNSIGNED NOT NULL,
+	business_id_int INT UNSIGNED,
+	business_id_str VARCHAR(50),
+	value_str VARCHAR(100),
+	value_int INT,
+	value_decimal DECIMAL(10, 4),
+	value_time DATETIME,
+	PRIMARY KEY (id),
+	UNIQUE KEY `unq_xxx` (`field_id`, `business_id_int`),
+	UNIQUE KEY `unq_www` (`field_id`, `business_id_str`),
+	KEY idx_xxx(business_id_int, field_id) USING BTREE,
+	KEY idx_www(business_id_str, field_id) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+=============================================================
+
+SELECT u.id,u.username,u.mobile_phone,u.email,u.password,u.name,u.gender,u.jsessionid_pc_browser,u.jsessionid_mobile_browser,u.jsessionid_app,e.id AS e_id,e.name AS e_name 
+FROM b_user u 
+INNER JOIN s_user_enterprise_rel r ON u.id=r.user_id 
+INNER JOIN s_enterprise e ON r.enterprise_id=e.id 
+WHERE u.mobile_phone='17810355544' OR u.email='mq7253180@126.com' OR u.username='asdfsd'
+
+
+UPDATE b_user SET name=CONCAT(name, 'www') WHERE id=4;
+UPDATE b_user_ext SET updation_status=0 WHERE id=4;
+
+SELECT * FROM b_user;
+
+DELETE FROM b_user WHERE id=4;
+INSERT INTO `b_user` VALUES (4, '2019-06-24 14:41:15', 'yejq', '叶敬群', 1, 'dad3a37aa9d50688b5157698acfd7aee', '18340877879', 'yejingqun@hce-haier.com', NULL, NULL, NULL);
+
+DELETE FROM b_user_ext WHERE id=4;
+INSERT INTO b_user_ext VALUES(4, 1, 0, NOW());
+
