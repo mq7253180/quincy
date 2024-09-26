@@ -3,7 +3,12 @@ useradd -r -m -d /usr/mysql -g mysql -s /bin/false mysql
 passwd mysql
 mkdir -p /mysql/logs
 chown -R mysql:mysql /mysql
-rpm -ivh /quincy/mysql/libaio-0.3.109-13.el7.x86_64.rpm
+安装libaio
+	压缩包安装：rpm -ivh /quincy/mysql/libaio-0.3.109-13.el7.x86_64.rpm
+	源码安装方式：
+		sed -i '/install.*libaio.a/s/^/#/' src/Makefile
+		make
+		make install
 解压
 
 5.6.*版
