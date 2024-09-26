@@ -125,21 +125,21 @@ GPG
 删除私钥: gpg --delete-secret-key(s) newkey
 -----------------------------------------------------------------
 安装gcc: 
+
 联机：yum install -y gcc gcc-c++
-离线
-下载地址：http://mirrors.163.com/centos/7/os/x86_64/Packages/、https://pkgs.org/
-安装顺序：
-libmpfr：https://pkgs.org/download/libmpfr6、http://rpmfind.net/linux/RPM/opensuse/15.2/x86_64/libmpfr6-4.0.1-lp152.3.113.x86_64.html
-libmpc
 
-https://gcc.gnu.org/
-./configure --prefix=/quincy/env/gcc-bin --enable-checking=release --enable-languages=c,c++ --disable-multilib
-
-报错：
-configure: error: no acceptable C compiler found in $PATH
-
-make -j4
-make install
+离线：
+	下载地址：http://mirrors.163.com/centos-vault/7.8.2003/os/x86_64/Packages/
+	安装顺序：
+		mpfr-3.1.1-4.el7.x86_64.rpm
+		libmpc-1.0.1-3.el7.x86_64.rpm
+		cpp-4.8.5-39.el7.x86_64.rpm
+		kernel-headers-3.10.0-1127.el7.x86_64.rpm
+		glibc-headers-2.17-307.el7.1.x86_64.rpm
+		glibc-devel-2.17-307.el7.1.x86_64.rpm
+		gcc-4.8.5-39.el7.x86_64.rpm
+		libstdc++-devel-4.8.5-39.el7.x86_64.rpm
+		gcc-c++-4.8.5-39.el7.x86_64.rpm
 -----------------------------------------------------------------
 安装rz、sz: 
 yum install -y lrzsz

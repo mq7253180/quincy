@@ -3,6 +3,11 @@
 安装openssl、pcre、zlib
 
 安装openssl: 
+	如果./config --prefix=时报
+		LANGUAGE = (unset),
+		LC_ALL = (unset),
+	在~/.bashrc中末尾添加：export LC_ALL=C，后执行source ~/.bashrc
+
 ln -s /quincy/env/openssl-bin/lib/libssl.so.1.1 /usr/lib64/libssl.so.1.1
 ln -s /quincy/env/openssl-bin/lib/libcrypto.so.1.1 /usr/lib64/libcrypto.so.1.1
 
