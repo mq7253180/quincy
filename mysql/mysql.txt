@@ -1,8 +1,8 @@
 groupadd mysql
 useradd -r -m -d /usr/mysql -g mysql -s /bin/false mysql
 passwd mysql
-mkdir -p /mysql/logs
-chown -R mysql:mysql /mysql
+mkdir -p /logs/mysql
+chown -R mysql:mysql /logs/mysql
 安装libaio
 	压缩包安装：rpm -ivh /quincy/mysql/libaio-0.3.109-13.el7.x86_64.rpm
 	源码安装方式：
@@ -20,7 +20,7 @@ chown -R mysql:mysql /mysql
 5.7.*及以上版
 ./mysql/bin/mysqld --initialize --explicit_defaults_for_timestamp --basedir=/quincy/mysql/mysql --datadir=/quincy/mysql/data --user=mysql
 
-CentOS7
+CentOS 7
 5.6.*版报
 FATAL ERROR: please install the following Perl modules before executing ./scripts/mysql_install_db:
 Data::Dumper
@@ -33,23 +33,28 @@ yum -y install perl-Module-Install.noarch
 Installing MySQL system tables..../bin/mysqld: error while loading shared libraries: libaio.so.1: cannot open shared object file: No such file or directory
 或
 mysqld: error while loading shared libraries: libaio.so.1: cannot open shared object file: No such file or directory
-安装libaio：http://mirror.centos.org/centos/7/os/x86_64/Packages/libaio-0.3.109-13.el7.x86_64.rpm
-libaio-devel-0.3.109-13.el7.x86_64.rpm
+安装libaio：
+rpm方式：http://mirror.centos.org/centos/7/os/x86_64/Packages/libaio-0.3.109-13.el7.x86_64.rpm
+tar.gz方式：
+	make
+	make install
+	ln -s /usr/lib/libaio.so.1.0.2 /usr/lib64/libaio.so
+	ln -s /usr/lib/libaio.so.1.0.2 /usr/lib64/libaio.so.1
 
 启动
 /quincy/mysql/mysql/bin/mysqld --defaults-file=/quincy/mysql/my-master.cnf --user=mysql
+nohup /quincy/mysql/mysql/bin/mysqld --defaults-file=/quincy/mysql/my-master.cnf --user=mysql 2>&1 &
 
 登录
-/quincy/mysql/mysql/bin/mysql --socket=/mysql/mysqld.socket -uroot -p
+/quincy/mysql/mysql/bin/mysql --socket=/logs/mysql/mysqld.socket -uroot -p
 
 更改用用户: 
 ALTER USER 'root'@'localhost' IDENTIFIED BY 'oneapimmysql';
-ALTER USER 'root'@'localhost' IDENTIFIED BY '1qazxsw2';
 ALTER USER SET user.host='%' WHERE user.user='root';
 ALTER USER 'root'@'%' IDENTIFIED WITH mysql_native_password BY 'oneapimmysql';
 
 8版客户端登录报: ERROR 2059(HY000): Authentication plugin 'caching_sha2_password' cannot be loaded: 
-ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY '1qazxsw2';
+ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'oneapimmysql';
 
 给haproxy建立健康检查无密码无权限用户
 CREATE USER 'haproxy'@'localhost';
@@ -74,6 +79,17 @@ GRANT ALL PRIVILEGES ON ducati.* TO 'making'@'localhost' IDENTIFIED BY '1qazxsw2
 
 8.4版
 带IDENTIFIED BY报：ERROR 1064 (42000): You have an error in your SQL syntax
+
+CREATE DATABASE ducati CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+CREATE DATABASE honda CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+CREATE DATABASE honda0 CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+CREATE DATABASE honda1 CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+CREATE DATABASE honda2 CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+CREATE DATABASE honda3 CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+CREATE DATABASE honda4 CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+CREATE DATABASE honda5 CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+CREATE DATABASE honda6 CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+CREATE DATABASE honda7 CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 GRANT ALL PRIVILEGES ON ducati.* TO 'maqiang'@'localhost' WITH GRANT OPTION;
 GRANT SELECT ON ducati.* TO 'maqiang'@'%';
@@ -172,9 +188,6 @@ grant all privileges on *.* to 'root'@'127.0.0.1' identified by 'xxx' with grant
 grant all privileges on jlcedu.* to 'jlcedu'@'localhost' identified by 'xxx' with grant option;
 grant all privileges on jlcedu.* to 'jlcedu'@'127.0.0.1' identified by 'xxx' with grant option;
 flush privileges;
-
-CREATE DATABASE oneapi CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-create database jlcedu;
 
 从库
 E:\mysql\mysql-master\mysql\bin\mysqld --install mysqlslave --defaults-file="E:\mysql\my-slave.ini"

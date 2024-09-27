@@ -1,1 +1,1 @@
-/quincy/mysql/mysql/bin/mysql --socket=/mysql/mysqld.socket -uadmin -pnimda
+/quincy/mysql/mysql/bin/mysql --socket=/logs/mysql/mysqld.socket -uadmin -pnimda

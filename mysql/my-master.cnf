@@ -15,11 +15,12 @@
 # log_bin
 
 # These are commonly set, remove the # and set as required.
+max_connections = 2000
 basedir = /quincy/mysql/mysql
 datadir = /quincy/mysql/data
 port = 3306
 server_id = 1
-socket = /mysql/mysqld.socket
+socket = /logs/mysql/mysqld.socket
 
 bind-address=0.0.0.0
 
@@ -33,7 +34,7 @@ binlog_format=MIXED
 
 log_bin_trust_function_creators = 1
 
-log_error = /mysql/logs/master-error.log
+log_error = /logs/mysql/master-error.log
 
 # Remove leading # to set options mainly useful for reporting servers.
 # The server defaults are faster for transactions and fast SELECTs.

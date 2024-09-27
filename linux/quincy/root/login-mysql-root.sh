@@ -1,1 +1,1 @@
-/quincy/mysql/mysql/bin/mysql --socket=/mysql/mysqld.socket -uroot -poneapimmysql
+/quincy/mysql/mysql/bin/mysql --socket=/logs/mysql/mysqld.socket -uroot -poneapimmysql
