@@ -123,7 +123,7 @@ GPG
 批量解密: echo "hcehk8926"|sudo gpg --batch --passphrase-fd 0 -o ${1} -d ${2}
 删除公钥: gpg --delete-key(s) newkey
 删除私钥: gpg --delete-secret-key(s) newkey
------------------------------------------------------------------
+=====================================================================
 安装gcc: 
 
 联机：yum install -y gcc gcc-c++
@@ -141,24 +141,28 @@ GPG
 		libstdc++-devel-4.8.5-39.el7.x86_64.rpm
 		gcc-c++-4.8.5-39.el7.x86_64.rpm
 -----------------------------------------------------------------
-安装rz、sz: 
-yum install -y lrzsz
-
-安装svn: 
-装apr、apr-util、sqlite
-装apr-util: --prefix=/export/env/apr-util-bin --with-apr=/export/env/apr-bin
-装subversion: --prefix=/export/env/subversion-bin --with-apr-util=/export/env/apr-util-bin --with-apr=/export/env/apr-bin --with-sqlite=/export/env/sqlite-bin
-
 安装git
-yum -y install curl-devel expat-devel gettext-devel openssl-devel zlib-devel gcc perl-ExtUtils-MakeMaker
-make prefix=/quincy/env/git-bin all
-make prefix=/quincy/env/git-bin install
-ln -s /quincy/env/git-bin/bin/git /usr/local/bin/git
 
-安装telnet：http://www.rpmfind.net/linux/rpm2html
+安装zlib(同安装Nginx)
+ln -s /quincy/programs/zlib-src/zlib.h /usr/include/zlib.h
+ln -s /quincy/programs/zlib-src/zconf.h /usr/include/zconf.h
+
+make报错：
+/usr/bin/ld: cannot find -lz
+collect2: error: ld returned 1 exit status
+make: *** [git-daemon] Error 1
+	建立软链接：ln -s /quincy/programs/zlib-src/libz.so /usr/lib64/libz.so
+
+
+./configure --prefix=
+make
+make install
+ln -s /quincy/programs/git-bin/bin/git /usr/local/bin/git
+---------------------------------------------------------------
+安装telnet：http://mirrors.163.com/centos-vault/7.8.2003/os/x86_64/Packages/
 
 安装wget：
-下载地址：http://mirrors.163.com/centos-vault/7.8.2003/os/x86_64/Packages
+下载地址：http://mirrors.163.com/centos-vault/7.8.2003/os/x86_64/Packages/
 rpm -ivh报“conflicts with file from package wget-1.14-18.el7_6.1.x86_64”：执行yum remove wget卸载后重新执行
 
 安装curl：
@@ -169,11 +173,19 @@ make
 make install
 ln -s /quincy/env/curl-bin/bin/curl /usr/local/bin/curl
 
+安装rz、sz: 
+yum install -y lrzsz
+
+安装svn: 
+装apr、apr-util、sqlite
+装apr-util: --prefix=/export/env/apr-util-bin --with-apr=/export/env/apr-bin
+装subversion: --prefix=/export/env/subversion-bin --with-apr-util=/export/env/apr-util-bin --with-apr=/export/env/apr-bin --with-sqlite=/export/env/sqlite-bin
+
 安装haproxy: 
 make TARGET=linux-glibc
 make install PREFIX=/quincy/env/haproxy-bin
 /quincy/env/haproxy/haproxy-bin/sbin/haproxy -f /quincy/env/haproxy/quincy.cfg -c
-----------------------------------------------------------------
+==========================================================
 挂载远程目录
 服务端
 yum install rpcbind
