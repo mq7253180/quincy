@@ -185,6 +185,18 @@ yum install -y lrzsz
 make TARGET=linux-glibc
 make install PREFIX=/quincy/env/haproxy-bin
 /quincy/env/haproxy/haproxy-bin/sbin/haproxy -f /quincy/env/haproxy/quincy.cfg -c
+------------------------------------------------------
+执行tar jxvf报：
+tar (child): bzip2: Cannot exec: No such file or directory
+tar (child): Error is not recoverable: exiting now
+tar: Child returned status 2
+tar: Error is not recoverable: exiting now
+
+安装bzip2: 
+下载解压
+make
+make install PREFIX=
+ln -s /quincy/programs/bzip2-bin/bin/bzip2 /usr/local/bin/bzip2
 ==========================================================
 挂载远程目录
 服务端
