@@ -153,7 +153,6 @@ collect2: error: ld returned 1 exit status
 make: *** [git-daemon] Error 1
 	建立软链接：ln -s /quincy/programs/zlib-src/libz.so /usr/lib64/libz.so
 
-
 ./configure --prefix=
 make
 make install

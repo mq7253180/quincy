@@ -16,11 +16,25 @@ rpm -qa pcre
 rpm -qa|grep pcre
 下载地址：https://sourceforge.net/projects/pcre/files/pcre/
 
-
 下载地址：https://nginx.org/en/download.html
-./configure --prefix=/quincy/nginx --with-http_ssl_module --with-http_stub_status_module --with-stream --with-stream_ssl_preread_module --with-stream_ssl_module --with-openssl=/quincy/programs/openssl-1.1.1w --with-pcre=/quincy/programs/pcre-src --with-zlib=/quincy/programs/zlib-src
+Github：
+	地址：https://github.com/nginx/nginx/
+	checkout后configure在auto目录中，复制或剪切到根目录
 
 ./configure --prefix=/quincy/nginx --with-http_ssl_module --with-http_stub_status_module --with-stream --with-stream_ssl_preread_module --with-stream_ssl_module --with-openssl=/quincy/programs/openssl-1.1.1w --with-pcre=/quincy/programs/pcre-src --with-zlib=/quincy/programs/zlib-src
+
+./configure --prefix=/quincy/nginx --with-http_ssl_module --with-http_stub_status_module --with-stream --with-stream_ssl_preread_module --with-stream_ssl_module --with-openssl=/quincy/programs/openssl-bin --with-pcre=/quincy/programs/pcre-bin --with-zlib=/quincy/programs/zlib-bin
+make时报错：
+make -f objs/Makefile
+make[1]: Entering directory `/quincy/nginx-1.27.1'
+cd /quincy/programs/pcre-bin \
+&& if [ -f Makefile ]; then make distclean; fi \
+&& CC="cc" CFLAGS="-O2 -fomit-frame-pointer -pipe " \
+./configure --disable-shared 
+/bin/sh: line 2: ./configure: No such file or directory
+make[1]: *** [/quincy/programs/pcre-bin/Makefile] Error 127
+make[1]: Leaving directory `/quincy/nginx-1.27.1'
+make: *** [build] Error 2
 
 报[error] invalid PID number: nginx -c <配置文件路径>
 ====================================================
