@@ -192,7 +192,7 @@ D:\env\mysql\mysql-5.7.22-winx64\bin\mysqldump -h10.50.1.14 -P3306 -upgw –p78D
 –lock-all-tables, -x：锁定所有库中所有的表，这是通过在整个dump的过程中持有全局读锁来实现的，自动关闭-single-transaction和-lock-tables选项
 
 导入：
-/quincy/mysql/mysql/bin/mysql --socket=/mysql/mysqld.socket -uadmin -pnimda ducati < /quincy/mysql/ducati.sql
+/quincy/mysql/mysql/bin/mysql --socket=/logs/mysql/mysqld.socket -uadmin -pnimda ducati < /quincy/mysql/ducati.sql
 /data/mysql/bin/mysql --socket=/data/mysql-related/mysqld.socket -uroot -pYh?8JHguIS6R yjglb_model_city < /data/mysql-related/sb.sql
 
 创建数据库：
