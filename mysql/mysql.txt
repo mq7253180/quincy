@@ -9,6 +9,8 @@ chown -R mysql:mysql /logs/mysql
 		sed -i '/install.*libaio.a/s/^/#/' src/Makefile
 		make
 		make install
+		ln -sf /usr/lib/libaio.so.1.0.2 /usr/lib64/libaio.so
+		ln -sf /usr/lib/libaio.so.1.0.2 /usr/lib64/libaio.so.1
 解压
 
 5.6.*版
@@ -36,10 +38,11 @@ mysqld: error while loading shared libraries: libaio.so.1: cannot open shared ob
 安装libaio：
 rpm方式：http://mirror.centos.org/centos/7/os/x86_64/Packages/libaio-0.3.109-13.el7.x86_64.rpm
 tar.gz方式：
+	sed -i '/install.*libaio.a/s/^/#/' src/Makefile
 	make
 	make install
-	ln -s /usr/lib/libaio.so.1.0.2 /usr/lib64/libaio.so
-	ln -s /usr/lib/libaio.so.1.0.2 /usr/lib64/libaio.so.1
+	ln -sf /usr/lib/libaio.so.1.0.2 /usr/lib64/libaio.so
+	ln -sf /usr/lib/libaio.so.1.0.2 /usr/lib64/libaio.so.1
 
 启动
 /quincy/mysql/mysql/bin/mysqld --defaults-file=/quincy/mysql/my-master.cnf --user=mysql
