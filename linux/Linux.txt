@@ -218,7 +218,7 @@ mount -t nfs 172.16.1.25:/export/test/src/eub-outer/src/main/webapp/resource /ex
 	修改/etc/ssh/sshd_config: PubkeyAuthentication yes
 	重启ssh: systemctl restart sshd.service或service sshd restart
 
-如果报：-bash: warning: setlocale: LC_CTYPE: cannot change locale (UTF-8): No such file or directory
+如果登录时报：-bash: warning: setlocale: LC_CTYPE: cannot change locale (UTF-8): No such file or directory
 	/etc/locale.conf中添加一行：LC_ALL=en_US.UTF-8
 ----------------------------------------------------------------
 定时任务: 
