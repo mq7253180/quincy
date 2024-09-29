@@ -1,6 +1,6 @@
 import axiosxxx from 'axios'
 
-//axiosxxx.defaults.headers['x-requested-with'] = 'XMLHttpRequest';
+// axiosxxx.defaults.headers['x-requested-with'] = 'XMLHttpRequest';
 
 const service = axiosxxx.create({
   baseURL: process.env.VUE_APP_BASE_API,
@@ -9,7 +9,7 @@ const service = axiosxxx.create({
   headers: {
     'x-requested-with': 'XMLHttpRequest'
   }
-});
+})
 
 export function ajax(params, t) {
   let handle = params.handle;
