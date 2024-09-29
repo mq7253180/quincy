@@ -21,10 +21,20 @@ java.lang.RuntimeException: Fontconfig head is null, check your fonts or fonts c
 	at java.desktop/sun.java2d.SunGraphics2D.drawString(SunGraphics2D.java:2931)
 	at com.quincy.core.web.VCodeController.genVCode(VCodeController.java:73)
 
-yum install -y fontconfig：可以看到/usr/share中有fontconfig、fonts两个目录了，可以执行fc-cache --force、fc-list了
-fc-cache --force
-重启服务
 
+离线安装：http://mirrors.163.com/centos-vault/7.8.2003/os/x86_64/Packages/
+下载rpm包后按照以下顺序安装：
+fontpackages-filesystem
+dejavu-fonts-common
+dejavu-sans-fonts
+fontconfig
+
+在线安装：yum install -y fontconfig
+
+可以看到/usr/share中有fontconfig、fonts两个目录了，可以执行fc-cache --force、fc-list了
+fc-cache --force
+重启应用服务
+-------------------------------------------------------------
 yum install -y ttmkfdir
 
 Dockerfile文件容器镜像需要安装相应的依赖包：
