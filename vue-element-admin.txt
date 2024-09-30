@@ -10,6 +10,26 @@ ajax({
       }
     }, this)
 
+使用md5: 
+npm install --save js-md5
+import md5 from 'js-md5'
+
+登录：
+ajax({
+            url: '/auth/signin/pwd',
+            method: 'post',
+            data: {
+              username: this.loginForm.username,
+              password: md5(this.loginForm.password)
+            },
+            handle: function(data) {
+              alert(JSON.stringify(data));
+              // this.$router.push({ path: this.redirect || '/', query: this.otherQuery })
+            }
+          }, this, function() {
+            alert('Stop Loading')
+            // this.loading = false
+          })
 
 
 SESSION=NjRlNGQ2MjMtYTMyOS00MmZmLWE3Y2YtOTc4M2QyMjkwNWE2; Path=/; HttpOnly; SameSite=Lax
