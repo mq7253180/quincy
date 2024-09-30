@@ -1,4 +1,4 @@
-import quincy, {ajax} from '@/utils/quincy'
+import quincy, { ajax } from '@/utils/quincy'
 
 ajax({
       url: '/xxx/ddd/10/0',
