@@ -15,7 +15,11 @@ npm install --save js-md5
 import md5 from 'js-md5'
 
 登录：
-ajax({
+import { ajax } from '@/utils/quincy'
+
+	  this.loading = true
+          const t = this
+          ajax({
             url: '/auth/signin/pwd',
             method: 'post',
             data: {
@@ -23,12 +27,14 @@ ajax({
               password: md5(this.loginForm.password)
             },
             handle: function(data) {
-              alert(JSON.stringify(data));
-              // this.$router.push({ path: this.redirect || '/', query: this.otherQuery })
+              if (data.status < 1) {
+                alert(data.msg)
+              } else {
+                t.$router.push({ path: this.redirect || '/', query: this.otherQuery })
+              }
             }
           }, this, function() {
-            alert('Stop Loading')
-            // this.loading = false
+            t.loading = false
           })
 
 
