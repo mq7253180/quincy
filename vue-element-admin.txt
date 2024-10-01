@@ -18,7 +18,6 @@ import md5 from 'js-md5'
 import { ajax } from '@/utils/quincy'
 
 	  this.loading = true
-          const t = this
           ajax({
             url: '/auth/signin/pwd',
             method: 'post',
@@ -26,11 +25,12 @@ import { ajax } from '@/utils/quincy'
               username: this.loginForm.username,
               password: md5(this.loginForm.password)
             },
-            handle: function(data) {
+            handle: data => {
               if (data.status < 1) {
                 alert(data.msg)
               } else {
-                t.$router.push({ path: t.redirect || '/', query: t.otherQuery })
+                this.$router.push({ path: this.redirect || '/', query: this.otherQuery })
+                alert(data.msg)
               }
             }
           }, this, () => {
