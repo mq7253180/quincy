@@ -15,7 +15,20 @@ npm install --save js-md5
 import md5 from 'js-md5'
 
 登录：
+// import { validUsername } from '@/utils/validate'
+import md5 from 'js-md5'
 import { ajax } from '@/utils/quincy'
+
+
+const validateUsername = (rule, value, callback) => {
+      /* if (!validUsername(value)) {
+        callback(new Error('Please enter the correct user name'))
+      } else {
+        callback()
+      } */
+      callback()
+    }
+
 
 	  this.loading = true
           ajax({
@@ -37,6 +50,9 @@ import { ajax } from '@/utils/quincy'
             this.loading = false
           })
 
+	/* setTimeout(() => {
+            this.loading = false
+          }, 3000) */
 
 SESSION=NjRlNGQ2MjMtYTMyOS00MmZmLWE3Y2YtOTc4M2QyMjkwNWE2; Path=/; HttpOnly; SameSite=Lax
 SESSION=; Max-Age=0; Expires=Thu, 1 Jan 1970 00:00:00 GMT; Path=/; HttpOnly; SameSite=Lax
