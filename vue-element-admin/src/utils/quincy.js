@@ -6,6 +6,7 @@ import qs from 'qs'
 const service = axiosxxx.create({
   baseURL: process.env.VUE_APP_BASE_API,
   timeout: 50000,
+  withCredentials: true,
   headers: {
     'x-requested-with': 'XMLHttpRequest'
   }
