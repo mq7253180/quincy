@@ -38,12 +38,16 @@ const validateUsername = (rule, value, callback) => {
               username: this.loginForm.username,
               password: md5(this.loginForm.password)
             },
-            handle: data => {
-              if (data.status < 1) {
-                alert(data.msg)
+            handle: result => {
+              if (result.status < 1) {
+                alert(result.msg)
               } else {
+                this.$store.commit('user/setUser', result.data.user)
+                this.$store.commit('user/setName', result.data.user.name)
+                this.$store.commit('user/setAvatar', 'https://jep8566.com/ken.JPG')
+                this.$store.commit('user/setIntroduction', 'blabla')
                 this.$router.push({ path: this.redirect || '/', query: this.otherQuery })
-                alert(data.msg)
+                // alert(result.msg + '---------' + Cookies.get('Set-Cookie'))
               }
             }
           }, this, () => {
