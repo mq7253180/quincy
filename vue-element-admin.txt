@@ -14,7 +14,7 @@ ajax({
 npm install --save js-md5
 import md5 from 'js-md5'
 
-登录：
+@/views/login/index.vue：
 // import { validUsername } from '@/utils/validate'
 import md5 from 'js-md5'
 import { ajax } from '@/utils/quincy'
@@ -29,34 +29,6 @@ const validateUsername = (rule, value, callback) => {
       callback()
     }
 
-
-	  this.loading = true
-          ajax({
-            url: '/auth/signin/pwd',
-            method: 'post',
-            data: {
-              username: this.loginForm.username,
-              password: md5(this.loginForm.password)
-            },
-            handle: result => {
-              if (result.status < 1) {
-                alert(result.msg)
-              } else {
-                this.$store.commit('user/setUser', result.data.user)
-                this.$store.commit('user/setName', result.data.user.name)
-                this.$store.commit('user/setAvatar', 'https://jep8566.com/ken.JPG')
-                this.$store.commit('user/setIntroduction', 'blabla')
-                this.$router.push({ path: this.redirect || '/', query: this.otherQuery })
-                // alert(result.msg + '---------' + Cookies.get('Set-Cookie'))
-              }
-            }
-          }, this, () => {
-            this.loading = false
-          })
-
-	/* setTimeout(() => {
-            this.loading = false
-          }, 3000) */
 
 SESSION=NjRlNGQ2MjMtYTMyOS00MmZmLWE3Y2YtOTc4M2QyMjkwNWE2; Path=/; HttpOnly; SameSite=Lax
 SESSION=; Max-Age=0; Expires=Thu, 1 Jan 1970 00:00:00 GMT; Path=/; HttpOnly; SameSite=Lax
