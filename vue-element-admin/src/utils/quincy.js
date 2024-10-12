@@ -26,7 +26,6 @@ export function ajax(params, t, after) {
         case 1: handle(data);break;
         case 0: {
               // alert('跳登录页')
-              // t.$store.dispatch('user/logout')
               t.$router.push(`/login?redirect=${t.$route.fullPath}`)
           }break;
         default: alert('弹层(红叉)：'+response.data.msg);break;
