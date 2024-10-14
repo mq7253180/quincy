@@ -53,7 +53,7 @@ import ErrorLog from '@/components/ErrorLog'
 import Screenfull from '@/components/Screenfull'
 import SizeSelect from '@/components/SizeSelect'
 import Search from '@/components/HeaderSearch'
-import { getToken, setToken, removeToken } from '@/utils/auth'
+import { removeToken } from '@/utils/auth'
 import router, { resetRouter } from '@/router'
 import { ajax } from '@/utils/quincy'
 
