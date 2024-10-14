@@ -8,17 +8,28 @@
 export default {
   name: 'App',
   created() {
-    if (sessionStorage.getItem('store')) {
+    if (sessionStorage.getItem('vuexStore')) {
       this.$store.replaceState(
         Object.assign(
           {},
           this.$store.state,
-          JSON.parse(sessionStorage.getItem('store'))
+          JSON.parse(sessionStorage.getItem('vuexStore'))
         )
       )
     }
     window.addEventListener('beforeunload', () => {
-      sessionStorage.setItem('store', JSON.stringify(this.$store.state))
+      sessionStorage.setItem('vuexStore', JSON.stringify(this.$store.state))
+    })
+    window.addEventListener('vuexStoreMsg', (event) => {
+      if (event.data) {
+        this.$store.replaceState(
+          Object.assign(
+            {},
+            this.$store.state,
+            event.data
+          )
+        )
+      }
     })
   }
 }
