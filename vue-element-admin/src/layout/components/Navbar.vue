@@ -54,7 +54,7 @@ import Screenfull from '@/components/Screenfull'
 import SizeSelect from '@/components/SizeSelect'
 import Search from '@/components/HeaderSearch'
 import { removeToken } from '@/utils/auth'
-import router, { resetRouter } from '@/router'
+import { resetRouter } from '@/router'
 import { ajax } from '@/utils/quincy'
 
 export default {
@@ -73,6 +73,20 @@ export default {
       'device'
     ])
   },
+  created() {
+    if (sessionStorage.getItem('store')) {
+      this.$store.replaceState(
+        Object.assign(
+          {},
+          this.$store.state,
+          JSON.parse(sessionStorage.getItem('store'))
+        )
+      )
+    }
+    window.addEventListener('beforeunload', () => {
+      sessionStorage.setItem('store', JSON.stringify(this.$store.state))
+    })
+  },
   methods: {
     toggleSideBar() {
       this.$store.dispatch('app/toggleSideBar')
@@ -87,7 +101,7 @@ export default {
           this.$store.commit('user/setToken', '')
           removeToken()
           resetRouter()
-          // alert('已登出---' + this.$store.getters.roles + '---' + this.$store.getters.token + '---' + this.$store.getters.avatar)
+          alert('您已登出')
           this.$router.push(`/login?redirect=${this.$route.fullPath}`)
         }
       }, this, () => {
