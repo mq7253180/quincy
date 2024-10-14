@@ -20,9 +20,8 @@ router.beforeEach(async(to, from, next) => {
 
   // determine whether the user has logged in
   const hasToken = getToken()
-  // alert('SESSION==================' + Cookies.get('SESSION'))
+
   if (hasToken) {
-    // alert('hasToken==================' + hasToken)
     if (to.path === '/login') {
       // if is logged in, redirect to the home page
       next({ path: '/' })
@@ -30,7 +29,6 @@ router.beforeEach(async(to, from, next) => {
     } else {
       // determine whether the user has obtained his permission roles through getInfo
       const hasRoles = store.getters.roles && store.getters.roles.length > 0
-      // alert('hasRoles==================' + hasRoles)
       if (hasRoles) {
         next()
       } else {
@@ -66,6 +64,7 @@ router.beforeEach(async(to, from, next) => {
       // in the free login whitelist, go directly
       next()
     } else {
+      alert('您已登出')
       // other pages that do not have permission to access are redirected to the login page.
       next(`/login?redirect=${to.path}`)
       NProgress.done()
