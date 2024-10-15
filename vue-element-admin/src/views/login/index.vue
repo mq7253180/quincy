@@ -156,7 +156,6 @@ export default {
       })
     },
     handleLogin() {
-      // this.$router.push('/dashboard')
       this.$refs.loginForm.validate(valid => {
         if (valid) {
           this.loading = true
@@ -171,12 +170,11 @@ export default {
               if (result.status < 1) {
                 alert(result.msg)
               } else {
-                this.$store.commit('user/setUser', result.data.user)
-                this.$store.commit('user/setName', result.data.user.name)
-                this.$store.commit('user/setAvatar', 'https://jep8566.com/ken.JPG')
-                this.$store.commit('user/setIntroduction', 'blabla')
+                this.$store.commit('user/SET_USER', result.data.user)
+                this.$store.commit('user/SET_NAME', result.data.user.name)
+                this.$store.commit('user/SET_AVATAR', 'https://jep8566.com/ken.JPG')
+                this.$store.commit('user/SET_INTRODUCTION', 'blabla')
                 this.$router.push({ path: this.redirect || '/', query: this.otherQuery })
-                // alert(result.msg + '---------' + Cookies.get('Set-Cookie'))
               }
             }
           }, this, () => {

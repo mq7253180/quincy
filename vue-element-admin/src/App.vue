@@ -20,17 +20,6 @@ export default {
     window.addEventListener('beforeunload', () => {
       sessionStorage.setItem('vuexStore', JSON.stringify(this.$store.state))
     })
-    window.addEventListener('vuexStoreMsg', (event) => {
-      if (event.data) {
-        this.$store.replaceState(
-          Object.assign(
-            {},
-            this.$store.state,
-            event.data
-          )
-        )
-      }
-    })
   }
 }
 </script>

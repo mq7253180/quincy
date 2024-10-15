@@ -29,24 +29,6 @@ const mutations = {
   },
   SET_USER: (state, user) => {
     state.user = user
-  },
-  setIntroduction(state, introduction) {
-    state.introduction = introduction
-  },
-  setName(state, name) {
-    state.name = name
-  },
-  setAvatar(state, avatar) {
-    state.avatar = avatar
-  },
-  setRoles(state, roles) {
-    state.roles = roles
-  },
-  setUser(state, user) {
-    state.user = user
-  },
-  setToken(state, token) {
-    state.token = token
   }
 }
 

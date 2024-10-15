@@ -83,8 +83,8 @@ export default {
         url: '/auth/signout',
         method: 'get',
         handle: () => {
-          this.$store.commit('user/setRoles', [])
-          this.$store.commit('user/setToken', '')
+          this.$store.commit('user/SET_ROLES', [])
+          this.$store.commit('user/SET_TOKEN', '')
           removeToken()
           resetRouter()
           alert('您已登出')
