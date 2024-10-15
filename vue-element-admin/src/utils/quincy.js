@@ -27,8 +27,8 @@ export function ajax(params, t, after) {
       switch (status) {
         case 1: handle(data); break
         case 0:
-          t.$store.commit('user/setRoles', [])
-          t.$store.commit('user/setToken', '')
+          t.$store.commit('user/SET_TOKEN', '')
+          t.$store.commit('user/SET_ROLES', [])
           removeToken()
           resetRouter()
           alert('会话超时，请重新登录！')
