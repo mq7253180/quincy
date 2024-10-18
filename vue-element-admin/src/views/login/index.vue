@@ -172,8 +172,9 @@ export default {
               } else {
                 this.$store.commit('user/SET_USER', result.data.user)
                 this.$store.commit('user/SET_NAME', result.data.user.name)
-                this.$store.commit('user/SET_AVATAR', 'https://jep8566.com/ken.JPG')
+                this.$store.commit('user/SET_AVATAR', 'https://demo.jep8566.com/avatar/ken.JPG')
                 this.$store.commit('user/SET_INTRODUCTION', 'blabla')
+                this.$store.commit('permission/SET_PERMISSIONS', result.data.permissions)
                 this.$router.push({ path: this.redirect || '/', query: this.otherQuery })
               }
             }
