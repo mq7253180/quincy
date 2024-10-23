@@ -53,7 +53,7 @@ if (typeof JSON.retrocycle !== 'function') {
             if (typeof element === 'object' && element !== null) {
               var path = element.$ref
               if (typeof path === 'string' && px.test(path)) {
-                value[i] = eval(path)
+                value[i] = evalEscape(path)
               } else {
                 rez(element)
               }
@@ -65,7 +65,7 @@ if (typeof JSON.retrocycle !== 'function') {
             if (typeof item === 'object' && item !== null) {
               var path = item.$ref
               if (typeof path === 'string' && px.test(path)) {
-                value[name] = eval(path)
+                value[name] = evalEscape(path)
               } else {
                 rez(item)
               }
@@ -76,4 +76,8 @@ if (typeof JSON.retrocycle !== 'function') {
     }($))
     return $
   }
+}
+const evalEscape = fn => {
+  var Fun = Function // 一个变量指向Function，防止有些前端编译工具报错
+  return new Fun('return ' + fn)()
 }
