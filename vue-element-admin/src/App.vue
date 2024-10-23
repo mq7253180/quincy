@@ -5,6 +5,8 @@
 </template>
 
 <script>
+import '@/utils/cycle'
+
 export default {
   name: 'App',
   created() {
@@ -13,12 +15,12 @@ export default {
         Object.assign(
           {},
           this.$store.state,
-          JSON.parse(localStorage.getItem('vuexStore'))
+          JSON.retrocycle(JSON.parse(localStorage.getItem('vuexStore')))
         )
       )
     }
     window.addEventListener('beforeunload', () => {
-      localStorage.setItem('vuexStore', JSON.stringify(this.$store.state))
+      localStorage.setItem('vuexStore', JSON.stringify(JSON.decycle(this.$store.state)))
     })
   }
 }
