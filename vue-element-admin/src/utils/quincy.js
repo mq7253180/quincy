@@ -1,14 +1,12 @@
 import axiosxxx from 'axios'
 import qs from 'qs'
-import { removeToken } from '@/utils/auth'
-import { resetRouter } from '@/router'
 
 // axiosxxx.defaults.headers['x-requested-with'] = 'XMLHttpRequest';
 
 const service = axiosxxx.create({
   baseURL: process.env.VUE_APP_BASE_API,
-  timeout: 50000,
   withCredentials: true,
+  timeout: 50000,
   headers: {
     'x-requested-with': 'XMLHttpRequest'
   }
@@ -27,10 +25,7 @@ export function ajax(params, t, after) {
       switch (status) {
         case 1: handle(data); break
         case 0:
-          t.$store.commit('user/SET_TOKEN', '')
-          t.$store.commit('user/SET_ROLES', [])
-          removeToken()
-          resetRouter()
+          t.$store.commit('user/remove')
           alert('会话超时，请重新登录！')
           t.$router.push(`/login?redirect=${t.$route.fullPath}`)
           break

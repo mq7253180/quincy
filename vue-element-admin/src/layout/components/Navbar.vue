@@ -53,8 +53,6 @@ import ErrorLog from '@/components/ErrorLog'
 import Screenfull from '@/components/Screenfull'
 import SizeSelect from '@/components/SizeSelect'
 import Search from '@/components/HeaderSearch'
-import { removeToken } from '@/utils/auth'
-import { resetRouter } from '@/router'
 import { ajax } from '@/utils/quincy'
 
 export default {
@@ -83,10 +81,7 @@ export default {
         url: '/auth/signout',
         method: 'get',
         handle: () => {
-          this.$store.commit('user/SET_TOKEN', '')
-          this.$store.commit('user/SET_ROLES', [])
-          removeToken()
-          resetRouter()
+          this.$store.commit('user/remove')
           alert('您已登出')
           this.$router.push(`/login?redirect=${this.$route.fullPath}`)
         }

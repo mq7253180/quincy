@@ -1,6 +1,7 @@
 import { login, logout, getInfo } from '@/api/user'
 import { getToken, setToken, removeToken } from '@/utils/auth'
 import router, { resetRouter } from '@/router'
+import store from '@/store'
 
 const state = {
   token: getToken(),
@@ -27,8 +28,25 @@ const mutations = {
   SET_ROLES: (state, roles) => {
     state.roles = roles
   },
-  SET_USER: (state, user) => {
+  set(state, user) {
     state.user = user
+    state.name = user.name
+    state.avatar = user.avatar
+    state.introduction = user.introduction
+    store.state.permission.permissions = user.permissions
+    localStorage.setItem('quincyUser', JSON.stringify(user))
+  },
+  remove() {
+    state.token = ''
+    state.roles = []
+    state.user = null
+    state.name = ''
+    state.avatar = ''
+    state.introduction = ''
+    store.state.permission.permissions = []
+    removeToken()
+    resetRouter()
+    localStorage.removeItem('quincyUser')
   }
 }
 

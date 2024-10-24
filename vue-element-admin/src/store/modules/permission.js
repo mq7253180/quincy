@@ -1,4 +1,5 @@
 import { asyncRoutes, constantRoutes } from '@/router'
+import store from '@/store'
 
 /**
  * Use meta.role to determine if the current user has permission
@@ -61,6 +62,10 @@ const actions = {
       } else {
         accessedRoutes = filterAsyncRoutes(asyncRoutes, roles)
       } */
+      var userJson = localStorage.getItem('quincyUser')
+      if (userJson !== null && userJson !== '') {
+        store.commit('user/set', JSON.parse(localStorage.getItem('quincyUser')))
+      }
       const accessedRoutes = filterAsyncRoutes(asyncRoutes, state.permissions)
       commit('SET_ROUTES', accessedRoutes)
       resolve(accessedRoutes)
