@@ -293,6 +293,20 @@ UPDATE sub_test SET eee=CONCAT(eee, 'yyy') WHERE id='o';
 UPDATE sub_test SET eee=CONCAT(eee, 'yyy') WHERE id='l';
 
 
+DROP TABLE IF EXISTS test_type;
+CREATE TABLE test_type (
+	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+	aaa TINYINT,
+	bbb SMALLINT,
+	ccc MEDIUMINT,
+	ddd INT,
+	eee BIGINT,
+	PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+INSERT INTO test_type(aaa, bbb, ccc, ddd, eee) VALUES(111, 222, 333, 444, 555);
+
+
 
 SELECT u.data_id,f.name,f.old_value,f.new_value,u.id,u.creation_time FROM s_updation_field f LEFT OUTER JOIN s_updation u ON f.p_id=u.id WHERE u.table_name='sub_test' AND u.creation_time BETWEEN '2024-07-24 15:30:00' AND '2024-07-24 16:30:00' ORDER BY u.creation_time DESC,u.data_id;
 
