@@ -1,14 +1,14 @@
 DROP TABLE IF EXISTS s_transaction;
 CREATE TABLE s_transaction (
-	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
 	application_name VARCHAR(20) NOT NULL COMMENT '应用服务名称',
 	bean_name VARCHAR(100) NOT NULL COMMENT 'Bean名称',
 	method_name VARCHAR(100) NOT NULL COMMENT '方法名称',
-	type TINYINT(1) NOT NULL COMMENT '1失败撤消; 0失败重试',
-	status TINYINT(1) NOT NULL DEFAULT 0 COMMENT '1执行结束; 0正在执行',
-	version INT(11) NOT NULL DEFAULT 0 COMMENT '重试执行版本',
+	type TINYINT NOT NULL COMMENT '1失败撤消; 0失败重试',
+	status TINYINT NOT NULL DEFAULT 0 COMMENT '1执行结束; 0正在执行',
+	version INT NOT NULL DEFAULT 0 COMMENT '重试执行版本',
 	flag_for_cron_job VARCHAR(10) COMMENT '定时任务标识',
-	in_order TINYINT(1) DEFAULT 0 COMMENT '是否有顺序: 1TRUE; 0FALSE',
+	in_order TINYINT DEFAULT 0 COMMENT '是否有顺序: 1TRUE; 0FALSE',
 	creation_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
 	last_executed DATETIME DEFAULT NULL COMMENT '上一次执行时间',
 	PRIMARY KEY (id),
@@ -17,12 +17,12 @@ CREATE TABLE s_transaction (
 
 DROP TABLE IF EXISTS s_transaction_atomic;
 CREATE TABLE s_transaction_atomic (
-	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
-	tx_id INT(11) UNSIGNED NOT NULL COMMENT '事务id',
+	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+	tx_id INT UNSIGNED NOT NULL COMMENT '事务id',
 	bean_name VARCHAR(100) NOT NULL COMMENT 'Bean名称',
 	method_name VARCHAR(100) NOT NULL COMMENT '失败后需要执行的方法名',
-	status TINYINT(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '确认方法: 2已执行撤消; 1成功; 0未成功',
-	sort TINYINT(2) NOT NULL COMMENT '顺序',
+	status TINYINT UNSIGNED NOT NULL DEFAULT 0 COMMENT '确认方法: 2已执行撤消; 1成功; 0未成功',
+	sort TINYINT NOT NULL COMMENT '顺序',
 	msg VARCHAR(200) COMMENT '失败信息',
 	ret_class VARCHAR(200) DEFAULT NULL COMMENT '返回类型',
 	ret_value VARCHAR(1500) DEFAULT NULL COMMENT '返回值',
@@ -32,19 +32,19 @@ CREATE TABLE s_transaction_atomic (
 
 DROP TABLE IF EXISTS s_transaction_arg;
 CREATE TABLE s_transaction_arg (
-	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
-	parent_id INT(11) UNSIGNED NOT NULL COMMENT '事务或原子操作id',
+	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+	parent_id INT UNSIGNED NOT NULL COMMENT '事务或原子操作id',
 	class VARCHAR(200) NOT NULL COMMENT '类型',
 	_value VARCHAR(1500) NOT NULL COMMENT '值',
-	sort TINYINT(2) NOT NULL COMMENT '顺序',
-	type TINYINT(1) NOT NULL COMMENT '0事务; 1原子操作',
+	sort TINYINT NOT NULL COMMENT '顺序',
+	type TINYINT NOT NULL COMMENT '0事务; 1原子操作',
 	PRIMARY KEY (id),
 	KEY idx_union (parent_id, type) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 DROP TABLE IF EXISTS `b_region`;
 CREATE TABLE `b_region` (
-  `id` INT(11) UNSIGNED NOT NULL,
+  `id` INT UNSIGNED NOT NULL,
   `en_name` VARCHAR(50) NOT NULL COMMENT '英文名称',
   `cn_name` VARCHAR(50) NOT NULL COMMENT '中文名称',
   `tel_prefix` VARCHAR(15) DEFAULT NULL COMMENT '电话区号',
@@ -52,7 +52,7 @@ CREATE TABLE `b_region` (
   `code2` VARCHAR(2) DEFAULT NULL COMMENT '两字码',
   `currency` VARCHAR(5) DEFAULT NULL COMMENT '币种',
   `locale` VARCHAR(10) DEFAULT NULL COMMENT 'locale',
-  `parent_id` INT(11) UNSIGNED DEFAULT '0' COMMENT '父id',
+  `parent_id` INT UNSIGNED DEFAULT '0' COMMENT '父id',
   PRIMARY KEY (`id`),
   UNIQUE KEY `unq_en_name` (`en_name`),
   UNIQUE KEY `unq_cn_name` (`cn_name`),
@@ -258,9 +258,9 @@ INSERT INTO `b_region` VALUES (247, 'Central African Republic', '中非共和国
 
 DROP TABLE IF EXISTS `s_role`;
 CREATE TABLE `s_role` (
-  `id` INT(11) UNSIGNED NOT NULL,
+  `id` INT UNSIGNED NOT NULL,
   `name` VARCHAR(50) NOT NULL COMMENT '名称',
-  `enterprise_id` INT(11) UNSIGNED,
+  `enterprise_id` BIGINT UNSIGNED,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -282,7 +282,7 @@ INSERT INTO `s_role` VALUES (17, '合规(香港)');
 
 DROP TABLE IF EXISTS `s_permission`;
 CREATE TABLE `s_permission` (
-  `id` INT(11) UNSIGNED NOT NULL,
+  `id` INT UNSIGNED NOT NULL,
   `name` VARCHAR(255) NOT NULL COMMENT '名称',
   `des` VARCHAR(50) NOT NULL COMMENT '描述',
   PRIMARY KEY (`id`)
@@ -306,9 +306,9 @@ INSERT INTO `s_permission` VALUES (20, 'creditMarginDelete', '删除保证金');
 
 DROP TABLE IF EXISTS `s_permission_role_rel`;
 CREATE TABLE `s_permission_role_rel` (
-  `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `role_id` INT(11) UNSIGNED NOT NULL COMMENT '角色id',
-  `permission_id` INT(11) UNSIGNED NOT NULL COMMENT '权限id',
+  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `role_id` INT UNSIGNED NOT NULL COMMENT '角色id',
+  `permission_id` INT UNSIGNED NOT NULL COMMENT '权限id',
   PRIMARY KEY (`id`),
   UNIQUE KEY `unq_rel` (`permission_id`,`role_id`),
   KEY `idx_permission_id` (`permission_id`),
@@ -335,8 +335,8 @@ INSERT INTO `s_permission_role_rel` VALUES (39, 0, 20);
 
 DROP TABLE IF EXISTS `s_menu`;
 CREATE TABLE `s_menu` (
-  `id` INT(11) UNSIGNED NOT NULL,
-  `p_id` INT(11) UNSIGNED DEFAULT NULL COMMENT '父id',
+  `id` INT UNSIGNED NOT NULL,
+  `p_id` INT UNSIGNED DEFAULT NULL COMMENT '父id',
   `name` VARCHAR(20) NOT NULL COMMENT '名称',
   `uri` VARCHAR(200) DEFAULT NULL COMMENT 'uri',
   `icon` VARCHAR(50) DEFAULT NULL COMMENT '图标',
@@ -352,9 +352,9 @@ INSERT INTO `s_menu` VALUES (22, 2, '保证金', '/credit/margin/5/1', NULL);
 
 DROP TABLE IF EXISTS `s_role_menu_rel`;
 CREATE TABLE `s_role_menu_rel` (
-  `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `role_id` INT(11) UNSIGNED NOT NULL COMMENT '角色id',
-  `menu_id` INT(11) UNSIGNED NOT NULL COMMENT '菜单id',
+  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `role_id` INT UNSIGNED NOT NULL COMMENT '角色id',
+  `menu_id` INT UNSIGNED NOT NULL COMMENT '菜单id',
   PRIMARY KEY (`id`),
   UNIQUE KEY `unq_rel` (`role_id`,`menu_id`),
   KEY `idx_role_id` (`role_id`),
@@ -373,10 +373,10 @@ INSERT INTO `s_role_menu_rel` VALUES (37, 14, 21);
 
 DROP TABLE IF EXISTS s_client_system;
 CREATE TABLE s_client_system (
-	id INT(11) UNSIGNED NOT NULL,
+	id INT UNSIGNED NOT NULL,
 	name VARCHAR(50) NOT NULL COMMENT '名称',
 	client_id VARCHAR(256) NOT NULL COMMENT '逻辑client id',
-	secret VARCHAR(256) COMMENT '私钥',
+	secret VARCHAR(256) COMMENT '公钥',
 	PRIMARY KEY (id),
 	UNIQUE KEY `unq_client_id` (`client_id`),
 	UNIQUE KEY `unq_secret` (`secret`),
@@ -385,13 +385,13 @@ CREATE TABLE s_client_system (
 
 INSERT INTO s_client_system VALUES(1, '本系统', 'self', NULL);
 
-DROP TABLE IF EXISTS `s_user`;
-CREATE TABLE `s_user` (
-  `id` INT(11) UNSIGNED NOT NULL,
+DROP TABLE IF EXISTS `b_user`;
+CREATE TABLE `b_user` (
+  `id` BIGINT UNSIGNED NOT NULL,
   `creation_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `username` VARCHAR(50) NOT NULL,
   `name` VARCHAR(50) NOT NULL,
-  `gender` TINYINT(1) NOT NULL COMMENT '0女；1男',
+  `gender` TINYINT UNSIGNED NOT NULL COMMENT '0女；1男',
   `password` VARCHAR(128),
   `mobile_phone` VARCHAR(20) NOT NULL,
   `email` VARCHAR(50),
@@ -409,8 +409,7 @@ CREATE TABLE `s_user` (
 
 DROP TABLE IF EXISTS s_enterprise;
 CREATE TABLE s_enterprise (
-	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
-	sharding_key TINYINT(6) UNSIGNED NOT NULL,
+	id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
 	name VARCHAR(50) NOT NULL,
 	unified_socialc_redit_identifier VARCHAR(50),
 	address VARCHAR(100),
@@ -432,10 +431,10 @@ INSERT INTO `s_user` VALUES (7, '2019-06-24 14:41:15', 'zhaozh', '赵志辉', 'd
 
 DROP TABLE IF EXISTS `s_role_user_rel`;
 CREATE TABLE `s_role_user_rel` (
-  `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `role_id` INT(11) UNSIGNED NOT NULL COMMENT '角色id',
-  `user_id` INT(11) UNSIGNED NOT NULL COMMENT '用户id',
-  `status` TINYINT(2) NOT NULL DEFAULT 1 COMMENT '-1已离职；0未激活；1正常',
+  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `role_id` INT UNSIGNED NOT NULL COMMENT '角色id',
+  `user_id` BIGINT UNSIGNED NOT NULL COMMENT '用户id',
+  `status` TINYINT NOT NULL DEFAULT 1 COMMENT '-1已离职；0未激活；1正常',
   PRIMARY KEY (`id`),
   UNIQUE KEY `unq_rel` (`role_id`,`user_id`),
   KEY `idx_role_id` (`role_id`),
@@ -447,7 +446,7 @@ INSERT INTO `s_role_user_rel` VALUES (13, 14, 5);
 
 DROP TABLE IF EXISTS s_updation;
 CREATE TABLE s_updation (
-	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
 	sql_statement VARCHAR(300) NOT NULL,
 	params VARCHAR(100) NOT NULL,
 	creation_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -457,10 +456,10 @@ CREATE TABLE s_updation (
 
 DROP TABLE IF EXISTS s_updation_row;
 CREATE TABLE s_updation_row (
-	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
-	p_id INT(11) UNSIGNED NOT NULL,
+	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+	p_id INT UNSIGNED NOT NULL,
 	table_name VARCHAR(50) NOT NULL,
-	data_id_int INT(11) UNSIGNED,
+	data_id_int INT UNSIGNED,
 	data_id_str VARCHAR(50),
 	PRIMARY KEY (id),
 	KEY idx_xxx(data_id_int, table_name, p_id) USING BTREE,
@@ -471,13 +470,13 @@ CREATE TABLE s_updation_row (
 
 DROP TABLE IF EXISTS s_updation_field;
 CREATE TABLE s_updation_field (
-	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
-	p_id INT(11) UNSIGNED NOT NULL,
+	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+	p_id INT UNSIGNED NOT NULL,
 	name VARCHAR(50) NOT NULL,
 	old_value_str VARCHAR(100),
 	new_value_str VARCHAR(100),
-	old_value_int INT(11),
-	new_value_int INT(11),
+	old_value_int INT,
+	new_value_int INT,
 	old_value_decimal DECIMAL(10, 4),
 	new_value_decimal DECIMAL(10, 4),
 	old_value_time DATETIME,
@@ -488,22 +487,22 @@ CREATE TABLE s_updation_field (
 
 DROP TABLE IF EXISTS s_dynamic_field;
 CREATE TABLE s_dynamic_field (
-	id INT(11) UNSIGNED NOT NULL,
+	id INT UNSIGNED NOT NULL,
 	table_name VARCHAR(50) NOT NULL,
 	name VARCHAR(50) NOT NULL,
-	sort TINYINT(2),
+	sort TINYINT,
 	PRIMARY KEY (id),
 	KEY idx_table_name(table_name, sort, id, name) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 DROP TABLE IF EXISTS s_dynamic_field_val;
 CREATE TABLE s_dynamic_field_val (
-	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
-	field_id INT(11) UNSIGNED NOT NULL,
-	business_id_int INT(11) UNSIGNED,
+	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+	field_id INT UNSIGNED NOT NULL,
+	business_id_int INT UNSIGNED,
 	business_id_str VARCHAR(50),
 	value_str VARCHAR(100),
-	value_int INT(11),
+	value_int INT,
 	value_decimal DECIMAL(10, 4),
 	value_time DATETIME,
 	PRIMARY KEY (id),
@@ -513,25 +512,3 @@ CREATE TABLE s_dynamic_field_val (
 	KEY idx_www(business_id_str, field_id) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-
-
-
-DROP TABLE IF EXISTS s_oauth2_code;
-CREATE TABLE s_oauth2_code (
-	id INT(11) NOT NULL AUTO_INCREMENT,
-	user_id INT(11) NOT NULL COMMENT '用户id',
-	client_system_id INT(11) NOT NULL COMMENT '第三方系统id',
-	code VARCHAR(128) COMMENT '授权码',
-	PRIMARY KEY (id),
-	UNIQUE KEY `unq_union` (`user_id`, `client_system_id`),
-	UNIQUE KEY `unq_code` (`code`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
-DROP TABLE IF EXISTS s_oauth2_scope;
-CREATE TABLE s_oauth2_scope (
-	id INT(11) NOT NULL AUTO_INCREMENT,
-	code_id INT(11) NOT NULL COMMENT 's_oauth2_code表的id',
-	scope VARCHAR(20) NOT NULL COMMENT '权限',
-	PRIMARY KEY (id),
-	UNIQUE KEY `unq_union` (`code_id`, `scope`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
