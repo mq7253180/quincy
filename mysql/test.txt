@@ -637,7 +637,7 @@ INSERT INTO s_dynamic_field VALUES(1, 'sub_test', 'item1', 3);
 INSERT INTO s_dynamic_field VALUES(2, 'sub_test', 'item2', 1);
 INSERT INTO s_dynamic_field VALUES(3, 'sub_test', 'item3', 2);
 
-DELTE FROM s_dynamic_field_val;
+DELETE FROM s_dynamic_field_val;
 INSERT INTO s_dynamic_field_val(field_id, business_id_str, value_decimal) VALUES(1, 'h', 123.32);
 INSERT INTO s_dynamic_field_val(field_id, business_id_str, value_decimal) VALUES(1, 'i', 342.43);
 INSERT INTO s_dynamic_field_val(field_id, business_id_str, value_decimal) VALUES(1, 'j', 3545.23);
@@ -658,6 +658,32 @@ INSERT INTO s_dynamic_field_val(field_id, business_id_str, value_decimal) VALUES
 INSERT INTO s_dynamic_field_val(field_id, business_id_str, value_decimal) VALUES(3, 'c', 874.83);
 INSERT INTO s_dynamic_field_val(field_id, business_id_str, value_decimal) VALUES(1, 'c', 2345.56);
 SELECT * FROM s_dynamic_field_val;
+
+abcdefghi j  k  l  m  n  o  p  q  r  s  t  u  v  w  x  y  z
+123456789 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26
+
+DELETE FROM s_dynamic_field_val;
+INSERT INTO s_dynamic_field_val(field_id, business_id_int, value_decimal) VALUES(1, 8, 123.32);
+INSERT INTO s_dynamic_field_val(field_id, business_id_int, value_decimal) VALUES(1, 9, 342.43);
+INSERT INTO s_dynamic_field_val(field_id, business_id_int, value_decimal) VALUES(1, 10, 3545.23);
+INSERT INTO s_dynamic_field_val(field_id, business_id_int, value_decimal) VALUES(1, 11, 7645.23);
+INSERT INTO s_dynamic_field_val(field_id, business_id_int, value_decimal) VALUES(1, 12, 453.12);
+INSERT INTO s_dynamic_field_val(field_id, business_id_int, value_str) VALUES(2, 8, 'aaa');
+INSERT INTO s_dynamic_field_val(field_id, business_id_int, value_str) VALUES(2, 9, 'and');
+INSERT INTO s_dynamic_field_val(field_id, business_id_int, value_decimal) VALUES(3, 8, 78424.67);
+INSERT INTO s_dynamic_field_val(field_id, business_id_int, value_decimal) VALUES(3, 9, 234434.78);
+INSERT INTO s_dynamic_field_val(field_id, business_id_int, value_decimal) VALUES(3, 10, 765.52);
+INSERT INTO s_dynamic_field_val(field_id, business_id_int, value_decimal) VALUES(3, 11, 435.76);
+INSERT INTO s_dynamic_field_val(field_id, business_id_int, value_decimal) VALUES(1, 13, 23423.28);
+INSERT INTO s_dynamic_field_val(field_id, business_id_int, value_str) VALUES(2, 10, 'ghfjg');
+INSERT INTO s_dynamic_field_val(field_id, business_id_int, value_decimal) VALUES(3, 13, 12312.92);
+INSERT INTO s_dynamic_field_val(field_id, business_id_int, value_decimal) VALUES(1, 14, 435.18);
+INSERT INTO s_dynamic_field_val(field_id, business_id_int, value_str) VALUES(2, 11, 'tyru');
+INSERT INTO s_dynamic_field_val(field_id, business_id_int, value_decimal) VALUES(3, 12, 32.83);
+INSERT INTO s_dynamic_field_val(field_id, business_id_int, value_decimal) VALUES(3, 3, 874.83);
+INSERT INTO s_dynamic_field_val(field_id, business_id_int, value_decimal) VALUES(1, 3, 2345.56);
+SELECT * FROM s_dynamic_field_val;
+
 
 INSERT INTO s_dynamic_field_val(field_id, business_id_str, value_decimal) VALUES(3, 'h', 675.75);
 
