@@ -385,6 +385,15 @@ CREATE TABLE s_client_system (
 
 INSERT INTO s_client_system VALUES(1, '本系统', 'self', NULL);
 
+DROP TABLE IF EXISTS `b_login_user_mapping`;
+CREATE TABLE `b_login_user_mapping` (
+  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `login_name` VARCHAR(50) NOT NULL,
+  `user_id` BIGINT UNSIGNED NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `unq_login_name` (`login_name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
 DROP TABLE IF EXISTS `b_user`;
 CREATE TABLE `b_user` (
   `id` BIGINT UNSIGNED NOT NULL,
