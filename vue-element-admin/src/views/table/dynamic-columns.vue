@@ -24,12 +24,12 @@
         reviewer
       </el-checkbox>
     </div>
-    <table>
+    <table v-loading="listLoading" border fit highlight-current-row style="width: 100%;" @sort-change="sortChange">
       <tr>
-        <td>id</td>
-        <td>eee</td>
-        <td>fff</td>
-        <td v-for="dynamicFieldName in dynamicFieldNames" :key="dynamicFieldName.index">{{ dynamicFieldName }}</td>
+        <td width="150px" align="center">id</td>
+        <td width="150px" align="center">eee</td>
+        <td width="150px" align="center">fff</td>
+        <td width="150px" align="center" v-for="dynamicFieldName in dynamicFieldNames" :key="dynamicFieldName.index">{{ dynamicFieldName }}</td>
       </tr>
       <tr v-for="row in list" :key="row.id">
         <td>{{ row.id }}</td>
@@ -136,6 +136,7 @@ export default {
           // alert(JSON.stringify(data))
           this.list = data.result
           this.dynamicFieldNames = data.dynamicFieldNames
+          this.listLoading = false
         }
       }, this)
       /* fetchList(this.listQuery).then(response => {
