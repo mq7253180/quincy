@@ -46,7 +46,7 @@
                   <span>{{ row.fff }}</span>
                 </div>
               </td>
-              <td v-for="dynamicField in row.dynamicFields" :key="dynamicField.index" rowspan="1" colspan="1" :class="dynamicField.align">
+              <td v-for="dynamicField in row.dynamicFields" :key="dynamicField.index" rowspan="1" colspan="1" :class="dynamicField.clazz">
                 <div class="cell">
                   <span>{{ dynamicField.value }}</span>
                 </div>
