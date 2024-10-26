@@ -499,6 +499,7 @@ CREATE TABLE s_dynamic_field (
 	id INT UNSIGNED NOT NULL,
 	table_name VARCHAR(50) NOT NULL,
 	name VARCHAR(50) NOT NULL,
+	align VARCHAR(50),
 	sort TINYINT,
 	PRIMARY KEY (id),
 	KEY idx_table_name(table_name, sort, id, name) USING BTREE

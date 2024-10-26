@@ -9,8 +9,8 @@
                 <div class="cell">
                   ID
                   <span class="caret-wrapper">
-                    <i class="sort-caret ascending"></i>
-                    <i class="sort-caret descending"></i>
+                    <i class="sort-caret ascending" />
+                    <i class="sort-caret descending" />
                   </span>
                 </div>
               </th>
@@ -20,8 +20,8 @@
               <th colspan="1" rowspan="1" class="el-table_3_column_14 is-center is-leaf">
                 <div class="cell">FFF</div>
               </th>
-              <th v-for="dynamicFieldName in dynamicFieldNames" :key="dynamicFieldName.index" colspan="1" rowspan="1" class="el-table_3_column_15 is-center is-leaf">
-                <div class="cell">{{ dynamicFieldName }}</div>
+              <th v-for="dynamicField in dynamicFields" :key="dynamicField.index" colspan="1" rowspan="1" class="el-table_3_column_15 is-center is-leaf">
+                <div class="cell">{{ dynamicField.name }}</div>
               </th>
             </tr>
           </thead>
@@ -46,7 +46,7 @@
                   <span>{{ row.fff }}</span>
                 </div>
               </td>
-              <td v-for="dynamicField in row.dynamicFields" :key="dynamicField.index" rowspan="1" colspan="1" class="el-table_3_column_15 is-right">
+              <td v-for="dynamicField in row.dynamicFields" :key="dynamicField.index" rowspan="1" colspan="1" :class="dynamicField.align">
                 <div class="cell">
                   <span>{{ dynamicField.value }}</span>
                 </div>
@@ -68,7 +68,7 @@ export default {
     return {
       list: null,
       listLoading: true,
-      dynamicFieldNames: null
+      dynamicFields: null
     }
   },
   created() {
@@ -84,7 +84,7 @@ export default {
         // data: {},
         handle: (data) => {
           this.list = data.result
-          this.dynamicFieldNames = data.dynamicFieldNames
+          this.dynamicFields = data.dynamicFields
           this.listLoading = false
         }
       }, this)

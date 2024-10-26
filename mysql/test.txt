@@ -633,9 +633,9 @@ INNER JOIN (SELECT * FROM s_dynamic_field ORDER BY sort) f ON v.field_id=f.id AN
 +----+-------------+-----------------+------------+------+-------------------------+----------------+---------+---------------------------+------+----------+-------------+
 
 DELETE FROM s_dynamic_field;
-INSERT INTO s_dynamic_field VALUES(1, 'sub_test', 'item1', 3);
-INSERT INTO s_dynamic_field VALUES(2, 'sub_test', 'item2', 1);
-INSERT INTO s_dynamic_field VALUES(3, 'sub_test', 'item3', 2);
+INSERT INTO s_dynamic_field VALUES(1, 'sub_test', 'item1', 'el-table_3_column_15 is-right', 3);
+INSERT INTO s_dynamic_field VALUES(2, 'sub_test', 'item2', 'el-table_3_column_15 is-left', 1);
+INSERT INTO s_dynamic_field VALUES(3, 'sub_test', 'item3', 'el-table_3_column_15 is-right', 2);
 
 DELETE FROM s_dynamic_field_val;
 INSERT INTO s_dynamic_field_val(field_id, business_id_str, value_decimal) VALUES(1, 'h', 123.32);
