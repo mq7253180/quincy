@@ -404,6 +404,7 @@ CREATE TABLE `b_user` (
   `password` VARCHAR(128),
   `mobile_phone` VARCHAR(20) NOT NULL,
   `email` VARCHAR(50),
+  `avatar` VARCHAR(256),
   `jsessionid_pc_browser` VARCHAR(128),
   `jsessionid_mobile_browser` VARCHAR(128),
   `jsessionid_app` VARCHAR(128),
@@ -429,14 +430,15 @@ CREATE TABLE s_enterprise (
 	UNIQUE KEY `unq_unified_socialc_redit_identifier` (`unified_socialc_redit_identifier`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-INSERT INTO `b_user` VALUES (0, '2019-06-24 14:41:15', 'maqiang', '马强', 1, 'dad3a37aa9d50688b5157698acfd7aee', '17810355544', 'maqiang@hce-haier.com', '3b7fa1804e7a472988cdbbb6eea9ee0a', NULL, NULL);
-INSERT INTO `b_user` VALUES (1, '2019-06-24 14:41:15', 'tim', 'TIM', 1, 'dad3a37aa9d50688b5157698acfd7aee', '17310464686', 'TIM@hce-haier.com', NULL, NULL, NULL);
-INSERT INTO `b_user` VALUES (2, '2019-06-24 14:41:15', 'xuetx', '薛童心', 0, 'dad3a37aa9d50688b5157698acfd7aee', '18653241108', 'xuetongxin@hce-haier.com', NULL, NULL, NULL);
-INSERT INTO `b_user` VALUES (3, '2019-06-24 14:41:15', 'fanzhen', '范桢', 1, 'dad3a37aa9d50688b5157698acfd7aee', '18611993803', 'fanzhen@hce-haier.com', NULL, NULL, NULL);
-INSERT INTO `b_user` VALUES (4, '2019-06-24 14:41:15', 'yejq', '叶敬群', 0, 'dad3a37aa9d50688b5157698acfd7aee', '18340877879', 'yejingqun@hce-haier.com', NULL, NULL, NULL);
-INSERT INTO `b_user` VALUES (5, '2019-06-24 14:41:15', 'jinyl', '金艳丽', 0, 'dad3a37aa9d50688b5157698acfd7aee', '18612751163', 'jinyanli@hce-haier.com', '6866ef5f06d74eb58788a71802c41ea9', NULL, NULL);
-INSERT INTO `b_user` VALUES (6, '2019-06-24 14:41:15', 'yangguang', '杨光', 1, 'dad3a37aa9d50688b5157698acfd7aee', '15844055800', '1122211@126.com', NULL, NULL, NULL);
-INSERT INTO `b_user` VALUES (7, '2019-06-24 14:41:15', 'zhaozh', '赵志辉', 1, 'dad3a37aa9d50688b5157698acfd7aee', '13552501524', 'luangk1@yusys.com.cn', NULL, NULL, NULL);
+DELETE FROM b_user;
+INSERT INTO `b_user` VALUES (0, '2019-06-24 14:41:15', 'maqiang', '马强', 1, 'dad3a37aa9d50688b5157698acfd7aee', '17810355544', 'maqiang@hce-haier.com', '/ken.JPG', '3b7fa1804e7a472988cdbbb6eea9ee0a', NULL, NULL);
+INSERT INTO `b_user` VALUES (1, '2019-06-24 14:41:15', 'tim', 'TIM', 1, 'dad3a37aa9d50688b5157698acfd7aee', '17310464686', 'TIM@hce-haier.com', NULL, NULL, NULL, NULL);
+INSERT INTO `b_user` VALUES (2, '2019-06-24 14:41:15', 'xuetx', '薛童心', 0, 'dad3a37aa9d50688b5157698acfd7aee', '18653241108', 'xuetongxin@hce-haier.com', NULL, NULL, NULL, NULL);
+INSERT INTO `b_user` VALUES (3, '2019-06-24 14:41:15', 'fanzhen', '范桢', 1, 'dad3a37aa9d50688b5157698acfd7aee', '18611993803', 'fanzhen@hce-haier.com', NULL, NULL, NULL, NULL);
+INSERT INTO `b_user` VALUES (4, '2019-06-24 14:41:15', 'yejq', '叶敬群', 0, 'dad3a37aa9d50688b5157698acfd7aee', '18340877879', 'yejingqun@hce-haier.com', NULL, NULL, NULL, NULL);
+INSERT INTO `b_user` VALUES (5, '2019-06-24 14:41:15', 'jinyl', '金艳丽', 0, 'dad3a37aa9d50688b5157698acfd7aee', '18612751163', 'jinyanli@hce-haier.com', NULL, '6866ef5f06d74eb58788a71802c41ea9', NULL, NULL);
+INSERT INTO `b_user` VALUES (6, '2019-06-24 14:41:15', 'yangguang', '杨光', 1, 'dad3a37aa9d50688b5157698acfd7aee', '15844055800', '1122211@126.com', NULL, NULL, NULL, NULL);
+INSERT INTO `b_user` VALUES (7, '2019-06-24 14:41:15', 'zhaozh', '赵志辉', 1, 'dad3a37aa9d50688b5157698acfd7aee', '13552501524', 'luangk1@yusys.com.cn', NULL, NULL, NULL, NULL);
 
 DROP TABLE IF EXISTS `s_role_user_rel`;
 CREATE TABLE `s_role_user_rel` (

@@ -134,6 +134,7 @@ CREATE TABLE `b_user` (
   `password` VARCHAR(128),
   `mobile_phone` VARCHAR(20) NOT NULL,
   `email` VARCHAR(50),
+  `avatar` VARCHAR(256),
   `jsessionid_pc_browser` VARCHAR(128),
   `jsessionid_mobile_browser` VARCHAR(128),
   `jsessionid_app` VARCHAR(128),
