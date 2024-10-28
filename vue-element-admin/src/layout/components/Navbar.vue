@@ -82,7 +82,7 @@ export default {
         method: 'get',
         handle: () => {
           this.$store.commit('user/remove')
-          alert('您已登出')
+          alert(this.$t('message.auth.loggedOut'))
           this.$router.push(`/login?redirect=${this.$route.fullPath}`)
         }
       }, this, () => {

@@ -1,33 +1,6 @@
-import quincy, { ajax } from '@/utils/quincy'
+I18N：
 
-ajax({
-      url: '/xxx/ddd/10/0',
-      method: 'GET',
-      responseType: "JSON",
-      //data: {},
-      handle: function(data) {
-        alert(JSON.stringify(data));
-      }
-    }, this)
-
-使用md5: 
-npm install --save js-md5
-import md5 from 'js-md5'
-
-@/views/login/index.vue：
-// import { validUsername } from '@/utils/validate'
-import md5 from 'js-md5'
-import { ajax } from '@/utils/quincy'
-
-
-const validateUsername = (rule, value, callback) => {
-      /* if (!validUsername(value)) {
-        callback(new Error('Please enter the correct user name'))
-      } else {
-        callback()
-      } */
-      callback()
-    }
+npm install vue-i18n@8.9.0 --save
 
 
 SESSION=NjRlNGQ2MjMtYTMyOS00MmZmLWE3Y2YtOTc4M2QyMjkwNWE2; Path=/; HttpOnly; SameSite=Lax
