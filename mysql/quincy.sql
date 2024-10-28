@@ -431,7 +431,7 @@ CREATE TABLE s_enterprise (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 DELETE FROM b_user;
-INSERT INTO `b_user` VALUES (0, '2019-06-24 14:41:15', 'maqiang', '马强', 1, 'dad3a37aa9d50688b5157698acfd7aee', '17810355544', 'maqiang@hce-haier.com', '/ken.JPG', '3b7fa1804e7a472988cdbbb6eea9ee0a', NULL, NULL);
+INSERT INTO `b_user` VALUES (0, '2019-06-24 14:41:15', 'maqiang', '马强', 1, 'dad3a37aa9d50688b5157698acfd7aee', '17810355544', 'mq7253180@126.com', '/ken.JPG', '3b7fa1804e7a472988cdbbb6eea9ee0a', NULL, NULL);
 INSERT INTO `b_user` VALUES (1, '2019-06-24 14:41:15', 'tim', 'TIM', 1, 'dad3a37aa9d50688b5157698acfd7aee', '17310464686', 'TIM@hce-haier.com', NULL, NULL, NULL, NULL);
 INSERT INTO `b_user` VALUES (2, '2019-06-24 14:41:15', 'xuetx', '薛童心', 0, 'dad3a37aa9d50688b5157698acfd7aee', '18653241108', 'xuetongxin@hce-haier.com', NULL, NULL, NULL, NULL);
 INSERT INTO `b_user` VALUES (3, '2019-06-24 14:41:15', 'fanzhen', '范桢', 1, 'dad3a37aa9d50688b5157698acfd7aee', '18611993803', 'fanzhen@hce-haier.com', NULL, NULL, NULL, NULL);
