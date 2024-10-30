@@ -463,11 +463,12 @@ CREATE TABLE `s_menu` (
   KEY `idx_p_id` (`p_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-INSERT INTO `s_menu` VALUES (1, NULL, '系统管理', NULL, 'activity');
-INSERT INTO `s_menu` VALUES (2, NULL, '账户管理', NULL, 'package');
-INSERT INTO `s_menu` VALUES (11, 1, '超级管理', '/sys/admin', NULL);
-INSERT INTO `s_menu` VALUES (21, 2, '合同授信', '/credit', NULL);
-INSERT INTO `s_menu` VALUES (22, 2, '保证金', '/credit/margin/5/1', NULL);
+INSERT INTO `s_menu` VALUES 
+(1, NULL, '系统管理', NULL, 'activity'),
+(2, NULL, '账户管理', NULL, 'package'),
+(11, 1, '超级管理', '/sys/admin', NULL),
+(21, 2, '合同授信', '/credit', NULL),
+(22, 2, '保证金', '/credit/margin/5/1', NULL);
 
 DROP TABLE IF EXISTS `s_role_menu_rel`;
 CREATE TABLE `s_role_menu_rel` (
@@ -480,15 +481,16 @@ CREATE TABLE `s_role_menu_rel` (
   KEY `idx_menu_id` (`menu_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-INSERT INTO `s_role_menu_rel` VALUES (30, 0, 1);
-INSERT INTO `s_role_menu_rel` VALUES (34, 0, 2);
-INSERT INTO `s_role_menu_rel` VALUES (31, 0, 11);
-INSERT INTO `s_role_menu_rel` VALUES (35, 0, 21);
-INSERT INTO `s_role_menu_rel` VALUES (38, 0, 22);
-INSERT INTO `s_role_menu_rel` VALUES (32, 14, 1);
-INSERT INTO `s_role_menu_rel` VALUES (36, 14, 2);
-INSERT INTO `s_role_menu_rel` VALUES (33, 14, 11);
-INSERT INTO `s_role_menu_rel` VALUES (37, 14, 21);
+INSERT INTO `s_role_menu_rel` VALUES 
+(30, 0, 1),
+(34, 0, 2),
+(31, 0, 11),
+(35, 0, 21),
+(38, 0, 22),
+(32, 14, 1),
+(36, 14, 2),
+(33, 14, 11),
+(37, 14, 21);
 
 DROP TABLE IF EXISTS s_client_system;
 CREATE TABLE s_client_system (
@@ -549,16 +551,6 @@ CREATE TABLE s_enterprise (
 	UNIQUE KEY `unq_unified_socialc_redit_identifier` (`unified_socialc_redit_identifier`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-
-DELETE FROM b_login_user_mapping;
-
-USE honda5;
-INSERT INTO b_login_user_mapping(login_name, user_id) VALUES ('17810355544', 25143814434232384);
-USE honda4;
-INSERT INTO b_login_user_mapping(login_name, user_id) VALUES ('mq7253180@126.com', 25143814434232384);
-USE honda6;
-INSERT INTO b_login_user_mapping(login_name, user_id) VALUES ('maqiang', 25143814434232384);
-
 DELETE FROM b_user;
 INSERT INTO `b_user` VALUES (25143814434232384, '2019-06-24 14:41:15', 'maqiang', '马强', 1, 'dad3a37aa9d50688b5157698acfd7aee', '17810355544', 'mq7253180@126.com', '/ken.JPG', '3b7fa1804e7a472988cdbbb6eea9ee0a', NULL, NULL);
 INSERT INTO `b_user` VALUES (1, '2019-06-24 14:41:15', 'tim', 'TIM', 1, 'dad3a37aa9d50688b5157698acfd7aee', '17310464686', 'TIM@hce-haier.com', NULL, NULL, NULL, NULL);
@@ -568,6 +560,10 @@ INSERT INTO `b_user` VALUES (4, '2019-06-24 14:41:15', 'yejq', '叶敬群', 0, '
 INSERT INTO `b_user` VALUES (5, '2019-06-24 14:41:15', 'jinyl', '金艳丽', 0, 'dad3a37aa9d50688b5157698acfd7aee', '18612751163', 'jinyanli@hce-haier.com', NULL, '6866ef5f06d74eb58788a71802c41ea9', NULL, NULL);
 INSERT INTO `b_user` VALUES (6, '2019-06-24 14:41:15', 'yangguang', '杨光', 1, 'dad3a37aa9d50688b5157698acfd7aee', '15844055800', '1122211@126.com', NULL, NULL, NULL, NULL);
 INSERT INTO `b_user` VALUES (7, '2019-06-24 14:41:15', 'zhaozh', '赵志辉', 1, 'dad3a37aa9d50688b5157698acfd7aee', '13552501524', 'luangk1@yusys.com.cn', NULL, NULL, NULL, NULL);
+
+INSERT INTO b_login_user_mapping(login_name, user_id) VALUES ('17810355544', 25143814434232384);
+INSERT INTO b_login_user_mapping(login_name, user_id) VALUES ('mq7253180@126.com', 25143814434232384);
+INSERT INTO b_login_user_mapping(login_name, user_id) VALUES ('maqiang', 25143814434232384);
 
 DROP TABLE IF EXISTS `s_role_user_rel`;
 CREATE TABLE `s_role_user_rel` (
