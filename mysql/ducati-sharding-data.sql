@@ -76,7 +76,9 @@ INSERT INTO `s_permission_role_rel` VALUES
 (163,76,0),
 (164,77,0),
 (165,78,0);
+
 INSERT INTO `b_user` VALUES (25143814434232384, '2019-06-24 14:41:15', 'maqiang', '马强', 1, 'dad3a37aa9d50688b5157698acfd7aee', '17810355544', 'mq7253180@126.com', '/ken.JPG', '3b7fa1804e7a472988cdbbb6eea9ee0a', NULL, NULL);
+INSERT INTO `s_role_user_rel`(role_id, user_id) VALUES (0, 25143814434232384);
 
 DROP TABLE IF EXISTS sub_test;
 CREATE TABLE sub_test (

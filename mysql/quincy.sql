@@ -582,7 +582,7 @@ CREATE TABLE `s_role_user_rel` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 INSERT INTO `s_role_user_rel`(role_id, user_id) VALUES 
-(0, 0),
+(0, 25143814434232384),
 (14, 5);
 
 DROP TABLE IF EXISTS s_updation;
