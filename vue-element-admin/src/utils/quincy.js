@@ -12,7 +12,7 @@ const service = axiosxxx.create({
   }
 })
 
-export function ajax(params, t, after) {
+export function ajax(params, thiz, after) {
   const handle = params.handle
   delete params.handle
   if (params.data != null) {
@@ -25,9 +25,9 @@ export function ajax(params, t, after) {
       switch (status) {
         case 1: handle(data); break
         case 0:
-          t.$store.commit('user/remove')
-          alert(t.$t('message.auth.timeout'))
-          t.$router.push(`/login?redirect=${t.$route.fullPath}`)
+          thiz.$store.commit('user/remove')
+          alert(thiz.$t('message.auth.timeout'))
+          thiz.$router.push(`/login?redirect=${thiz.$route.fullPath}`)
           break
         default: alert('弹层(红叉)：' + response.data.msg); break
       }
