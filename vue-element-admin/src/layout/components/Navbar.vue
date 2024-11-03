@@ -84,9 +84,6 @@ export default {
           this.$store.commit('user/remove')
           alert(this.$t('message.auth.loggedOut'))
           this.$router.push(`/login?redirect=${this.$route.fullPath}`)
-        },
-        after: () => {
-          this.loading = false
         }
       }, this)
     }

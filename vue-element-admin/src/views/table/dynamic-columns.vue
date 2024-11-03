@@ -85,6 +85,8 @@ export default {
         success: (data) => {
           this.list = data.result
           this.dynamicFields = data.dynamicFields
+        },
+        after: () => {
           this.listLoading = false
         }
       }, this)
