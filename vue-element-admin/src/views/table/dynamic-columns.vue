@@ -82,7 +82,7 @@ export default {
         method: 'GET',
         responseType: 'JSON',
         // data: {},
-        handle: (data) => {
+        success: (data) => {
           this.list = data.result
           this.dynamicFields = data.dynamicFields
           this.listLoading = false

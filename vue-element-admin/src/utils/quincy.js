@@ -12,18 +12,18 @@ const service = axiosxxx.create({
   }
 })
 
-export function ajax(params, thiz, after) {
-  const handle = params.handle
-  delete params.handle
-  if (params.data != null) {
+export function ajax(params, thiz) {
+  const success = params.success
+  const after = params.after
+  delete params.success
+  delete params.after
+  if (params.data !== null) {
     params.data = qs.stringify(params.data)
   }
   service(params).then(response => {
     if (response.status === 200) {
-      const status = response.data.status
-      const data = response.data.data
-      switch (status) {
-        case 1: handle(data); break
+      switch (response.data.status) {
+        case 1: success(response.data.data); break
         case 0:
           thiz.$store.commit('user/remove')
           alert(thiz.$t('message.auth.timeout'))
@@ -34,7 +34,7 @@ export function ajax(params, thiz, after) {
     } else { // Not 200 except 404、500、502、503 etc.
       alert(response.status + ': ' + response.statusText)
     }
-    if (after != null) {
+    if (after !== null && after !== undefined) {
       after()
     }
   }).catch(error => {

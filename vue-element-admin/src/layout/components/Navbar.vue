@@ -80,14 +80,15 @@ export default {
       ajax({
         url: '/auth/signout',
         method: 'get',
-        handle: () => {
+        success: () => {
           this.$store.commit('user/remove')
           alert(this.$t('message.auth.loggedOut'))
           this.$router.push(`/login?redirect=${this.$route.fullPath}`)
+        },
+        after: () => {
+          this.loading = false
         }
-      }, this, () => {
-        this.loading = false
-      })
+      }, this)
     }
   }
 }

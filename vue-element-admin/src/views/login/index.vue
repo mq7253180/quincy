@@ -166,20 +166,21 @@ export default {
               username: this.loginForm.username,
               password: md5(this.loginForm.password)
             },
-            handle: result => {
+            success: result => {
               if (result.status < 1) {
                 alert(result.msg)
               } else {
-                result.data.user.avatar = 'https://demo.jep8566.com/avatar/ken.JPG'
+                result.data.user.avatar = process.env.VUE_APP_BASE_AVATAR + result.data.user.avatar
                 result.data.user.introduction = 'blabla'
                 result.data.user.permissions = result.data.permissions
                 this.$store.commit('user/set', result.data.user)
                 this.$router.push({ path: this.redirect || '/', query: this.otherQuery })
               }
+            },
+            after: () => {
+              this.loading = false
             }
-          }, this, () => {
-            this.loading = false
-          })
+          }, this)
           /* this.$store.dispatch('user/login', this.loginForm)
             .then(() => {
               this.$router.push({ path: this.redirect || '/', query: this.otherQuery })
