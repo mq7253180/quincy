@@ -14,9 +14,9 @@ const service = axiosxxx.create({
 
 export function ajax(params, thiz) {
   const success = params.success
-  const after = params.after
+  const finaly = params.finaly
   delete params.success
-  delete params.after
+  delete params.finaly
   if (params.data !== null) {
     params.data = qs.stringify(params.data)
   }
@@ -38,8 +38,8 @@ export function ajax(params, thiz) {
     console.log(error)
     alert('请检查：\r\n前端：URL、传参；\r\n后端：404、500、502、503\r\n' + JSON.stringify(error))
   }).finally(() => {
-    if (after != null) {
-      after()
+    if (finaly != null) {
+      finaly()
     }
   })
 }
