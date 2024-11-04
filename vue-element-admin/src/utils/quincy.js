@@ -34,12 +34,10 @@ export function ajax(params, thiz) {
     } else { // Not 200 except 404、500、502、503 etc.
       alert(response.status + ': ' + response.statusText)
     }
-    if (after !== null && after !== undefined) {
-      after()
-    }
   }).catch(error => {
     console.log(error)
     alert('请检查：\r\n前端：URL、传参；\r\n后端：404、500、502、503\r\n' + JSON.stringify(error))
+  }).finally(() => {
     if (after != null) {
       after()
     }
