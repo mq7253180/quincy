@@ -30,8 +30,8 @@ INSERT INTO test VALUES(14, 'aaa14', 20);
 INSERT INTO test VALUES(15, 'aaa15', 13);
 SELECT * FROM test ORDER BY bbb;
 
-INSERT INTO test VALUES(17, 'aaa17', 17);
-INSERT INTO test VALUES(18, 'aaa17', 33);
+INSERT INTO test VALUES(17, 'aaa17', 14);
+INSERT INTO test VALUES(18, 'aaa17', 17);
 
 
 2, 5, 7, 9, 12, 15, 21, 32, 56, 87
@@ -83,6 +83,41 @@ INSERT INTO uest VALUES(17, 'poijjs', 38);
 INSERT INTO uest VALUES(18, 'lkjhhd', 25);
 INSERT INTO uest VALUES(19, 'csadfdsafads', 4);
 INSERT INTO uest VALUES(20, 'dwqfwqfwq', 76);
+
+DROP TABLE IF EXISTS uest;
+CREATE TABLE uest (
+	id INT(11) NOT NULL AUTO_INCREMENT,
+	ccc VARCHAR(20) NOT NULL,
+	ddd INT(10) NOT NULL,
+	PRIMARY KEY (id),
+	KEY idx_ddd(ddd) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+SELECT COUNT(*) FROM uest WHERE id BETWEEN 12345 AND 12644;
+
+INSERT INTO uest(ccc, ddd) VALUES 
+('abcd', 15),
+('bcde', 5),
+('cdef', 32),
+('defg', 56),
+('efgh', 21),
+('fghi', 2),
+('ghij', 7),
+('hijk', 12),
+('abcdef', 9),
+('bcdefg', 21),
+('cdefgh', 67),
+('abefgh', 41),
+('aefghi', 37),
+('abcfgh', 13),
+('cdeghes', 21),
+('cdghasdf', 18),
+('poijjs', 38),
+('lkjhhd', 25),
+('csadfdsafads', 4),
+('dwqfwqfwq', 76);
+
+INSERT INTO uest(ccc, ddd) SELECT ccc, ddd FROM uest;
 
 DROP TABLE zelation;
 CREATE TABLE zelation (
