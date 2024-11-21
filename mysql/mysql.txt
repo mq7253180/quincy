@@ -283,7 +283,9 @@ RR隔离级别：
 				INSERT：开闭规则同上
 					条件值存在：锁当自己当前和前一个区间；
 					条件值不存在：只锁自己当前区间
-				UPDATE/DELETE：无间隙锁，其他事务均可以在相临区间UPDATE、DELETE
+				UPDATE/DELETE：
+					UPDATE/DELETE：无间隙锁，其他事务均可以UPDATE、DELETE相邻数据
+					INSERT：锁当自己当前和后一个区间，其他事务的INSERT操作被阻塞
 		INSERT：无间隙锁，其他事务均可以在相临区间UPDATE、DELETE、INSERT
 
 1000万条记录，8c32g
