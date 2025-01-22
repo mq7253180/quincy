@@ -17,7 +17,9 @@ Normal certificate:
 
 1. 添加A记录
 2. Nginx设置静态目录
-certbot certonly --webroot -w /quincy/html -d jep8566.com -d ducati.jep8566.com -d docker.jep8566.com -d nexus.jep8566.com -d honda.jep8566.com -d crm.jep8566.com -d demo.jep8566.com
+certbot certonly --webroot -w /quincy/html -d jep8566.com -d ducati.jep8566.com -d docker.jep8566.com -d nexus.jep8566.com -d honda.jep8566.com -d crm.jep8566.com -d demo.jep8566.com -d static.jep8566.com
+
+certbot certonly --webroot -w /quincy/html --register-unsafely-without-email -d jep8566.com -d ducati.jep8566.com -d docker.jep8566.com -d nexus.jep8566.com -d honda.jep8566.com -d crm.jep8566.com -d demo.jep8566.com -d static.jep8566.com
 -------------------------------------------
 Wildcard certificate: 
 certbot certonly -d "*.jep8566.com" --manual --register-unsafely-without-email --preferred-challenges dns
