@@ -250,7 +250,7 @@ kubectl describe pod $(kubectl get pod -l <label_selector>)|grep "Memory"
 
 NodeIP、ClusterIP、PodIP
 
-nodePort、port、targetPort
+nodePort、port、targetPort、containerPort
 ========================================
 区别：
 RUN、CMD、ENTRYPOINT
