@@ -220,6 +220,8 @@ mount -t nfs 172.16.1.25:/export/test/src/eub-outer/src/main/webapp/resource /ex
 
 如果登录时报：-bash: warning: setlocale: LC_CTYPE: cannot change locale (UTF-8): No such file or directory
 	/etc/locale.conf中添加一行：LC_ALL=en_US.UTF-8
+
+macOS生成的和CentOS不一样，无法登录，如果不一样以CentOS为准
 ----------------------------------------------------------------
 定时任务: 
 crontab -l
