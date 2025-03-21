@@ -86,6 +86,7 @@ GRANT ALL PRIVILEGES ON ducati.* TO 'making'@'localhost' IDENTIFIED BY '1qazxsw2
 带IDENTIFIED BY报：ERROR 1064 (42000): You have an error in your SQL syntax
 
 GRANT CREATE ON *.* TO 'admin'@'%';
+GRANT DROP ON *.* TO 'admin'@'%';
 
 CREATE DATABASE ducati CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 CREATE DATABASE honda CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;

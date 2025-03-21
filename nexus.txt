@@ -1,5 +1,9 @@
-/quincy/nexus/nexus-3.62.0-01/bin/nexus run &
-/quincy/nexus/nexus-3.62.0-01/bin/nexus start
-/quincy/nexus/nexus-3.62.0-01/bin/nexus stop
+下载：
+https://help.sonatype.com/en/download-archives---repository-manager-3.html
+https://download.sonatype.com/nexus/3/nexus-3.37.1-01-unix.tar.gz
+
+/quincy/nexus/nexus/bin/nexus run &
+/quincy/nexus/nexus/bin/nexus start
+/quincy/nexus/nexus/bin/nexus stop
 
 默认admin密码在/quincy/nexus/sonatype-work/nexus3/admin.password中保存
