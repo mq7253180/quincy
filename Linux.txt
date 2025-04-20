@@ -35,7 +35,8 @@ useradd -r -m -d /usr/admin -g admin admin
 passwd admin
 将已有用户加入组: usermod -a -G <组名> <用户名>
 ls -lrt
-lsof -i:port: 查看被哪个进程占用
+lsof -i :port: 查看被哪个进程占用
+netstat -tunap | grep ':80'：查看端口正在被哪些ip访问
 
 查看用户属于哪个组: groups 用户名
 登录SFTP: sftp -P 9122 QUINCY@256.127.2.151
