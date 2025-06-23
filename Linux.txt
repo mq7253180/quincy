@@ -276,6 +276,8 @@ PATH=$JAVA_HOME/bin:$PATH
 CLASSPATH=.:$JAVA_HOME/lib/jrt-fs.jar
 export JAVA_HOME CLASSPATH PATH
 
+nohup java -cp .:jsch-0.1.55.jar SSHTest 7 10 20 ${ip} 2>&1 &
+
 报Unable to find Java: 
 1. JAVA_HOME指向不存在的目录
 2. ln -s /quincy/env/java/jdk-11.0.2/bin/java /sbin/java
