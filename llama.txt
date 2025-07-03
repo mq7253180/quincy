@@ -1,0 +1,100 @@
+mkdir /quincy
+mount /dev/vdb /quincy
+cat /quincy/id_rsa.pub >> ./.ssh/authorized_keys
+ln -s /quincy/ollama/bin/ollama /usr/bin
+ln -sf /quincy/programs/gcc/lib64/libstdc++.so.6.0.28 /lib64
+ln -sf /lib64/libstdc++.so.6.0.28 /lib64/libstdc++.so.6
+ln -s /quincy/programs/glibc/lib/libm-2.28.so /lib64
+ln -sf /lib64/libm-2.28.so /lib64/libm.so.6
+
+groupadd ollama
+useradd -r -m -d /quincy/ollama/usr -g ollama ollama
+
+
+/etc/systemd/system/ollama.service
+
+[Unit]
+Description=Ollama Service
+After=network-online.target
+
+[Service]
+ExecStart=/usr/bin/ollama serve
+User=ollama
+Group=ollama
+Restart=always
+RestartSec=3
+Environment="PATH=$PATH"
+
+[Install]
+WantedBy=multi-user.target
+
+systemctl daemon-reload
+systemctl enable ollama
+systemctl status ollama
+
+
+/etc/systemd/system/ollama.service.d/override.conf
+
+[Service]
+Environment="OLLAMA_MODELS=/quincy/ollama/models"
+
+echo $OLLAMA_MODELS
+
+ollama serve &
+ollama run llama4:scout
+=======================================
+/lib64/libstdc++.so.6: version `GLIBCXX_3.4.25' not found
+
+升级gcc、g++
+strings /lib64/libstdc++.so.6|grep GLIBC
+下载：https://ftp.gnu.org/gnu/gcc/gcc-9.5.0/gcc-9.5.0.tar.gz
+
+yum groupinstall "Development Tools"
+yum install gmp-devel mpfr-devel libmpc-devel
+./contrib/download_prerequisites
+mkdir build && cd build
+../configure --prefix=/quincy/programs/gcc --disable-multilib
+make -j$(nproc)
+make install
+ln -sf /quincy/programs/gcc/lib64/libstdc++.so.6.0.28 /lib64
+ln -sf /lib64/libstdc++.so.6.0.28 /lib64/libstdc++.so.6
+
+
+/lib64/libm.so.6: version `GLIBC_2.27' not found (required by ollama)
+
+升级glibc
+strings /lib64/libm.so.6|grep GLIBC
+下载：https://ftp.gnu.org/gnu/glibc/glibc-2.28.tar.gz
+
+mkdir build && cd build
+../configure --prefix=/quincy/programs/glibc --disable-werror --disable-profile --enable-add-ons --with-headers=/usr/include --with-binutils=/usr/bin
+make
+make install
+ln -s /quincy/programs/glibc/lib/libm-2.28.so /lib64
+ln -sf /lib64/libm-2.28.so /lib64/libm.so.6
+
+make时报
+configure: error: 
+*** These critical programs are missing or too old: make
+*** Check the INSTALL file for required versions.
+
+升级gcc、g++
+ln -sf /quincy/programs/gcc/bin/gcc /usr/bin/gcc
+ln -sf /quincy/programs/gcc/bin/g++ /usr/bin/g++
+
+升级make
+下载：https://ftp.gnu.org/gnu/make/make-4.3.tar.gz
+../configure --prefix=/quincy/programs/make
+make
+make install
+ln -sf /quincy/programs/make/bin/make /usr/bin/make
+
+yum install -y bison
+=======================================================
+/etc/systemd/system/ollama.service.d/override.conf
+
+Environment="OLLAMA_DEBUG=1"
+Environment="OLLAMA_MODELS=/quincy/ollama/models"
+Environment="OLLAMA_HOST=0.0.0.0:11434"
+
+
