@@ -26,13 +26,13 @@ daemon.json
 }
 
 解压文件
-ln -s /quincy/docker/docker/containerd /usr/local/bin/containerd
-ln -s /quincy/docker/docker/runc /usr/local/bin/runc
-ln -s /quincy/docker/docker/docker /usr/local/bin/docker
-ln -s /quincy/docker/docker/docker-init /usr/local/bin/docker-init
-/quincy/docker/docker/dockerd --selinux-enabled=false --config-file=/quincy/docker/daemon.json -H tcp://0.0.0.0:2375 -H unix:///var/run/docker.sock -D >> /quincy/tmp/logs/dockerd.log 2>&1 &
+ln -s /quincy/docker/containerd /usr/local/bin/containerd
+ln -s /quincy/docker/runc /usr/local/bin/runc
+ln -s /quincy/docker/docker /usr/local/bin/docker
+ln -s /quincy/docker/docker-init /usr/local/bin/docker-init
+/quincy/docker/dockerd --selinux-enabled=false --config-file=/quincy/docker/daemon.json -H tcp://0.0.0.0:2375 -H unix:///var/run/docker.sock -D >> /quincy/tmp/logs/dockerd.log 2>&1 &
 
-/quincy/docker/docker/dockerd --selinux-enabled=false --config-file=/quincy/docker/daemon.json --insecure-registry=47.93.89.0 -H tcp://0.0.0.0:2375 -H unix:///var/run/docker.sock -D >> /quincy/tmp/logs/dockerd.log 2>&1 &
+/quincy/docker/dockerd --selinux-enabled=false --config-file=/quincy/docker/daemon.json --insecure-registry=47.93.89.0 -H tcp://0.0.0.0:2375 -H unix:///var/run/docker.sock -D >> /quincy/tmp/logs/dockerd.log 2>&1 &
 
 其他
 --insecure-registry=127.0.0.1
