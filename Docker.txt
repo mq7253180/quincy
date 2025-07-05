@@ -16,7 +16,7 @@ mklink /J "C:\Users\Public\Documents\Hyper-V\Virtual hard disks" "D:\Virtual har
 ================================================================================
 Linux：
 
-从https://download.docker.com/下载对应版本的压缩文件
+从https://download.docker.com/linux/static/stable/x86_64/下载对应版本的压缩文件
 
 daemon.json
 {
