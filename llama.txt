@@ -1,3 +1,5 @@
+https://github.com/ollama/ollama/blob/main/docs/linux.md
+
 mkdir /quincy
 mount /dev/vdb /quincy
 cat /quincy/id_rsa.pub >> ./.ssh/authorized_keys
@@ -8,8 +10,8 @@ ln -s /quincy/programs/glibc/lib/libm-2.28.so /lib64
 ln -sf /lib64/libm-2.28.so /lib64/libm.so.6
 
 groupadd ollama
-useradd -r -m -d /quincy/ollama/usr -g ollama ollama
-
+useradd -r -m -d /usr/admin -g ollama ollama
+chown -R ollama:ollama /quincy/ollama
 
 /etc/systemd/system/ollama.service
 
@@ -24,6 +26,8 @@ Group=ollama
 Restart=always
 RestartSec=3
 Environment="PATH=$PATH"
+Environment="OLLAMA_HOST=0.0.0.0:11434"
+Environment="OLLAMA_MODELS=/quincy/ollama/models"
 
 [Install]
 WantedBy=multi-user.target
@@ -32,15 +36,8 @@ systemctl daemon-reload
 systemctl enable ollama
 systemctl status ollama
 
-
-/etc/systemd/system/ollama.service.d/override.conf
-
-[Service]
-Environment="OLLAMA_MODELS=/quincy/ollama/models"
-
-echo $OLLAMA_MODELS
-
 ollama serve &
+ollama run llama3.2 ""
 ollama run llama4:scout
 =======================================
 /lib64/libstdc++.so.6: version `GLIBCXX_3.4.25' not found
@@ -93,8 +90,26 @@ yum install -y bison
 =======================================================
 /etc/systemd/system/ollama.service.d/override.conf
 
+[Service]
 Environment="OLLAMA_DEBUG=1"
 Environment="OLLAMA_MODELS=/quincy/ollama/models"
 Environment="OLLAMA_HOST=0.0.0.0:11434"
+======================================================
+Open WebUI
+
+For CPU Only: 
+docker run -d -p 3000:8080 -v ollama:/quincy/ollama/usr/.ollama -v open-webui:/quincy/open-webui/data --name open-webui ghcr.io/open-webui/open-webui:ollama
+
+If Ollama is on your computer：
+docker run -d -p 3000:8080 --add-host=host.docker.internal:127.0.0.1 -v open-webui:/quincy/open-webui/data --name open-webui ghcr.io/open-webui/open-webui:main
+
+If Ollama is on a Different Server：
+docker run -d -p 3000:8080 -e OLLAMA_BASE_URL=https://127.0.0.1:11434 -v open-webui:/quincy/open-webui/data --name open-webui ghcr.io/open-webui/open-webui:main
+
+To run Open WebUI with Nvidia GPU support：
+docker run -d -p 3000:8080 --gpus all --add-host=host.docker.internal:host-gateway -v open-webui:/quincy/open-webui/data --name open-webui --restart always ghcr.io/open-webui/open-webui:cuda
+
+With GPU Support: 
+docker run -d -p 3000:8080 --gpus=all -v ollama:/root/.ollama -v open-webui:/quincy/open-webui/data --name open-webui --restart always ghcr.io/open-webui/open-webui:ollama
 
 
