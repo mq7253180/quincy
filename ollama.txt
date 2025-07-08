@@ -26,6 +26,7 @@ Group=ollama
 Restart=always
 RestartSec=3
 Environment="PATH=$PATH"
+Environment="OLLAMA_KEEP_ALIVE=-1"
 Environment="OLLAMA_HOST=0.0.0.0:11434"
 Environment="OLLAMA_MODELS=/quincy/ollama/models"
 
@@ -39,6 +40,12 @@ systemctl status ollama
 ollama serve &
 ollama run llama3.2 ""
 ollama run llama4:scout
+
+curl http://localhost:11434/api/generate -d '{
+  "model": "llama3.2",
+  "stream": true,
+  "keep_alive": "24h"
+}'
 =======================================
 /lib64/libstdc++.so.6: version `GLIBCXX_3.4.25' not found
 
@@ -92,24 +99,21 @@ yum install -y bison
 
 [Service]
 Environment="OLLAMA_DEBUG=1"
+Environment="OLLAMA_KEEP_ALIVE=-1"
 Environment="OLLAMA_MODELS=/quincy/ollama/models"
 Environment="OLLAMA_HOST=0.0.0.0:11434"
 ======================================================
 Open WebUI
 
-For CPU Only: 
-docker run -d -p 3000:8080 -v ollama:/quincy/ollama/usr/.ollama -v open-webui:/quincy/open-webui/data --name open-webui ghcr.io/open-webui/open-webui:ollama
-
 If Ollama is on your computer：
-docker run -d -p 3000:8080 --add-host=host.docker.internal:127.0.0.1 -v open-webui:/quincy/open-webui/data --name open-webui ghcr.io/open-webui/open-webui:main
+docker run -d -p 3000:8080 --add-host=host.docker.internal:172.23.81.181 -v open-webui:/quincy/open-webui/data --name open-webui-172 ghcr.io/open-webui/open-webui:main
+
+docker run -d -p 3000:8080 --add-host=host.docker.internal:127.0.0.1 -v open-webui:/quincy/open-webui/data --name open-webui-127 ghcr.io/open-webui/open-webui:main
+
+docker run -d -p 3000:8080 -v open-webui:/quincy/open-webui/data --name open-webui ghcr.io/open-webui/open-webui:main
 
 If Ollama is on a Different Server：
 docker run -d -p 3000:8080 -e OLLAMA_BASE_URL=https://127.0.0.1:11434 -v open-webui:/quincy/open-webui/data --name open-webui ghcr.io/open-webui/open-webui:main
 
-To run Open WebUI with Nvidia GPU support：
-docker run -d -p 3000:8080 --gpus all --add-host=host.docker.internal:host-gateway -v open-webui:/quincy/open-webui/data --name open-webui --restart always ghcr.io/open-webui/open-webui:cuda
-
-With GPU Support: 
-docker run -d -p 3000:8080 --gpus=all -v ollama:/root/.ollama -v open-webui:/quincy/open-webui/data --name open-webui --restart always ghcr.io/open-webui/open-webui:ollama
 
 
