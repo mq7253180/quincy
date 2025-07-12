@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+	<head>
+	    <meta charset="UTF-8" />
+	    <title>LLM</title>
+	</head>
+	<body>
+		<textarea id="question" rows="10" cols="60"></textarea>
+		<br/>
+		<button type="button" id="btn" onClick="streamData()">提问</button>
+		<p id="answer"></p>
+	    <script type="text/javascript"/>
+	    	function streamData() {
+	    		var answer = document.getElementById('answer');
+	    		var btn = document.getElementById('btn');
+	    		answer.innerText = '正在玩命思考...，时间可能有点长';
+	    		btn.disabled = true;
+				var xhr = new XMLHttpRequest();
+    			xhr.open('POST', '/api/chat', true);
+    			xhr.responseType = 'text';
+				xhr.onreadystatechange = function() {
+					if(xhr.readyState==4) {
+						if(xhr.status==200) {
+							var json = '['+xhr.responseText.replaceAll('}\n{', '}, {')+']';
+							var data = JSON.parse(json);
+							//alert(data.length);
+							var sb = '';
+							data.forEach(function (item, index) {
+								sb += item.message.content;
+								if(index < data.length-1) {
+									sb += ' ';
+								}
+							});
+							answer.innerText = sb;
+							btn.disabled = false;
+						} else
+							alert(xhr.status+"---"+xhr.responseText);
+					}
+				};
+				xhr.onload = function() {
+					console.log('Data loading complete.');
+				};
+				xhr.onerror = function() {
+					console.error('Data loading error.');
+				};
+				var data = '{\"model\": \"llama3.2\", \"messages\": [{\"role\": \"user\", \"content": \"'+document.getElementById('question').value+'\"}]}';
+				xhr.send(data);
+			}
+	    </script>
+	</body>
+</html>
