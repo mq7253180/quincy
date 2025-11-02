@@ -69,3 +69,17 @@ Minor GC: 执行不频繁，约10秒一次;
 Full GC: 执行时间不到1s;
 Full GC: 执行频率不算频繁，不低于10分钟1次
 
+
+# 电商系统典型配置（16G内存）
+-Xms12g -Xmx12g 
+-XX:NewRatio=1 
+-XX:SurvivorRatio=4 
+-XX:+UseG1GC 
+-XX:MaxGCPauseMillis=200 
+-XX:MetaspaceSize=256m 
+-XX:MaxMetaspaceSize=512m 
+-XX:+PrintGCDetails 
+–XX:MaxTenuringThreshold=15 
+-Xloggc:/logs/gc.log
+
+

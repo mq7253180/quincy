@@ -511,6 +511,8 @@ CREATE TABLE `b_login_user_mapping` (
   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `login_name` VARCHAR(50) NOT NULL,
   `user_id` BIGINT UNSIGNED NOT NULL,
+  `sharding_key` TINYINT UNSIGNED,
+  `tb_sharding_key` TINYINT UNSIGNED,
   PRIMARY KEY (`id`),
   UNIQUE KEY `unq_login_name` (`login_name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
