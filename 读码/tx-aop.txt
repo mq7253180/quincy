@@ -1,0 +1,3 @@
+AnnotationTransactionAspect中切入的@Transactional注解
+AspectJTransactionManagementConfiguration中注入的txManager
+AbstractTransactionManagementConfiguration的setConfigurers方法给txManager赋的值，configurers.iterator().next()取的是所有事务管理器的头一个

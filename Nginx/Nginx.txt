@@ -15,6 +15,7 @@ ln -s /quincy/programs/openssl-bin/lib/libcrypto.so.1.1 /usr/lib64/libcrypto.so.
 rpm -qa pcre
 rpm -qa|grep pcre
 下载地址：https://sourceforge.net/projects/pcre/files/pcre/
+如果没安装C++编译器会报：configure: error: Invalid C++ compiler or C++ compiler flags
 
 下载地址：https://nginx.org/en/download.html
 Github：
@@ -23,7 +24,6 @@ Github：
 
 ./configure --prefix=/quincy/nginx --with-http_ssl_module --with-http_stub_status_module --with-stream --with-stream_ssl_preread_module --with-stream_ssl_module --with-openssl=/quincy/programs/openssl-1.1.1w --with-pcre=/quincy/programs/pcre-src --with-zlib=/quincy/programs/zlib-src
 
-./configure --prefix=/quincy/nginx --with-http_ssl_module --with-http_stub_status_module --with-stream --with-stream_ssl_preread_module --with-stream_ssl_module --with-openssl=/quincy/programs/openssl-bin --with-pcre=/quincy/programs/pcre-bin --with-zlib=/quincy/programs/zlib-bin
 make时报错：
 make -f objs/Makefile
 make[1]: Entering directory `/quincy/nginx-1.27.1'
