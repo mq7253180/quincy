@@ -1,0 +1,32 @@
+private Properties properties;
+
+	private String getDatabaseProductName(DataSource dataSource) throws SQLException {
+	    try (Connection con = dataSource.getConnection()) {
+	      DatabaseMetaData metaData = con.getMetaData();
+	      return metaData.getDatabaseProductName();
+	    }
+
+	  }
+
+	private String getDatabaseName(DataSource dataSource) throws SQLException {
+	    String productName = getDatabaseProductName(dataSource);
+	    if (this.properties != null) {
+	      for (Map.Entry<Object, Object> property : properties.entrySet()) {
+	        if (productName.contains((String) property.getKey())) {
+	          return (String) property.getValue();
+	        }
+	      }
+	      // no match, return null
+	      return null;
+	    }
+	    return productName;
+	  }
+
+	private String getDatabaseName2(DataSource dataSource) throws SQLException {
+	    String productName = getDatabaseProductName(dataSource);
+	    return this.properties != null ? (String)this.properties.entrySet().stream().filter((entry) -> {
+	    	return productName.contains((String)entry.getKey());
+	    }).map((entry) -> {
+	    	return (String)entry.getValue();
+	    }).findFirst().orElse(null) : productName;
+	  }
