@@ -271,6 +271,11 @@ show slave status\G
  start slave;
  show slave status\G
 5 作为备启动keepalived：nohup /space/keepalived/sbin/keepalived -f /space/kald-backup.conf 2>&1 &
+
+
+lock-all-tables：使用的是FLUSH TABLES READ LOCK全局读锁，锁定所有database下的所有表
+lock-tables：使用的是LOCK TABLES tb1 READ,tb2 READ锁定一个database下的所有表，处理完再锁另一个database的所有表
+在使用mysqldump获取一致性备份时，我们经常会使用两个参数，--single-transaction和--master-data，前者保证innodb表的数据一致性，后者保证获取与数据备份匹配的一致性位点，主要用于搭建复制。现在使用mysql主备集群基本是标配，所以也是必需的。对于myisam，就需要通过--lock-all-tables参数和--master-data来达到同样的目的。
 ======================================================================
 BTREE索引
 
