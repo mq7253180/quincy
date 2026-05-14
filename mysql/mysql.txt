@@ -315,6 +315,22 @@ RU和RC隔离级别：无论INSERT还是UPDATE，均锁唯一性字段的值
 RR隔离级别：
 	INSERT：锁唯一性字段的值和所有记录，INSERT如果唯一性字段值不冲突可以成功，如果冲突或UPDATE相不相干的记录均被卡住
 	UPDATE：锁表
+----------------------------------------------------------------------
+联合主键：
+	INSERT：
+		READ_COMMITTED：都会被阻塞
+		REPEATABLE_READ：同上
+	UPDATE（并没有这条）：
+		READ_COMMITTED：都不会被阻
+		REPEATABLE_READ：UPDATE不会，INSERT会
+
+普通索引：
+	INSERT：
+		READ_COMMITTED：UPDATE会，INSERT不会
+		REPEATABLE_READ：同上
+	UPDATE（并没有这条）：
+		READ_COMMITTED：都不会
+		REPEATABLE_READ：UPDATE不会，INSERT会
 ========================================================================
 EXPLAIN
 
