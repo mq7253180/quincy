@@ -197,7 +197,10 @@ D:\env\mysql\mysql-5.7.22-winx64\bin\mysqldump -h10.50.1.14 -P3306 -upgw –p78D
 所有库：-A
 单张表：test1
 多张表：--databases test1 test2
-–lock-all-tables, -x：锁定所有库中所有的表，这是通过在整个dump的过程中持有全局读锁来实现的，自动关闭-single-transaction和-lock-tables选项
+–lock-all-tables, -x：锁定所有库中所有的表，这是通过在整个dump的过程中持有全局读锁来实现的，自动关闭-single-transaction和-lock-tables, -l选项
+--master(新版source)-data: 会将change master 语句写入dump文件中
+  1: 在从库导入后，配置主从“无需”再指定文件名和位置
+  2: 只不过会被注释掉，在从库导入后，配置主从“需要”指定文件名和位置，建议使用该值
 
 导入：
 /quincy/mysql/mysql/bin/mysql --socket=/logs/mysql/mysqld.socket -uadmin -pnimda ducati < /quincy/mysql/ducati.sql
